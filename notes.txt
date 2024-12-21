@@ -1,0 +1,94 @@
+
+
+https://www.bea.gov/resources/for-developers
+https://apps.bea.gov/api/signup/
+https://apps.bea.gov/API/docs/index.htm
+https://www.bea.gov/news/schedule/full
+
+https://apps.bea.gov/api/_pdf/bea_web_service_api_user_guide.pdf
+100 requests/minute
+100MB/minute
+https://apps.bea.gov/api/data
+
+https://www.bea.gov/
+https://www.bea.gov/data
+https://apps.bea.gov/API/signup/
+    https://apps.bea.gov
+https://apps.bea.gov/api/bea_web_service_api_user_guide.htm
+
+https://us-bea.github.io/beaapi/index.html
+https://us-bea.github.io/econ-visual-guide/access-economic-data-via-the-bea-api.html
+
+https://www.bea.gov/news/schedule
+https://www.bea.gov/data/economic-accounts/international#bop
+
+developers@bea.gov
+https://github.com/us-bea/
+https://github.com/us-bea/beaapi
+https://apps.bea.gov/api/_pdf/bea_web_service_api_user_guide.pdf
+
+https://catalog.data.gov/dataset/?+amp+amp+amp+quot+Constables=&+amp+amp+amp+quot=&q=&_metadata_type_limit=0&_organization_limit=0&_publisher_limit=0&organization=doc-gov&res_format=API&_tags_limit=0&publisher=Bureau+of+Economic+Analysis
+
+###########################################################################
+#! env python
+#
+import os
+import sys
+import beaapi
+import pandas as pd
+pd.set_option('display.max_colwidth', None)
+
+beakey = os.environ['BEA_API_KEY']
+
+def dsparamvals(dataset_name, parameter_name):
+    print('Values for dataset %s parameter %s' % (dataset_name, parameter_name))
+    try:
+        param_vals = beaapi.get_parameter_values(beakey, dataset_name,
+                                                     parameter_name)
+    except Exception as e:
+        print('dsparamvale get_parameter_values %s' % e)
+        sys.exit()
+    print(param_vals)
+
+
+def dsparams(dataset_name):
+    print('Parameters for %s dataset' % dataset_name)
+    try:
+        list_of_params = beaapi.get_parameter_list(beakey, dataset_name)
+    except Exception as e:
+        print('dsparams get_parameter_list %s' % e)
+        sys.exit()
+    print(list_of_params)
+    for parameter_name in list_of_params['ParameterName']:
+        dsparamvals(dataset_name, parameter_name)
+
+def metadata():
+    print('Metadata Search examples')
+    try:
+        grossdom = beaapi.search_metadata('Gross domestic', beakey)
+    except Exception as e:
+        print('metadata search_metadata  %s' % e)
+        sys.exit()
+    print(grossdom)
+
+
+def hierarchy():
+    print('Dataset Names')
+    try:
+        datasets_info = beaapi.get_data_set_list(beakey)
+    except Exception as e:
+        print('hierarchy get_data_set_list %s' % e)
+        sys.exit()
+
+    print(datasets_info)
+
+    for dataset_name in datasets_info['DatasetName']:
+        dsparams(dataset_name)
+
+#
+def main():
+
+    hierarchy()
+
+
+main()
