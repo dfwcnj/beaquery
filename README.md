@@ -20,21 +20,29 @@ pip install beaquery
 
 `beaquery` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
 
-`
-usage: beaquery.py [-h]
-                   [--dataset {NIPA,NIUnderlyingDetail,MNE,FixedAssets,ITA,IIP,InputOutpus,IntlServTrade,GDPbyIndustry,Regional,UnderlyingGDPbyIndustry,APIDatasetMetaData}]
-                   [--param PARAM] [--hierarchy] [--datasets] [--params]
-                   [--paramvals]
+<p>
+usage: beaquery.py [-h]<br>
+                   [--dataset
+                   {NIPA,NIUnderlyingDetail,MNE,FixedAssets,ITA,<br>
+                    IIP,InputOutpus,IntlServTrade,GDPbyIndustry,Regional,<br>
+                    UnderlyingGDPbyIndustry,APIDatasetMetaData}]<br>
+                   [--param PARAM]<br>
+                   [--hierarchy]<br>
+                   [--datasets]<br>
+                   [--params]<br>
+                   [--paramvals]<br>
 
-explore BEA structure
+explore BEA structure<br>
 
-options:
-  -h, --help            show this help message and exit
-  --dataset {NIPA,NIUnderlyingDetail,MNE,FixedAssets,ITA,IIP,InputOutpus,IntlServTrade,GDPbyIndustry,Regional,UnderlyingGDPbyIndustry,APIDatasetMetaData}
-                        specify the dataset
-  --param PARAM         specify a parameter for a dataset
-  --hierarchy           display BEA data organization hierarchy
-  --datasets            display datasets
-  --params              display parameters for a dataset
-  --paramvals           show values for a parameter of a dataset
-`
+options:<br>
+  -h, --help            show this help message and exit<br>
+  --dataset {NIPA,NIUnderlyingDetail,MNE,FixedAssets,ITA,IIP,<br>
+             InputOutpus,IntlServTrade,GDPbyIndustry,Regional,<br>
+             UnderlyingGDPbyIndustry,APIDatasetMetaData}<br>
+        specify the dataset<br>
+  --param PARAM         specify a parameter for a dataset<br>
+  --hierarchy           display BEA data organization hierarchy<br>
+  --datasets            display datasets<br>
+  --params              display parameters for a dataset<br>
+  --paramvals           show values for a parameter of a dataset<br>
+</p>

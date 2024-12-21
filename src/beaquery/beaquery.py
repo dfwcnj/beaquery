@@ -2,10 +2,11 @@
 #
 import os
 import sys
+import time
 import argparse
 import beaapi
 import pandas as pd
-pd.set_option('display.max_colwidth', None)
+
 
 class BEAQuery():
     def __init__(self):
@@ -18,6 +19,10 @@ class BEAQuery():
             print('assign this key to BEA_API_KEY env variable',
                               file=sys.stderr)
             sys.exit()
+
+        pd.set_option('display.max_colwidth', None)
+        pd.set_option('display.max_rows', None)
+        pd.set_option('display.max_columns', None)
 
 
     def dsparamvals(self, dataset_name, parameter_name):
@@ -45,6 +50,7 @@ class BEAQuery():
         print(list_of_params)
 
         for parameter_name in list_of_params['ParameterName']:
+            time.sleep(2)
             self.dsparamvals(dataset_name, parameter_name)
 
     def dsparams(self, dataset_name):
@@ -82,9 +88,10 @@ class BEAQuery():
 
 
     def hierarchy(self):
-        dataset_info = self.datasets()
+        datasets_info = self.datasets()
 
         for dataset_name in datasets_info['DatasetName']:
+            time.sleep(2)
             self.dsparamhier(dataset_name)
 
 #
