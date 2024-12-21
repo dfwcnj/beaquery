@@ -21,28 +21,28 @@ pip install beaquery
 `beaquery` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
 
 <p>
-usage: beaquery.py [-h]<br>
-                   [--dataset
-                   {NIPA,NIUnderlyingDetail,MNE,FixedAssets,ITA,<br>
-                    IIP,InputOutpus,IntlServTrade,GDPbyIndustry,Regional,<br>
-                    UnderlyingGDPbyIndustry,APIDatasetMetaData}]<br>
-                   [--param PARAM]<br>
-                   [--hierarchy]<br>
-                   [--datasets]<br>
-                   [--params]<br>
-                   [--paramvals]<br>
+usage: nbsp;beaquery.py nbsp;[-h]<br>
+ nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp;[--dataset
+ nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp;{NIPA,NIUnderlyingDetail,MNE,FixedAssets,ITA,<br>
+ nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp;IIP,InputOutpus,IntlServTrade,GDPbyIndustry,Regional,<br>
+ nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp;UnderlyingGDPbyIndustry,APIDatasetMetaData}]<br>
+ nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp;[--param nbsp;PARAM]<br>
+ nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp;[--hierarchy]<br>
+ nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp;[--datasets]<br>
+ nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp;[--params]<br>
+ nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp;[--paramvals]<br>
 
-explore BEA structure<br>
+explore nbsp;BEA nbsp;structure<br>
 
 options:<br>
-  -h, --help            show this help message and exit<br>
-  --dataset {NIPA,NIUnderlyingDetail,MNE,FixedAssets,ITA,IIP,<br>
-             InputOutpus,IntlServTrade,GDPbyIndustry,Regional,<br>
-             UnderlyingGDPbyIndustry,APIDatasetMetaData}<br>
-        specify the dataset<br>
-  --param PARAM         specify a parameter for a dataset<br>
-  --hierarchy           display BEA data organization hierarchy<br>
-  --datasets            display datasets<br>
-  --params              display parameters for a dataset<br>
-  --paramvals           show values for a parameter of a dataset<br>
+ nbsp; nbsp;-h, nbsp;--help nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp;show nbsp;this nbsp;help nbsp;message nbsp;and nbsp;exit<br>
+ nbsp; nbsp;--dataset nbsp;{NIPA,NIUnderlyingDetail,MNE,FixedAssets,ITA,IIP,<br>
+ nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp;InputOutpus,IntlServTrade,GDPbyIndustry,Regional,<br>
+ nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp;UnderlyingGDPbyIndustry,APIDatasetMetaData}<br>
+ nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp;specify nbsp;the nbsp;dataset<br>
+ nbsp; nbsp;--param nbsp;PARAM nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp;specify nbsp;a nbsp;parameter nbsp;for nbsp;a nbsp;dataset<br>
+ nbsp; nbsp;--hierarchy nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp;display nbsp;BEA nbsp;data nbsp;organization nbsp;hierarchy<br>
+ nbsp; nbsp;--datasets nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp;display nbsp;datasets<br>
+ nbsp; nbsp;--params nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp;display nbsp;parameters nbsp;for nbsp;a nbsp;dataset<br>
+ nbsp; nbsp;--paramvals nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp; nbsp;show nbsp;values nbsp;for nbsp;a nbsp;parameter nbsp;of nbsp;a nbsp;dataset<br>
 </p>
