@@ -2,6 +2,7 @@
 #
 import os
 import sys
+import json
 import time
 import argparse
 import beaapi
@@ -20,7 +21,7 @@ class BEAQuery():
                               file=sys.stderr)
             sys.exit()
 
-        self.datasetdict = {}
+        # self.datasetdict = {}
 
         pd.set_option('display.max_colwidth', None)
         pd.set_option('display.max_rows', None)
@@ -67,9 +68,9 @@ class BEAQuery():
             pvd[k] = pvdict[k][i]
         return pvd
 
-    def datasetdictparamvals(self, dn):
-        self.datasetdict['datasets'][dn]['ParameterValues'] = []
-        for pd in self.datasetdict['datasets'][dn]['Parameters']:
+    def datasetdictparamvals(self, dsdict, dn):
+        dsdict['datasets'][dn]['ParameterValues'] = []
+        for pd in dsdict['datasets'][dn]['Parameters']:
             pn =  pd['ParameterName']
             pvals = self.dsparamvals(dn, pn)
             pvalsdict = pvals.to_dict()
@@ -79,7 +80,7 @@ class BEAQuery():
             for k in ks:
                 for i in ix:
                    pvdict = self.datasetdictparamval(i, pvalsdict)
-                   self.datasetdict['datasets'][dn]['ParameterValues'].append(pvdict)
+                   dsdict['datasets'][dn]['ParameterValues'].append(pvdict)
 
     def datasetdictparam(self, i, pdict):
         pd = {}
@@ -87,36 +88,40 @@ class BEAQuery():
                 pd[k] = pdict[k][i]
         return pd
 
-    def datasetdictparams(self, dn):
+    def datasetdictparams(self, dsdict, dn):
         params = self.dsparams(dn)
         paramsdict = params.to_dict()
-        self.datasetdict['datasets'][dn]['Parameters'] = []
+        dsdict['datasets'][dn]['Parameters'] = []
         ks = [k for k in paramsdict.keys()]
         for k in ks:
             ix = [i for i in paramsdict[k].keys()]
         for k in ks:
             for i in ix:
                 pdict = self.datasetdictparam(i, paramsdict)
-                self.datasetdict['datasets'][dn]['Parameters'].append(pdict)
+                dsdict['datasets'][dn]['Parameters'].append(pdict)
 
-    def initdatasetdict(self, dsdict):
-        self.datasetdict['datasets'] = {}
-        for i in dsdict['DatasetName'].keys():
-            n = dsdict['DatasetName'][i]
-            d = dsdict['DatasetDescription'][i]
-            self.datasetdict['datasets'][n] = {}
-            self.datasetdict['datasets'][n]['DatasetDescription'] = d
+    def initdatasetdict(self, dsf):
+        dsr = dsf.to_dict()
+        dsdict = {}
+        dsdict['datasets'] = {}
+        for i in dsr['DatasetName'].keys():
+            n = dsr['DatasetName'][i]
+            d = dsr['DatasetDescription'][i]
+            dsdict['datasets'][n] = {}
+            dsdict['datasets'][n]['DatasetDescription'] = d
+        return dsdict
 
-    def hierarchy(self):
+    def dicthierarchy(self):
         datasetsframe = self.datasets()
+        dsdict = self.initdatasetdict(datasetsframe)
 
         # datasetsframe.to_excel('beahierarchy.xlsx', sheet_name='datasets')
 
-        dsdict = datasetsframe.to_dict()
-        self.initdatasetdict(dsdict)
-        for n in self.datasetdict['datasets'].keys():
-            self.datasetdictparams(n)
-            self.datasetdictparamvals(n)
+        for n in dsdict['datasets'].keys():
+            self.datasetdictparams(dsdict, n)
+            self.datasetdictparamvals(dsdict, n)
+
+        return dsdict
 #
 def main():
     argp = argparse.ArgumentParser(description='explore BEA structure')
@@ -137,21 +142,37 @@ def main():
         help='display parameters for a dataset')
     argp.add_argument('--paramvals', action='store_true', default=False,
               help='show values for a parameter of a dataset')
+
+    argp.add_argument('--json', action='store_true', default=False,
+        help='display json')
     args=argp.parse_args()
 
     BQ = BEAQuery()
     if args.hierarchy:
-        BQ.hierarchy()
+        dsdict = BQ.dicthierarchy()
+        if args.json:
+            dsjson = json.JSONEncoder().encode(dsdict)
+            print(dsjson)
+        else:
+            print(dsdict)
     elif args.datasets:
         ds = BQ.datasets()
-        print(ds)
+        if args.json:
+            dsjson = json.JSONEncoder().encode(ds)
+            print(dsjson)
+        else:
+            print(ds)
     elif args.params:
         if args.dataset == None:
             print('a dataset must be provided')
             argp.print_help()
             sys.exit()
         ps = BQ.dsparams(args.dataset)
-        print(ps)
+        if args.json:
+            psjson = json.JSONEncoder().encode(ps)
+            print(psjson)
+        else:
+            print(ps)
     elif args.paramvals:
         if args.dataset == None and args.param == None:
             print('a dataset and parameter must be provided')
