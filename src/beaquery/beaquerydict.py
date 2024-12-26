@@ -270,8 +270,8 @@ def main():
             sys.exit()
         pvs = BQ.dsparamvals(args.dataset, args.param)
         print(pvs)
-
-    argp.print_help()
+    else:
+        argp.print_help()
 
 
 
