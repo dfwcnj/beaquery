@@ -154,9 +154,11 @@ class BEAQueryDict():
             aa.append(ra)
         tbls = self.aa2table(cap, aa)
         for k in ka:
+            tbls.append('<h3>Parameters for %s</h3>' % k)
             ht = self.datasetparameterstable(k, dict['datasets'][k])
             if ht != None:
                 tbls.extend(ht)
+            tbls.append('<h3>Parameter Values for %s</h3>' % k)
             ht = self.datasetparametervaluestables(k, dict['datasets'][k])
             if ht != None:
                 tbls.extend(ht)
