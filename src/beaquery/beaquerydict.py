@@ -6,6 +6,7 @@ import json
 import time
 import argparse
 import pandas as pd
+import webbrowser
 
 import beaapi
 
@@ -81,81 +82,136 @@ class BEAQueryDict():
         time.sleep(self.delay)
         return datasetsframe
 
-    def jsondatasetshtml(self, dict):
-        """ jsondatasetshtml(dict)
-        render BEA dataset names parameters and values to html
-        dict = dictionary containing model data for datasets
-        return array containing an html rendering
-        """
-        ka = [k for k in dict['dataset'].keys()]
-        htmla = []
-        htmla.append('<table border=1 >')
-        hd = '</th><th scope="col">'.join(['DatasetName', 'DatasetDescription'])
-        htmla.append('<tr><th scope="col">%s</th></tr>' % (hd) )
-        cap = '<caption>%s</caption>' % ('BEA Datasets')
-        htmla.append(cap)
-        for k in ka:
-            ra = [k, dict['dataset'][k]]
-            rw = '</td><td scope="row">'.join(ra)
-            htmla.append('<tr><td scope="row">%s</td></tr>' % (rw) )
-        htmla.append('</table>')
-        for k in ka:
-            ht = self.jsonparametershtml(k, dict['dataset'][k])
-            htmla.extend(ht)
-            ht = self.jsonparametervalueshtml(k, dict['dataset'][k])
-            htmla.extend(ht)
+    def aa2table(self, cap, aa):
+       """ aa2table(aa)
 
-    def jsonparametershtml(self, ds, dict):
-        """ jsonparametershtml(ds, dict)
-        ds - dataset name
-        dict - dict containing data model for a dataset
-        return an html table rendering for the parameters of a dataset
-        """
-        ka = [k for k in dict['Parameters'][0].keys()]
-        htmla = []
-        htmla.append('<table border=1 >')
-        hd = '</th><th scope="col">'.join(ka)
-        htmla.append('<tr><th scope="col">%s</th></tr>' % (hd) )
-        cap = '<caption>%s</caption>' % ('BEA Dataset %s Parameters' % ds)
-        htmla.append(cap)
-        for d in dict['Parameters']:
-            ra = [d[k] for k in d.keys()]
-            rw = '</td><td scope="row">'.join(ra)
-            htmla.append('<tr><td scope="row">%s</td></tr>' % (rw) )
-        htmla.append('</table>')
-        return htmla
+       convert array of arrays to an html table
+       aa - array of arrays
+       """
+       tbla = []
+       # table
+       tbla.append('<table border="1">')
+       # table header
+       hdra = aa[0]
+       hdr = '</th><th>'.join(hdra)
+       tbla.append('<tr><th scope="col">%s</th></tr>' % (hdr) )
+       cap = '<caption>%s</caption>' % cap
+       tbla.append(cap)
+       # table rows
+       for i in range(1, len(aa) ):
+           rowa = aa[i]
+           for j in range(len(rowa)):
+               if rowa[j] == None:
+                   rowa[j] = ''
+               elif type(rowa[j]) == type(1):
+                   rowa[j] = '%d' % rowa[j]
+           row = '</td><td>'.join(rowa)
+           tbla.append('<tr><td>%s</td></tr>' % (row) )
 
-    def jsonparametervalueshtml(self, ds, param, dict):
-        """ jsonparametervalueshtml(ds, param, dict)
+       # close
+       tbla.append('</table>')
+       return tbla
+
+    def datasetparametervaluestables(self, ds, dict):
+        """ datasetparametervaluestables(ds, param, dict)
         ds - dataset name
         param - parameter name
         dict - dictionary containing schema for values of a parameter of a dataset
         return an html table rendering for the values of the parameter
         """
-        ka = [k for k in dict['ParameterValuess'][0].keys()]
-        htmla = []
-        htmla.append('<table border=1 >')
-        hd = '</th><th scope="col">'.join(ka)
-        htmla.append('<tr><th scope="col">%s</th></tr>' % (hd) )
-        cap = '<caption>%s</caption>' % ('BEA Datasets')
-        htmla.append(cap)
-        cap = '<caption>%s</caption>' % ('BEA Dataset %s Parameter %v Values' % (ds, param))
-        htmla.append(cap)
-        for d in dict['ParameterValuess']:
-            ra = [d[k] for k in d.keys()]
-            rw = '</td><td scope="row">'.join(ra)
-            htmla.append('<tr><td scope="row">%s</td></tr>' % (rw) )
-        htmla.append('</table>')
-        return htmla
-        pass
+        for p in  dict['ParameterValues'].keys():
+            pa = dict['ParameterValues'][p]
+            cap = 'Parameter Values for Dataset %s Parameter %s' % (ds, p)
+            tbla = self.aa2table(cap, pa)
+        return tbla
 
-    def datasetdictparamval(self, i, pvdict):
+    def datasetparameterstable(self, ds, dict):
+        """ datasetparameterstable(ds, dict)
+        ds - dataset name
+        dict - dict containing data model for a dataset
+        return an html table rendering for the parameters of a dataset
+        """
+        cap = 'BEA Dataset %s Parameters' % ds
+        pa = dict['Parameters']
+        tbla = self.aa2table(cap, pa)
+        return tbla
+
+
+    def datasethierarchytables(self, dict):
+        """ datasethierarchytables(dict)
+        render BEA dataset names parameters and values to html tables
+        dict = dictionary containing model data for datasets
+        return array containing an table renderings
+        """
+
+        cap = 'BEA Datasets'
+        aa = []
+        aa.append(['DatasetName', 'DatasetDescription'])
+        ka = [k for k in dict['datasets'].keys()]
+        for k in ka:
+            d = dict['datasets'][k]['DatasetDescription']
+            ra = [k, d]
+            aa.append(ra)
+        tbls = self.aa2table(cap, aa)
+        for k in ka:
+            ht = self.datasetparameterstable(k, dict['datasets'][k])
+            if ht != None:
+                tbls.extend(ht)
+            ht = self.datasetparametervaluestables(k, dict['datasets'][k])
+            if ht != None:
+                tbls.extend(ht)
+
+        return tbls
+
+    def datasethierarchyhtml(self, dict):
+        """ datasethierarchyhtml(dict)
+        render BEA dataset hierarchy to an html page
+        dict - dictionary containing data model for datasets
+        return array containing the html rendering
+        """
+        htmla = []
+        htmla.append('<html>')
+        ttl = 'BEA Dataset Data Hierarchy'
+        htmla.append('<head><h1>%s</h1></head>' % (ttl) )
+
+        tbls = self.datasethierarchytables(dict)
+        htmla.extend(tbls)
+
+        htmla.append('</html>')
+
+        return htmla
+
+
+    def datasethierarchyshow(self, dict):
+        """ datasethierarchyshow(dict)
+        display the html page depicting BEA dataset model to a browser
+        dict - dictionary containing data model for datasets
+        """
+        htmla = self.datasethierarchyhtml(dict)
+        fn = '/tmp/beahierarchy.html'
+        with open(fn, 'w') as fp:
+            fp.write(''.join(htmla))
+        webbrowser.open('file://%s' % fn)
+
+    def datasetparamvaldict(self, i, pvdict):
+        """ datasetparamvaldict(i, pvdict)
+        make a python dictionary for values at index i
+        i - index into pvdict
+        pvdict - parameter values dictionary for a dataset
+        return the dictionary
+        """
         pvd = {}
         for k in pvdict.keys():
             pvd[k] = pvdict[k][i]
         return pvd
 
-    def datasetdictparamvals(self, dsdict, dn):
+    def datasetparamvalsdict(self, dsdict, dn):
+        """ datasetparamvalsdict(dsdict, dn)
+        make a dictionary for parameter values for a dataset
+        dsdict - dataset hierarchy dictionary
+        dn - dataset name
+        store result in the dataset hierarchy dictionary
+        """
         dsdict['datasets'][dn]['ParameterValues'] = {}
         for i in range(1, len(dsdict['datasets'][dn]['Parameters'])):
             pn = dsdict['datasets'][dn]['Parameters'][1][0]
@@ -172,7 +228,13 @@ class BEAQueryDict():
 
         return
 
-    def datasetdictparams(self, dsdict, dn):
+    def datasetparamsdict(self, dsdict, dn):
+        """ datasetparamsdict(dsdict, dn)
+        make a dictionary for parameters for a dataset
+        dsdict - dataset hierarchy dictionary
+        dn - dataset name
+        store result in the dataset hierarchy dictionary
+        """
         paramsframe = self.dsparams(dn)
         paramsdict = paramsframe.to_dict()
         ks = [k for k in paramsdict.keys()]
@@ -186,6 +248,11 @@ class BEAQueryDict():
         return
 
     def initdatasetdict(self, dsf):
+        """ initdatasetsict(dsf)
+        initialize the dataset hierarchy dictionary
+        dsf - pandas fræme representing the dataset
+        return the dataset dict
+        """
         dsr = dsf.to_dict()
         dsdict = {}
         dsdict['datasets'] = {}
@@ -196,15 +263,19 @@ class BEAQueryDict():
             dsdict['datasets'][n]['DatasetDescription'] = d
         return dsdict
 
-    def dicthierarchy(self):
+    def datasethierarchydict(self):
+        """ datasethierarchydict()
+        populate the BEA dataset hierarchy model
+        return a python dictionary representing the hierarchy
+        """
         datasetsframe = self.datasets()
         dsdict = self.initdatasetdict(datasetsframe)
 
         # datasetsframe.to_excel('beahierarchy.xlsx', sheet_name='datasets')
 
         for n in dsdict['datasets'].keys():
-            self.datasetdictparams(dsdict, n)
-            self.datasetdictparamvals(dsdict, n)
+            self.datasetparamsdict(dsdict, n)
+            self.datasetparamvalsdict(dsdict, n)
 
         return dsdict
 #
@@ -232,15 +303,19 @@ def main():
         help='display json')
     argp.add_argument('--html', action='store_true', default=False,
         help='display html')
+    argp.add_argument('--show', action='store_true', default=False,
+        help='display hierarchy html in browser')
     args=argp.parse_args()
 
     BQ = BEAQueryDict()
     if args.hierarchy:
-        dsdict = BQ.dicthierarchy()
-        if args.html:
-            htmla = BQ.jsondatasetshtml(dsdict)
+        dsdict = BQ.datasethierarchydict()
+        if args.show:
+            BQ.datasethierarchyshow(dsdict)
+        elif args.html:
+            htmla = BQ.datasethierarchytables(dsdict)
             print(''.join(htmla))
-        if args.json:
+        elif args.json:
             dsjson = json.JSONEncoder().encode(dsdict)
             print(dsjson)
         else:
