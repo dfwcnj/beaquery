@@ -31,6 +31,28 @@ class BEAQueryDict():
         pd.set_option('display.max_rows', None)
         pd.set_option('display.max_columns', None)
 
+    def getdata(self, ds, tn, fq, yr):
+        """ getdata(ds, parameter_name)
+        ds - name of the dataset
+        tn - table name
+        fq = frequency M,Q,Y
+        yr - year or X for all
+        return pandas dataframe for the dataset parameter data
+        """
+        print('Values for dataset %s table %s %s %s' % 
+                          (ds, tn, fq, yr), file=sys.stderr)
+        try:
+            pvalframe = beaapi.get_data(self.api_key,
+                               ds,
+                               TableName=tn,
+                               Frequency=fq,
+                               Year=yr)
+        except Exception as e:
+            print('dsparamvals get_parameter_values %s' % e)
+            sys.exit()
+
+        time.sleep(self.delay)
+        return pvalframe
 
     def dsparamvals(self, dataset_name, parameter_name):
         """ dsparamvals(dataset_name, parameter_name)
@@ -43,7 +65,7 @@ class BEAQueryDict():
         try:
             pvalframe = beaapi.get_parameter_values(self.api_key,
                             dataset_name,
-                                                     parameter_name)
+                            parameter_name)
         except Exception as e:
             print('dsparamvals get_parameter_values %s' % e)
             sys.exit()
@@ -289,17 +311,23 @@ def main():
                       'FixedAssets', 'ITA', 'IIP', 'InputOutpus',
                       'IntlServTrade', 'GDPbyIndustry', 'Regional',
                       'UnderlyingGDPbyIndustry', 'APIDatasetMetaData'])
+    argp.add_argument('--getdata', action='store_true', default=False,
+        help='get data for a dataset')
+    argp.add_argument('--table', help='table name')
+    argp.add_argument('--freq', default = 'A',
+                      choices = ['M','Q','A'],
+                      help='frequency M,Q,A')
+    argp.add_argument('--year', default = 'X',
+                      help='year 1929-CY or X for all')
 
-    argp.add_argument('--param', help='specify a  parameter for a dataset')
-
-    argp.add_argument('--hierarchy', action='store_true', default=False,
-        help='display BEA data organization hierarchy')
     argp.add_argument('--datasets', action='store_true', default=False,
         help='display datasets')
     argp.add_argument('--params', action='store_true', default=False,
         help='display parameters for a dataset')
     argp.add_argument('--paramvals', action='store_true', default=False,
               help='show values for a parameter of a dataset')
+    argp.add_argument('--hierarchy', action='store_true', default=False,
+        help='display BEA data organization hierarchy')
 
     argp.add_argument('--json', action='store_true', default=False,
         help='display json')
@@ -322,6 +350,10 @@ def main():
             print(dsjson)
         else:
             print(dsdict)
+    elif args.getdata:
+        df = BQ.getdata(args.dataset, args.table,
+                        args.freq, args.year)
+        print(df)
     elif args.datasets:
         ds = BQ.datasets()
         if args.json:

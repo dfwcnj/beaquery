@@ -34,14 +34,14 @@ class BEAQueryNIPA():
         rstr = resp.read().decode('utf-8')
         return rstr
 
-    def gettable(self, tn, fq, yr, fmt):
+    def gettable(self, ds, tn, fq, yr, fmt):
         params = ('&method=GetData&'
-                  'DatasetName=NIPA&'
+                  'DatasetName=%s&'
                   'TableName=%s&'
                   'Frequency=%s&'
                   'Year=%s&'
                   'ResultFormat=%s' %
-                  (tn, fq, yr, fmt) )
+                  (ds, tn, fq, yr, fmt) )
         url = self.burl + params
         resp = self.uq.query(url)
         rstr = resp.read().decode('utf-8')
@@ -51,6 +51,8 @@ class BEAQueryNIPA():
 def main():
     argp = argparse.ArgumentParser(description='get NIPA data')
 
+    argp.add_argument('--dataset', default='NIPA',
+                      choices=['NIPA', 'NIUnderlyingDetail'], help='result format')
     argp.add_argument('--table', help='specify tablename ')
     argp.add_argument('--tableregister',
                       action='store_true', default=False,
@@ -70,7 +72,8 @@ def main():
        txt = BN.gettableregister()
        print(txt)
     elif args.table:
-        tbl = BN.gettable(args.table, 'A', 'X', 'json')
+        tbl = BN.gettable(args.dataset, args.table,
+                          args.freq, args.yr, args.format)
         print(tbl)
     else:
         argp.print_help()
