@@ -7,6 +7,11 @@ import argparse
 import beaapi
 import pandas as pd
 
+try:
+    import beaquery.ebquery
+except Exception as e:
+    import ebquery
+
 
 class BEAQuery():
     def __init__(self):
@@ -24,6 +29,68 @@ class BEAQuery():
         pd.set_option('display.max_rows', None)
         pd.set_option('display.max_columns', None)
 
+    def gettableregister(self):
+        resp = self.uq.query(self.trurl)
+        rstr = resp.read().decode('utf-8')
+        return rstr
+
+    def gettfydata(self, ds, tn, fq, yr):
+        """ gettfydata(ds, parameter_name)
+        ds - name of the dataset
+        tn - table name
+        fq = frequency M,Q,Y
+        yr - year or X for all
+        return pandas dataframe for the dataset parameter data
+        """
+        try:
+            pvalframe = beaapi.get_data(self.api_key,
+                               ds, tn,
+                               Frequency=fq,
+                               Year=yr)
+        except Exception as e:
+            print('dsparamvals gettfydata %s' % e)
+            sys.exit()
+
+        time.sleep(self.delay)
+        return pvalframe
+
+    def gettydata(self, ds, tn, fq, yr):
+        """ gettfydata(ds, parameter_name)
+        ds - name of the dataset
+        tn - table name
+        yr - year or X for all
+        return pandas dataframe for the dataset parameter data
+        """
+        try:
+            pvalframe = beaapi.get_data(self.api_key,
+                               ds, tn,
+                               Year=yr)
+        except Exception as e:
+            print('dsparamvals gettydata %s' % e)
+            sys.exit()
+
+        time.sleep(self.delay)
+        return pvalframe
+
+    def getdcydata(self, ds, doi, cl, yr):
+        """ getdata(ds, parameter_name)
+        ds - name of the dataset
+        doi - direction of investment
+        cl = classification
+        yr - year or all
+        return pandas dataframe for the dataset parameter data
+        """
+        try:
+            pvalframe = beaapi.get_data(self.api_key,
+                               ds, DirectionOfInvestment=doi,
+                               Classification=cl,
+                               Year=yr)
+        except Exception as e:
+            print('dsparamvals getdcydata %s' % e)
+            sys.exit()
+
+        time.sleep(self.delay)
+        return pvalframe
 
     def dsparamvals(self, dataset_name, parameter_name):
         print('Values for dataset %s parameter %s' % (dataset_name,
