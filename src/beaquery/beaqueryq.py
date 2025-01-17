@@ -47,8 +47,10 @@ class BEAQueryQ():
         return rstr
 
     # not using TableID Parameter
-    def NIPAParams(self, tn, fq, yr, fmt,
-                   ds='NIPA', shm='N'):
+    def NIPAParams(self, tn, fq, yr, fmt, shm='N'):
+        if fq == None or yr == None:
+            print('NIPAParams: Frequency and Year required', file=sys.stderr)
+            sys.exit()
         params = ('&method=GetData&'
                   'DatasetName=%s&'
                   'TableName=%s&'
@@ -56,36 +58,54 @@ class BEAQueryQ():
                   'Frequency=%s&'
                   'Year=%s&'
                   'ResultFormat=%s' %
-                  (ds, tn, shm, fq, yr, fmt) )
+                  ('NIPA', tn, shm, fq, yr, fmt) )
         return params
 
     def NIUnderlyingDetailParams(self, tn, fq, yr, fmt):
-        return self.NIPAParams(tn.  fq, yr, fmt,
-                               'NIUnderlyingDetail',shm)
-
-    def MNEParameters(self, doi, cl, fmt,
-                      ds='MNE', cnt='000', ind='000', yr='all'):
+        if fq == None or yr == None:
+            print('NIUnderlyingDetailParams: Frequency and Year required',
+                   file=sys.stderr)
+            sys.exit()
         params = ('&method=GetData&'
+                  'DatasetName=%s&'
+                  'TableName=%s&'
+                  'Frequency=%s&'
+                  'Year=%s&'
+                  'ResultFormat=%s' %
+                  ('NIUnderlyingDetail', tn, fq, yr, fmt) )
+        return params
+
+
+    def MNEParameters(self, doi, cl, fmt, cnt='000', ind='000', yr='all'):
+        if doi == None or cl == None or yr == None:
+            print('MNEParameters: DirectionOfInvestment,'
+                  'Classification,and Year required', file=sys.stderr)
+            sys.exit()
+        params = ('&method=GetData&'
+                  'DatasetName=%s&'
                   'DirectionOfInvestment=%s&'
                   'Classification=%s&'
                   'Country=%s&'
                   'Industry=%s&'
                   'Year=%s&'
                   'ResultFormat=%s' %
-                  (ds, doi, cl, cnt, ind, yr, fmt) )
+                  ('MNE', doi, cl, cnt, ind, yr, fmt) )
         return params
 
     def FixedAssetsParameters(self, tn, fmt, ds='FixedAssets', yr='X'):
+        if tn == None:
+            print('FixedAssetsParameters TableName required', file=sys.stderr)
+            sys.exit()
         params = ('&method=GetData&'
                   'DatasetName=%s&'
                   'TableName=%s&'
                   'Year=%s&'
                   'ResultFormat=%s' %
-                  (ds, tn, yr, fmt) )
+                  ('FixedAssets', tn, yr, fmt) )
         return params
 
     def ITAParameters(self, ind, fmt,
-                      ds='ITA', area='ALL', fq='ALL', yr='ALL'):
+                      area='ALL', fq='ALL', yr='ALL'):
         params = ('&method=GetData&'
                   'DatasetName=%s&'
                   'Indicator=%s&'
@@ -93,10 +113,10 @@ class BEAQueryQ():
                   'Frequency=%s&'
                   'Year=%s&'
                   'ResultFormat=%s' %
-                  (ds, ind, area, fq, yr, fmt) )
+                  ('ITA', ind, area, fq, yr, fmt) )
         return params
 
-    def IIPParameters(self, toi, fmt, ds='IIP', cmp='ALL', fq='ALL', yr='ALL'):
+    def IIPParameters(self, toi, fmt, cmp='ALL', fq='ALL', yr='ALL'):
         params = ('&method=GetData&'
                   'DatasetName=%s&'
                   'TypeOfInvestment=%s&'
@@ -104,20 +124,23 @@ class BEAQueryQ():
                   'Frequency=%s&'
                   'Year=%s&'
                   'ResultFormat=%s' %
-                  (ds, toi, cmp, fq, yr, fmt) )
+                  ('IIP', toi, cmp, fq, yr, fmt) )
         return params
 
-    def InputOutputParameters(self, tid, fmt, ds='InputOutput', yr='ALL'):
+    def InputOutputParameters(self, tid, fmt, yr='ALL'):
+        if tid == None:
+            print('InputOutputParameters TableID required', file=sys.stderr)
+            sys.exit()
         params = ('&method=GetData&'
                   'DatasetName=%s&'
                   'TableID=%s&'
                   'Year=%s&'
                   'ResultFormat=%s' %
-                  (ds, tid, yr, fmt) )
+                  ('InputOutput', tid, yr, fmt) )
         return params
 
     def IntlServTradeParameters(self, fmt,
-                                ds='IntlServTrade', tos='ALL', td='ALL',
+                                tos='ALL', td='ALL',
                                 aff='All', area='All', year='ALL'):
         params = ('&method=GetData&'
                   'DatasetName=%s&'
@@ -127,11 +150,11 @@ class BEAQueryQ():
                   'AreaOrCountry=%s&'
                   'Year=%s&'
                   'ResultFormat=%s' %
-                  (ds, tos, td, aff, area, yr, fmt) )
+                  ('IntlServTrade', tos, td, aff, area, yr, fmt) )
         return params
 
-    def IntlServSTAParameters(self, fmt, ds='IntlServSTA', ch='ALL',
-                              dst='ALL', ind='ALL', area='ALL', year='ALL'):
+    def IntlServSTAParameters(self, fmt, ch='ALL', dst='ALL',
+                              ind='ALL', area='ALL', year='ALL'):
         params = ('&method=GetData&'
                   'DatasetName=%s&'
                   'Channel=%s&'
@@ -140,7 +163,7 @@ class BEAQueryQ():
                   'AreaOrCountry=%s&'
                   'Year=%s&'
                   'ResultFormat=%s' %
-                  (ds, ch, dst, ind, area, yr, fmt) )
+                  ('IntlServSTA', ch, dst, ind, area, yr, fmt) )
         return params
 
     def GDPbyIndustryParameters(self, fmt,
@@ -152,11 +175,14 @@ class BEAQueryQ():
                   'Frequency=%s&'
                   'Year=%s&'
                   'ResultFormat=%s' %
-                  (ds, tid, ind, fq, yr, fmt) )
+                  ('GDPbyIndustry', tid, ind, fq, yr, fmt) )
         return params
 
-    def RegionalParameters(self, tn, lc, fmt,
-                           ds='Regional', fips='STATE', yr='ALL'):
+    def RegionalParameters(self, tn, lc, fmt, fips='STATE', yr='ALL'):
+        if fips == None or lc == None or tn == None:
+            print('RegionalParameters: GeoFIPS, LineCode, TableName required',
+                  file = sys.stderr)
+            sys.exit()
         params = ('&method=GetData&'
                   'DatasetName=%s&'
                   'GeoFIPS=%s&'
@@ -164,11 +190,10 @@ class BEAQueryQ():
                   'LineCode=%s&'
                   'Year=%s&'
                   'ResultFormat=%s' %
-                  (ds, fips, tn, lc, yr, fmt) )
+                  ('Regional', fips, tn, lc, yr, fmt) )
         return params
 
     def UnderlyingGDPbyIndustryParameters(self, fmt,
-                                          ds='UnderlyingGDPbyIndustry',
                                           tid='ALL', ind='All',
                                           fq='ALL', yr='ALL'):
         params = ('&method=GetData&'
@@ -178,167 +203,235 @@ class BEAQueryQ():
                   'Frequency=%s&'
                   'Year=%s&'
                   'ResultFormat=%s' %
-                  (ds, tid, ind, fq, yr, fmt) )
+                  ('UnderlyingGDPbyIndustry', tid, ind, fq, yr, fmt) )
         return params
 
 
 
-    # NIPA NIUnderlyingDetail
-    def gettfydata(self, ds, tn, fq, yr, fmt):
-        """ gettfydata(ds, tn, fq, yr, fmt)
-        ds - dataset name
+    def getNIPAdata(self, tn, fq, yr, shm, fmt):
+        """ getNIPAdata(tn, fq, yr, fmt)
+        tn - table name
+        fq - frequency
+        yr - year
+        shm - show millions
+        fmt - result format
+        retrieve national income and product accounts data
+        """
+        params = self.NIPAParams(tn, fq, yr, fmt, 'NIPA', shm)
+        url = self.burl + params
+        resp = self.uq.query(url)
+        if resp == None:
+            print('GetNIPAdata: no response', file=sys.stderr)
+            return resp
+        rstr = resp.read().decode('utf-8')
+        jsd = json.loads(rstr)
+        return jsd['BEAAPI']['Results']
+
+    def getNIUnderlyingDetaildata(self, tn, fq, yr, fmt):
+        """ getNIUnderlyingDetaildata(tn, fq, yr, fmt)
         tn - table name
         fq - frequency
         yr - year
         fmt - result format
-        retrieve BEA table for BEA dataset
+        retrieve national income underlying detail  data
         """
-        params = ('&method=GetData&'
-                  'DatasetName=%s&'
-                  'TableName=%s&'
-                  'Frequency=%s&'
-                  'Year=%s&'
-                  'ResultFormat=%s' %
-                  (ds, tn, fq, yr, fmt) )
+        params = self.NIUnderlyingDetailParams(tn, fq, yr, fmt)
         url = self.burl + params
         resp = self.uq.query(url)
         if resp == None:
-            print('gettfydata: no response', file=sys.stderr)
+            print('getNIUnderlyingDetaildata: no response', file=sys.stderr)
             return resp
         rstr = resp.read().decode('utf-8')
         jsd = json.loads(rstr)
         return jsd['BEAAPI']['Results']
 
-    # FixedAssets
-    def gettydata(self, ds, tn, yr, fmt):
-        """ gettydata(ds, tn, fq, yr, fmt)
-        ds - dataset name
-        tn - table name
-        yr - year
-        fmt - result format
-        retrieve BEA table for BEA dataset
-        """
-        params = ('&method=GetData&'
-                  'DatasetName=%s&'
-                  'TableName=%s&'
-                  'Year=%s&'
-                  'ResultFormat=%s' %
-                  (ds, tn, fq, yr, fmt) )
-        url = self.burl + params
-        resp = self.uq.query(url)
-        if resp == None:
-            print('gettydata: no response', file=sys.stderr)
-            return resp
-        rstr = resp.read().decode('utf-8')
-        jsd = json.loads(rstr)
-        return jsd['BEAAPI']['Results']
-
-    # MNE
-    def getdcydata(self, ds, doi, cl, yr, fmt):
-        """ getdcydata(ds, doi, cl, yr, fmt)
-        ds - dataset name
+    def getMNEdata(self, doi, cl, ind, cnt, yr, fmt):
+        """ getMNEdata(doi, cl, ind, cnt, yr, fmt)
         doi - direction of investment
         cl - classification
-        yr - year
+        ind - industry
+        cnt - country
+        yr  - yr
         fmt - result format
-        retrieve BEA table for BEA dataset
+        return multinational enterprises data
         """
-        params = ('&method=GetData&'
-                  'DatasetName=%s&'
-                  'DirectionofInvestmane=%s&'
-                  'Claѕsification=%s&'
-                  'Year=%s&'
-                  'ResultFormat=%s' %
-                  (ds, doi, cl, yr, fmt) )
+        params = self.MNEParameters(doi, cl, fmt, cnt, ind, yr)
         url = self.burl + params
         resp = self.uq.query(url)
         if resp == None:
-            print('getdcydata: no response', file=sys.stderr)
+            print('getMNEdata: no response', file=sys.stderr)
             return resp
         rstr = resp.read().decode('utf-8')
         jsd = json.loads(rstr)
         return jsd['BEAAPI']['Results']
 
-    # ITA
-    def getiafydata(self, ds, ind, area, fq, yr, fmt):
-        """ getiafydata(ind, area, fq, yr, fmt)
-        ds - dataset name
-        ind - indicator
+    def getFixedAssetsdata(self, tn, yr, fmt):
+        """ getFixedAssetsdata()
+        tn - table name
+        yr  - yr
+        fmt - result format
+        return fixed assets data
+        """
+        params = self.FixedAssetsParameters(tn, yr, fmt)
+        url = self.burl + params
+        resp = self.uq.query(url)
+        if resp == None:
+            print('getFixedAssetsdata: no response', file=sys.stderr)
+            return resp
+        rstr = resp.read().decode('utf-8')
+        jsd = json.loads(rstr)
+        return jsd['BEAAPI']['Results']
+
+    def getITAdata(self, ind, area, fq, yr, fmt):
+        """ getITAdata(ind, area, fq, yr, fmt)
+        tn - table name
+        yr  - yr
+        fmt - result format
+        return international transactions accounts data
+        """
+        params = self.ITAParameters(ind, fmt, area, fq, yr)
+        url = self.burl + params
+        resp = self.uq.query(url)
+        if resp == None:
+            print('getITAdata: no response', file=sys.stderr)
+            return resp
+        rstr = resp.read().decode('utf-8')
+        jsd = json.loads(rstr)
+        return jsd['BEAAPI']['Results']
+
+    def getIIPdata(self, toi, cmp, fq, yr, fmt):
+        """ getIIPdata(ind, area, fq, yr, fmt)
+        toi - type of investment
+        cmp - component
+        fq - frequency
+        yr  - yr
+        fmt - result format
+        return international investment position data
+        """
+        params = self.IIParameters(toi, fmt, cmp, fq, yr)
+        url = self.burl + params
+        resp = self.uq.query(url)
+        if resp == None:
+            print('getIIPdata: no response', file=sys.stderr)
+            return resp
+        rstr = resp.read().decode('utf-8')
+        jsd = json.loads(rstr)
+        return jsd['BEAAPI']['Results']
+
+    def getInputOutputdata(self, tid, yr, fmt):
+        """ getInputOutputdata(tid, yr, fmt)
+        tid - table id
+        yr- year
+        fmt - result format
+        return input output data
+        """
+        params = self.InputOutputParameters(tid, fmt, yr)
+        url = self.burl + params
+        resp = self.uq.query(url)
+        if resp == None:
+            print('getInputOutputtdata: no response', file=sys.stderr)
+            return resp
+        rstr = resp.read().decode('utf-8')
+        jsd = json.loads(rstr)
+        return jsd['BEAAPI']['Results']
+
+    def getIntlServTradedata(self, tos, td, aff, area, yr, fmt):
+        """ getIntlServTradedata(ind, tos, td, aff, area, yr, fmt)
+        tos - type of service
+        td - trade direction
+        aff - affiliation
         area - area or country
-        fq - frequency
-        yr - year
-        fmt - retult format
+        yr  - yr
+        fmt - result format
+        return international service trade data
         """
-        params = ('&method=GetData&'
-                  'DatasetName=%s&'
-                  'Indicator=%s&'
-                  'AreaorCountry=%s&'
-                  'Frequency=%s&'
-                  'Year=%s&'
-                  'ResultFormat=%s' %
-                  (ds, ind, area, fq, yr, fmt) )
+        params = self.IntlServTradeParameters(fmt, tos, td, aff, area, yr)
         url = self.burl + params
         resp = self.uq.query(url)
         if resp == None:
-            print('getdcydata: no response', file=sys.stderr)
+            print('getIntlServTradedata: no response', file=sys.stderr)
             return resp
         rstr = resp.read().decode('utf-8')
         jsd = json.loads(rstr)
         return jsd['BEAAPI']['Results']
 
-    # IIP
-    def gettcfydata(self, ds, toi, cmp, fq, yr, fmt):
-        """ gettcfydata(ind, area, fq, yr, fmt)
-        ds - dataset name
-        toi - type of investment
-        cmp - component
-        fq - frequency
-        yr - year
-        fmt - retult format
+    def getIntlServSTAdata(self, ch, dst, ind, area, yr, fmt):
+        """ getIntlServSTAPdata( ch, dst, ind, area, yr, fmt)
+        ch - channel
+        dst - destination
+        aff - affiliation
+        ind - industry
+        area - area or country
+        yr  - yr
+        fmt - result format
+        return international services supplied through affiliates data
         """
-        params = ('&method=GetData&'
-                  'DatasetName=%s&'
-                  'TypeOfInvestment=%s&'
-                  'Component=%s&'
-                  'Frequency=%s&'
-                  'Year=%s&'
-                  'ResultFormat=%s' %
-                  (ds, ind, area, fq, yr, fmt) )
+        params = self.IntlServSTAParameters(fmt, ch, dst, ind, area, yr)
         url = self.burl + params
         resp = self.uq.query(url)
         if resp == None:
-            print('gettcfydata: no response', file=sys.stderr)
+            print('getIntlServSTAdata: no response', file=sys.stderr)
             return resp
         rstr = resp.read().decode('utf-8')
         jsd = json.loads(rstr)
         return jsd['BEAAPI']['Results']
 
-    # InputOutput
-    def getiodata(self, ds, tid, yr, fmt):
-        """ getiodata(ind, area, fq, yr, fmt)
-        ds - dataset name
-        toi - type of investment
-        cmp - component
+    def getGDPbyIndustrydata(self, tid, ind, fq, yr, fmt):
+        """ getGDPbyIndustrydata( ch, dst, ind, area, yr, fmt)
+        tid = table id
+        ind - industry 
         fq - frequency
-        yr - year
-        fmt - retult format
+        yr  - yr
+        fmt - result format
+        return gdp by industry data
         """
-        params = ('&method=GetData&'
-                  'DatasetName=%s&'
-                  'TableID=%s&'
-                  'Year=%s&'
-                  'ResultFormat=%s' %
-                  (ds, tid, yr, fmt) )
+        params = self.GDPbyIndustryParameters(fmt, tid, ind, fq, yr)
         url = self.burl + params
         resp = self.uq.query(url)
         if resp == None:
-            print('getiodata: no response', file=sys.stderr)
+            print('getGDPbyIndustrydata: no response', file=sys.stderr)
             return resp
         rstr = resp.read().decode('utf-8')
         jsd = json.loads(rstr)
         return jsd['BEAAPI']['Results']
 
+    def getRegionaldata(self, tn, lc, fips, yr, fmt):
+        """ getRegionaldata(tn, lc, fips, yr, fmt)
+        tn - table name
+        lc - line code
+        fips - geo fips code
+        yr  - yr
+        fmt - result format
+        return regional data
+        """
+        params = self.RegionalParameters(tn, lc, fmt, fips, yr)
+        url = self.burl + params
+        resp = self.uq.query(url)
+        if resp == None:
+            print('getRegionaldata: no response', file=sys.stderr)
+            return resp
+        rstr = resp.read().decode('utf-8')
+        jsd = json.loads(rstr)
+        return jsd['BEAAPI']['Results']
 
+    def getUnderlyingGDPbyIndustrydata(self, tid, ind, fq, yr, fmt):
+        """ getUnderlyingGDPbyIndustrydata(tid, ind, fq, yr, fmt)
+        tid - table id
+        ind - industry
+        fq - frequency
+        yr  - yr
+        fmt - result format
+        return underlying gdp by industry data
+        """
+        params = self.UnderlyingGDPbyIndustryParameters(fmt, tid, ind, fq, yr)
+        url = self.burl + params
+        resp = self.uq.query(url)
+        if resp == None:
+            print('getRegionaldata: no response', file=sys.stderr)
+            return resp
+        rstr = resp.read().decode('utf-8')
+        jsd = json.loads(rstr)
+        return jsd['BEAAPI']['Results']
 
     def dd2csv(self, jsd):
         """ dd2csv(jsd)
@@ -578,38 +671,49 @@ class BEAQueryQ():
 def main():
     argp = argparse.ArgumentParser(description='get BEA data')
 
-    argp.add_argument('--hierarchy',
-                      action='store_true', default=False,
-                      help='BEA data model ')
-
-    argp.add_argument('--dataset', default='NIPA',
-                      choices=['NIPA', 'NIUnderlyingDetail', 'MNE',
+    argp.add_argument('--dataset', choices=['NIPA', 'NIUnderlyingDetail', 'MNE',
                       'FixedAssets', 'ITA', 'IIP', 'InputOutput',
                       'IntlServTrade', 'GDPbyIndustry', 'Regional',
                       'UnderlyingGDPbyIndustry', 'APIDatasetMetaData'],
                       help='dataset name')
-    argp.add_argument('--table', help='dataset table name')
-    argp.add_argument('--param', help='dataset parameter ')
+    argp.add_argument('--tn', help='NIPA NIUnderlyingDetail '
+                                      'FixedAssets Regional table name')
+    argp.add_argument('--tid', help='InputOutput GDPbyIndustry '
+                                      'UnderlyingGDPbyIndustry table id')
 
-    argp.add_argument('--tableregister',
-                      action='store_true', default=False,
-                      help='get NIPA table register ')
-
-    # argp.add_argument('--freq', default = 'A',
     argp.add_argument('--freq',
                      help='frequency M, Q, A or comma separated list')
-    argp.add_argument('--yr', default = 'X',
-                      help='year 1929-2025 or X for all')
-    # argp.add_argument('--doi', default = 'inward',
+    argp.add_argument('--yr',
+                      help='year 1929-2025 X or all')
     argp.add_argument('--doi',
                       choices = ['inward', 'outward', 'parent', 'state'],
-                      help='direction of investment ')
-    argp.add_argument('--cls', default = 'inward',
-                      help='classification country code or comma'
-                      ' separated list or  000 for all')
+                      help='MNE direction of investment ')
+    argp.add_argument('--cls', help='MNE classification')
+    argp.add_argument('--indstry', help='MNE IntlServSTA GDPbyIndustry '
+                                    'UnderlyingGDPbyIndustry Industry')
+    argp.add_argument('--cnt', help='MNE country')
+    argp.add_argument('--indctr', help='ITA indicator')
+    argp.add_argument('--aoc', help='ITA IntlServTrade IntlServSTA '
+                                    'area or country')
+    argp.add_argument('--toi', help='IIP type of investment')
+    argp.add_argument('--comp', help='IIP component')
+    argp.add_argument('--tos', help='IntlServTrade type of service')
+    argp.add_argument('--tdir', help='IntlServTrade trade direction')
+    argp.add_argument('--affl', help='IntlServTrade affiliation')
+    argp.add_argument('--chan', help='IntlServSTA channel')
+    argp.add_argument('--dest', help='IntlServSTA destination')
+    argp.add_argument('--fips', help='Regional geo FIPS')
+    argp.add_argument('--lncd', help='Regional line code')
 
     argp.add_argument('--format', default='json',
                       choices=['json', 'XML'], help='result format')
+
+    argp.add_argument('--hierarchy',
+                      action='store_true', default=False,
+                      help='BEA data model ')
+    argp.add_argument('--tableregister',
+                      action='store_true', default=False,
+                      help='get NIPA table register ')
 
     args=argp.parse_args()
 
@@ -618,22 +722,73 @@ def main():
     if args.tableregister:
        txt = BN.getNIPAregister()
        print(txt)
-    elif args.table:
-        if args.doi:
-            jsd = BN.getdcydata(args.dataset, args.doi, args.cls,
-                                 args.yr, args.format)
-            csvstr = BN.dd2csv(jsd)
-            print(csvstr)
-        elif args.freq:
-            jsd = BN.gettfydata(args.dataset, args.table,
-                                 args.freq, args.yr, args.format)
-            csvstr = BN.dd2csv(jsd)
-            print(csvstr)
-        elif args.yr:
-            jsd = BN.gettydata(args.dataset, args.table,
-                                args.yr, args.format)
-            csvstr = BN.dd2csv(jsd)
-            print(csvstr)
+    elif args.tn:
+        if args.dataset == None:
+            print('dataset required to print dataset tables')
+            argp.print_help()
+            sys.exit()
+        if args.dataset == 'NIPA':
+            if args.freq == None or args.yr == None:
+                argp.print_help()
+                sys.exit()
+            d = BN.getNIPAdata(args.tn, args.freq, args.yr, args.format)
+        elif args.dataset == 'NIUnderlyingDetail':
+            d = BN.getNIUnderlyingDetaildata(args.tn, args,freq, args,yr,
+                                             args.format)
+        elif args.dataset == 'FixedAssets':
+            d = BN.getFixedAssetsdata(args.tn, args.year, args.format)
+        elif args.dataset == 'ITA':
+            d = BN.getITAdata(args.tn, args.year, args.format)
+        elif args.dataset == 'Regional':
+            d = getRegionaldata(args.tn, args.lncd, args.fips,
+                                args.year, args.format)
+        else:
+            argp.print_help()
+            sys.exit()
+    elif args.tid:
+        if args.dataset =='InputOutput':
+            d = BN.getInputOutputdata(args.tid, args.year, args.format)
+        elif args.dataset == 'GDPbyIndustry':
+            d = getGDPbyIndustrydata(args.tid, args.indstr, args.freq,
+                                     args.year, args.format)
+        elif args.dataset == 'UnderlyingGDPbyIndustry':
+            d = getUnderlyingGDPbyIndustrydata(args.tid, args.indstr,
+                                               args.freq, args.year,
+                                               args.format)
+        else:
+            argp.print_help()
+            sys.exit()
+    elif args.doi:
+        if args.dataset == 'MNE':
+            d = BN.getMNEdata(args.doi, args.cls, args.cnt, args.indstr,
+                              args.year, args.format)
+        else:
+            argp.print_help()
+            sys.exit()
+    elif args.toi:
+        if args.dataset == 'IIP':
+            d = BN.getIIPdata(args.toi, args.comp, args,freq, args,year,
+                              args.format)
+        else:
+            argp.print_help()
+            sys.exit()
+    elif args.indctr:
+        if args.dataset == 'InputOutput':
+            d = getInputOutputdata(args.tid, args.year, args.format)
+        else:
+            argp.print_help()
+            sys.exit()
+    elif args.tos:
+        if args.dataset == 'IntlServTrade':
+            d = getIntlServTradeddat(args.toѕ, args.tdir, args.affl,
+                                      args.aoc, args.year, args.format)
+        else:
+            argp.print_help()
+            sys.exit()
+    elif args.chan:
+        if args.dataset == 'IntlServSTA':
+            d = BN.getIntlServSTAdata(args.chan, args.dest, args.indstr,
+                                     args.aoc, args.year, args.format)
         else:
             argp.print_help()
             sys.exit()
