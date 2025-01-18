@@ -76,20 +76,21 @@ class BEAQueryQ():
         return params
 
 
-    def MNEParameters(self, doi, cl, fmt, cnt='000', ind='000', yr='all'):
+    def MNEParameters(self, sid, doi, cl, fmt, cnt='000', ind='000', yr='all'):
         if doi == None or cl == None or yr == None:
             print('MNEParameters: DirectionOfInvestment,'
                   'Classification,and Year required', file=sys.stderr)
             sys.exit()
         params = ('&method=GetData&'
                   'DatasetName=%s&'
+                  'SeriesID=%s&'
                   'DirectionOfInvestment=%s&'
                   'Classification=%s&'
                   'Country=%s&'
                   'Industry=%s&'
                   'Year=%s&'
                   'ResultFormat=%s' %
-                  ('MNE', doi, cl, cnt, ind, yr, fmt) )
+                  ('MNE', sid, doi, cl, cnt, ind, yr, fmt) )
         return params
 
     def FixedAssetsParameters(self, tn, fmt, ds='FixedAssets', yr='X'):
@@ -141,7 +142,7 @@ class BEAQueryQ():
 
     def IntlServTradeParameters(self, fmt,
                                 tos='ALL', td='ALL',
-                                aff='All', area='All', year='ALL'):
+                                aff='All', area='All', yr='ALL'):
         params = ('&method=GetData&'
                   'DatasetName=%s&'
                   'TypeOfService=%s&'
@@ -154,7 +155,7 @@ class BEAQueryQ():
         return params
 
     def IntlServSTAParameters(self, fmt, ch='ALL', dst='ALL',
-                              ind='ALL', area='ALL', year='ALL'):
+                              ind='ALL', area='ALL', yr='ALL'):
         params = ('&method=GetData&'
                   'DatasetName=%s&'
                   'Channel=%s&'
@@ -217,7 +218,7 @@ class BEAQueryQ():
         fmt - result format
         retrieve national income and product accounts data
         """
-        params = self.NIPAParams(tn, fq, yr, fmt, 'NIPA', shm)
+        params = self.NIPAParams(tn, fq, yr, fmt, shm)
         url = self.burl + params
         resp = self.uq.query(url)
         if resp == None:
@@ -245,8 +246,9 @@ class BEAQueryQ():
         jsd = json.loads(rstr)
         return jsd['BEAAPI']['Results']
 
-    def getMNEdata(self, doi, cl, ind, cnt, yr, fmt):
+    def getMNEdata(self, sid, doi, cl, ind, cnt, yr, fmt):
         """ getMNEdata(doi, cl, ind, cnt, yr, fmt)
+        sid - series id
         doi - direction of investment
         cl - classification
         ind - industry
@@ -255,7 +257,7 @@ class BEAQueryQ():
         fmt - result format
         return multinational enterprises data
         """
-        params = self.MNEParameters(doi, cl, fmt, cnt, ind, yr)
+        params = self.MNEParameters(sid, doi, cl, fmt, cnt, ind, yr)
         url = self.burl + params
         resp = self.uq.query(url)
         if resp == None:
@@ -308,7 +310,7 @@ class BEAQueryQ():
         fmt - result format
         return international investment position data
         """
-        params = self.IIParameters(toi, fmt, cmp, fq, yr)
+        params = self.IIPParameters(toi, fmt, cmp, fq, yr)
         url = self.burl + params
         resp = self.uq.query(url)
         if resp == None:
@@ -438,6 +440,9 @@ class BEAQueryQ():
         jsd - restults from BEA table query
         return csv text for table data
         """
+        if 'Data' not in jsd.keys():
+            print('dd2csv no Data key', file=sys.stderr)
+            return None
         aa = self.dd2aa(jsd, 'Data')
         csv = self.aa2csv(aa)
         return csv
@@ -673,18 +678,22 @@ def main():
 
     argp.add_argument('--dataset', choices=['NIPA', 'NIUnderlyingDetail', 'MNE',
                       'FixedAssets', 'ITA', 'IIP', 'InputOutput',
-                      'IntlServTrade', 'GDPbyIndustry', 'Regional',
-                      'UnderlyingGDPbyIndustry', 'APIDatasetMetaData'],
+                      'IntlServTrade', 'IntlServSTA', 'GDPbyIndustry',
+                      'Regional', 'UnderlyingGDPbyIndustry',
+                      'APIDatasetMetaData'],
                       help='dataset name')
     argp.add_argument('--tn', help='NIPA NIUnderlyingDetail '
                                       'FixedAssets Regional table name')
     argp.add_argument('--tid', help='InputOutput GDPbyIndustry '
                                       'UnderlyingGDPbyIndustry table id')
+    argp.add_argument('--sid', help='MNE series id')
 
+    argp.add_argument('--showm', default='N',
+                      help='NIPA show millions')
     argp.add_argument('--freq',
                      help='frequency M, Q, A or comma separated list')
     argp.add_argument('--yr',
-                      help='year 1929-2025 X or all')
+                      help='year YYYY  X or all')
     argp.add_argument('--doi',
                       choices = ['inward', 'outward', 'parent', 'state'],
                       help='MNE direction of investment ')
@@ -723,6 +732,7 @@ def main():
        txt = BN.getNIPAregister()
        print(txt)
     elif args.tn:
+        d = None
         if args.dataset == None:
             print('dataset required to print dataset tables')
             argp.print_help()
@@ -731,67 +741,136 @@ def main():
             if args.freq == None or args.yr == None:
                 argp.print_help()
                 sys.exit()
-            d = BN.getNIPAdata(args.tn, args.freq, args.yr, args.format)
+            d = BN.getNIPAdata(args.tn, args.freq, args.yr, args.showm,
+                               args.format)
         elif args.dataset == 'NIUnderlyingDetail':
-            d = BN.getNIUnderlyingDetaildata(args.tn, args,freq, args,yr,
+            d = BN.getNIUnderlyingDetaildata(args.tn, args.freq, args.yr,
                                              args.format)
         elif args.dataset == 'FixedAssets':
-            d = BN.getFixedAssetsdata(args.tn, args.year, args.format)
-        elif args.dataset == 'ITA':
-            d = BN.getITAdata(args.tn, args.year, args.format)
+            d = BN.getFixedAssetsdata(args.tn, args.yr, args.format)
         elif args.dataset == 'Regional':
-            d = getRegionaldata(args.tn, args.lncd, args.fips,
-                                args.year, args.format)
+            d = BN.getRegionaldata(args.tn, args.lncd, args.fips,
+                                args.yr, args.format)
         else:
             argp.print_help()
             sys.exit()
+        if d != None:
+            if type(d) == type({}):
+                csv = BN.dd2csv(d)
+                print(csv)
+            elif type(d) == type([]):
+                for i in range(len(d)):
+                    print('\n\n')
+                    csv = BN.dd2csv(d[i])
+                    print(csv)
     elif args.tid:
+        d = None
         if args.dataset =='InputOutput':
-            d = BN.getInputOutputdata(args.tid, args.year, args.format)
+            d = BN.getInputOutputdata(args.tid, args.yr, args.format)
         elif args.dataset == 'GDPbyIndustry':
-            d = getGDPbyIndustrydata(args.tid, args.indstr, args.freq,
-                                     args.year, args.format)
+            d = BN.getGDPbyIndustrydata(args.tid, args.indstry, args.freq,
+                                     args.yr, args.format)
         elif args.dataset == 'UnderlyingGDPbyIndustry':
-            d = getUnderlyingGDPbyIndustrydata(args.tid, args.indstr,
-                                               args.freq, args.year,
+            d = BN.getUnderlyingGDPbyIndustrydata(args.tid, args.indstry,
+                                               args.freq, args.yr,
                                                args.format)
         else:
             argp.print_help()
             sys.exit()
-    elif args.doi:
+        if d != None:
+            if type(d) == type({}):
+                csv = BN.dd2csv(d)
+                print(csv)
+            elif type(d) == type([]):
+                for i in range(len(d)):
+                    print('\n\n')
+                    csv = BN.dd2csv(d[i])
+                    print(csv)
+    elif args.sid:
+        d = None
         if args.dataset == 'MNE':
-            d = BN.getMNEdata(args.doi, args.cls, args.cnt, args.indstr,
-                              args.year, args.format)
+            d = BN.getMNEdata(args.doi, args.sid, args.cls, args.cnt, \
+                              args.indstry, args.yr, args.format)
         else:
             argp.print_help()
             sys.exit()
+        if d != None:
+            if type(d) == type({}):
+                csv = BN.dd2csv(d)
+                print(csv)
+            elif type(d) == type([]):
+                for i in range(len(d)):
+                    print('\n\n')
+                    csv = BN.dd2csv(d[i])
+                    print(csv)
     elif args.toi:
+        d = None
         if args.dataset == 'IIP':
-            d = BN.getIIPdata(args.toi, args.comp, args,freq, args,year,
+            d = BN.getIIPdata(args.toi, args.comp, args.freq, args.yr,
                               args.format)
         else:
             argp.print_help()
             sys.exit()
+        if d != None:
+            if type(d) == type({}):
+                csv = BN.dd2csv(d)
+                print(csv)
+            elif type(d) == type([]):
+                for i in range(len(d)):
+                    print('\n\n')
+                    csv = BN.dd2csv(d[i])
+                    print(csv)
     elif args.indctr:
-        if args.dataset == 'InputOutput':
-            d = getInputOutputdata(args.tid, args.year, args.format)
+        d = None
+        if args.dataset == 'ITA':
+            d = BN.getITAdata(args.indctr, args.aoc, args.freq, args.yr,
+                              args.format)
         else:
             argp.print_help()
             sys.exit()
+        if d != None:
+            if type(d) == type({}):
+                csv = BN.dd2csv(d)
+                print(csv)
+            elif type(d) == type([]):
+                for i in range(len(d)):
+                    print('\n\n')
+                    csv = BN.dd2csv(d[i])
+                    print(csv)
     elif args.tos:
+        d = None
         if args.dataset == 'IntlServTrade':
-            d = getIntlServTradeddat(args.toѕ, args.tdir, args.affl,
-                                      args.aoc, args.year, args.format)
+            d = BN.getIntlServTradedata(args.tos, args.tdir, args.affl,
+                                      args.aoc, args.yr, args.format)
         else:
             argp.print_help()
             sys.exit()
+        if d != None:
+            if type(d) == type({}):
+                csv = BN.dd2csv(d)
+                print(csv)
+            elif type(d) == type([]):
+                for i in range(len(d)):
+                    print('\n\n')
+                    csv = BN.dd2csv(d[i])
+                    print(csv)
     elif args.chan:
+        d = None
         if args.dataset == 'IntlServSTA':
-            d = BN.getIntlServSTAdata(args.chan, args.dest, args.indstr,
-                                     args.aoc, args.year, args.format)
+            d = BN.getIntlServSTAdata(args.chan, args.dest, args.indstry,
+                                     args.aoc, args.yr, args.format)
         else:
             argp.print_help()
             sys.exit()
+        if d != None:
+            if type(d) == type({}):
+                csv = BN.dd2csv(d)
+                print(csv)
+            elif type(d) == type([]):
+                for i in range(len(d)):
+                    print('\n\n')
+                    csv = BN.dd2csv(d[i])
+                    print(csv)
     elif args.hierarchy:
         hd = BN.hierarchy(args.format)
         htm = BN.hierarchyhtml(hd)
@@ -799,8 +878,6 @@ def main():
     else:
         argp.print_help()
         sys.exit()
-
-
 
 
 if __name__ == '__main__':
