@@ -7,7 +7,7 @@ import sys
 import webbrowser
 
 try:
-    import beaquery.beaqueryq
+    from beaquery import beaqueryq
 except Exception as e:
     import beaqueryq
 

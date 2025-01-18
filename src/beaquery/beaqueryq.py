@@ -11,7 +11,7 @@ import xml
 import xml.etree.ElementTree as ET
 
 try:
-    import beaquery.ebquery
+    from beaquery import ebquery
 except Exception as e:
     import ebquery
 
