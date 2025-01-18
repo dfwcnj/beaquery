@@ -32,7 +32,19 @@ Issues = "https://github.com/U.N. Owen/beaquery/issues"
 Source = "https://github.com/U.N. Owen/beaquery"
 
 [project.scripts]
-beaquery = "beaquery.beaquery:main"
+beaqueryq = "beaquery.beaqueryq:main"
+beanipa = "beaquery.beanipa:main"
+beaniud = "beaquery.beaniud:main"
+beamne = "beaquery.beamne:main"
+beafixedassets = "beaquery.beafixedassets:main"
+beaita = "beaquery.beaita:main"
+beaiip = "beaquery.beaiip:main"
+beainputoutput = "beaquery.beainputoutput:main"
+beaistrade = "beaquery.beaistrade:main"
+beaissta = "beaquery.beaissta:main"
+beagdpbyind = "beaquery.beagdpbyind:main"
+bearegional = "beaquery.bearegional:main"
+beaugdpbyind = "beaquery.beaugdpbyind:main"
 
 [tool.hatch.version]
 path = "src/beaquery/__about__.py"
