@@ -11,7 +11,7 @@ requires-python = ">=3.8"
 license = "MIT"
 keywords = []
 authors = [
-  { name = "U.N. Owen", email = "void@some.where" },
+  { name = "Don Caldwell", email = "dfcnj@gmail.com" },
 ]
 classifiers = [
   "Development Status :: 4 - Beta",
@@ -27,9 +27,9 @@ classifiers = [
 dependencies = []
 
 [project.urls]
-Documentation = "https://github.com/U.N. Owen/beaquery#readme"
-Issues = "https://github.com/U.N. Owen/beaquery/issues"
-Source = "https://github.com/U.N. Owen/beaquery"
+Documentation = "https://github.com/dfwcnj/beaquery#readme"
+Issues = "https://github.com/dfwcnj/beaquery/issues"
+Source = "https://github.com/dfwcnj/beaquery"
 
 [project.scripts]
 beaqueryq = "beaquery.beaqueryq:main"
