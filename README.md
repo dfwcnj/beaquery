@@ -10,7 +10,7 @@
 - [Installation](#installation)
 - [License](#license)
 
-## Installation   NOT YET
+## Installation
 <br>
 ```console<br>
 pip&nbsp;install&nbsp;beaquery<br>
