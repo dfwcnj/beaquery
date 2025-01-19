@@ -442,7 +442,7 @@ class BEAQueryQ():
         """
         if 'Data' not in jsd.keys():
             print('dd2csv no Data key', file=sys.stderr)
-            # print(jsd, file=sys.stderr)
+            print(jsd, file=sys.stderr)
             return None
         aa = self.dd2aa(jsd, 'Data')
         csv = self.aa2csv(aa)
@@ -506,19 +506,36 @@ class BEAQueryQ():
         dss - string containing json
         convert string result to array of arrays
         """
-        keys = [k for k in dsd[jsk][0].keys()]
-        aa = []
-        for d in dsd[jsk]:
-            if len(aa) == 0:
-                aa.append(keys)
+        if type(dsd[jsk]) == type({}):
+            keys = [k for k in dsd[jsk].keys()]
+            aa = []
+            aa.append(keys)
             a = []
+            d = dsd[jsk]
             for k in keys:
                 if k not in d:
                     a.append('')
                 else:
                     a.append(d[k])
             aa.append(a)
-        return aa
+            return aa
+        elif type(dsd[jsk]) == type([]):
+            keys = [k for k in dsd[jsk][0].keys()]
+            aa = []
+            for d in dsd[jsk]:
+                if len(aa) == 0:
+                    aa.append(keys)
+                a = []
+                for k in keys:
+                    if k not in d:
+                        a.append('')
+                    else:
+                        a.append(d[k])
+                aa.append(a)
+            return aa
+        else:
+            print('dd2aa type error', file=sys.stderr)
+            return None
 
     def js2aa(self, dss, jsk):
         """ js2aa(dss)
@@ -790,8 +807,8 @@ def main():
     elif args.sid:
         d = None
         if args.dataset == 'MNE':
-            d = BN.getMNEdata(args.doi, args.sid, args.cls, args.cnt, \
-                              args.indstry, args.yr, args.format)
+            d = BN.getMNEdata(args.sid, args.doi, args.cls, args.indstry, \
+                              args.cnt, args.yr, args.format)
         else:
             argp.print_help()
             sys.exit()
