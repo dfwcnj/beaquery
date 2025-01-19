@@ -442,6 +442,7 @@ class BEAQueryQ():
         """
         if 'Data' not in jsd.keys():
             print('dd2csv no Data key', file=sys.stderr)
+            # print(jsd, file=sys.stderr)
             return None
         aa = self.dd2aa(jsd, 'Data')
         csv = self.aa2csv(aa)
