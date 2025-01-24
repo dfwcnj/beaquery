@@ -10,6 +10,10 @@ import webbrowser
 import xml
 import xml.etree.ElementTree as ET
 
+import plotly
+from plotly.subplots import make_subplots
+import plotly.graph_objects as go
+
 try:
     from beaquery import ebquery
 except Exception as e:
@@ -207,7 +211,9 @@ class BEAQueryQ():
                   ('UnderlyingGDPbyIndustry', tid, ind, fq, yr, fmt) )
         return params
 
-
+# dict_keys(['TableName', 'SeriesCode', 'LineNumber', 'LineDescription', 'TimePeriod', 'METRIC_NAME', 'CL_UNIT', 'UNIT_MULT', 'DataValue', 'NoteRef'])
+#
+# {'TableName': 'FAAt101', 'SeriesCode': 'k1ttotl1es00', 'LineNumber': '2', 'LineDescription': 'Fixed assets', 'TimePeriod': '1926', 'METRIC_NAME': 'Current Dollars', 'CL_UNIT': 'Level', 'UNIT_MULT': '6', 'DataValue': '270,574', 'NoteRef': 'FAAt101'}
 
     def getNIPAdata(self, tn, fq, yr, shm, fmt):
         """ getNIPAdata(tn, fq, yr, fmt)
@@ -437,7 +443,7 @@ class BEAQueryQ():
 
     def dd2csv(self, jsd):
         """ dd2csv(jsd)
-        jsd - restults from BEA table query
+        jsd - results from BEA table query
         return csv text for table data
         """
         if 'Data' not in jsd.keys():
@@ -447,6 +453,107 @@ class BEAQueryQ():
         aa = self.dd2aa(jsd, 'Data')
         csv = self.aa2csv(aa)
         return csv
+
+    def store2csv(self, d, fn):
+        """store2csv(d, fn)
+        d - results from table query
+        fn - where to store the csv data
+        """
+        if type(d) == type({}):
+            csv = self.dd2csv(d)
+            with open(args.csvfn, 'w') as fp:
+                print(csv, file=fp)
+        elif type(d) == type([]):
+            if not fn.endswith('csv'):
+                print('csv filename must end with ".csv"', file=sys.stderr)
+            for i in range(len(d)):
+                csv = self.dd2csv(d[i])
+                nfn = fn.replace('.csv', '%d.csv' % i)
+                with open(fn, 'w') as fp:
+                    print(csv, file=fp)
+
+    def print2csv(self, d):
+        """print2csv(d)
+        d - results of table query
+        print csv result to stdout
+        """
+        if type(d) == type({}):
+            csv = self.dd2csv(d)
+            print(csv)
+        elif type(d) == type([]):
+            for i in range(len(d)):
+                print('\n\n\n')
+                csv = self.dd2csv(d[i])
+                print(csv)
+
+    def paa2plots(self, parts, xk, yk, uk, t):
+        """ paa2plots(self, aa, x, y, sk, t)
+        parts - plot aa parts
+        xk - key to x axis data
+        yk - key to y axis data
+        uk - key to y axis units
+        t - plot title
+        return plot figure for data in parts
+        """
+        fig  = make_subplots(shared_yaxes=True, shared_xaxes=True)
+        xi = yi = ui = None
+
+        units = None
+        for k in parts.keys():
+            aa = parts[k]
+            if xi == None:
+                for i in range(len(aa[0])):
+                    if aa[0][i] == xk:
+                        xi = i
+                    elif aa[0][i] == yk:
+                        yi = i
+                    elif aa[0][i] == uk:
+                        ui = i
+
+            if units == None:
+                units = aa[1][ui]
+            xa = []
+            ya = []
+            for i in range(1, len(aa)):
+                xa.append(aa[i][xi])
+                ya.append(aa[i][yi])
+            fig.add_trace( go.Scatter(x=xa, y=ya, name=k))
+
+        fig.update_layout(
+            title=t,
+            yaxis_title=units,
+            xaxis_title='Date',
+        )
+        return fig
+
+
+    def aa2plot(self, aa, xi, yi, ui, t):
+        """ aa2plot(self, aa, x, y, t)
+        aa - array of arrays
+        xi - x index
+        yi - y index
+        ui - index to units
+        t - plot title
+        return plot figure
+        """
+        print('aa2plot add units', file =sys.stderr)
+        fig  = make_subplots(shared_yaxes=True, shared_xaxes=True)
+
+        xa = []
+        ya = []
+        units = aa[1][ui]
+        for i in range(len(aa)):
+            xa.append(aa[i][xi])
+            ya.append(aa[i][yi])
+
+        fig.add_trace( go.Scatter(x=xa, y=ya, name=t))
+
+        fig.update_layout(
+            title=t,
+            yaxis_title=units,
+            xaxis_title='Date',
+        )
+        return fig
 
     def aa2table(self, cap, aa):
        """ aa2table(aa)
@@ -571,7 +678,104 @@ class BEAQueryQ():
             aa.append(a)
         return aa
 
+    def aasplit(self, aa, k):
+        """ aasplit(self, aa, k)
+        aa - array of arrays
+        k - split key
+        return split aa
+        """
+        ai = None # index to split key
+        asp = {}
+        asp['parts'] = {}
+        keys = aa[0]
+        for i in range(len(aa[0])):
+            if aa[0][i] == k:
+                ai = i
+                break
+        if ai == None:
+            print('aasplit no key %s' % k, file=sys.stderr)
+            sys.exit()
+        for j in range(1, len(aa)):
+            if aa[j][ai] not in asp['parts']:
+                asp['parts'][aa[j][ai]] = []
+                asp['parts'][aa[j][ai]].append(keys)
+            asp['parts'][aa[j][ai]].append(aa[j])
+
+        return asp
+
+    def d2html(self, d, sk, xk, yk, uk):
+        """d2html(d, fn)
+        d - dictionary from table query
+        fn - name of file to store html
+        sk - split the data based on field name or None
+        xk - key to x axis data
+        yk - key to y axis data
+        uk - key to y axis units
+        """
+        ds = d['Statistic'].split()[0]
+        tn = d['Data'][0]['TableName']
+        htmla = []
+        htmla.append('<html>')
+        ttl = 'BEA Dataset %s Table %s' % (ds, tn)
+        htmla.append('<head>')
+        htmla.append('<title>%s</title>' % (ttl) )
+        htmla.append('<script src="https://cdn.plot.ly/plotly-2.32.0.min.js" charset="utf-8"></script>')
+        htmla.append('</head>')
+        if type(d) == type({}):
+            aa = self.dd2aa(d, 'Data')
+            if sk != None:
+                asp = self.aasplit(aa, sk)
+
+                fig = self.paa2plots(asp['parts'], xk, yk, uk, '%s %s' %
+                                     (ds, tn))
+                figjs = fig.to_json()
+                htmla.append('<div id="fig%s%s">' % (ds,tn) )
+                htmla.append('<script>')
+                htmla.append('var figobj = %s;\n' % figjs)
+                htmla.append('Plotly.newPlot("fig%s%s", figobj.data, figobj.layout, {});' % (ds,tn) )
+                htmla.append('</script>')
+                htmla.append('</div>')
+
+                for pk in asp['parts'].keys():
+                    pttl = '%s %s' % (ttl, pk)
+                    ptbla = self.aa2table(pttl, asp['parts'][pk])
+                    htmla.extend(ptbla)
+            else:
+                tbla = self.aa2table(ttl, aa)
+                htmla.extend(tbla)
+        elif type(d) == type([]):
+            for i in range(len(d)):
+                aa = self.dd2aa(d[i], 'Data')
+                if sk != None:
+                    asp = self.aasplit(aa, sk)
+
+                    fig = self.paa2plots(asp['parts'], xk, yk, uk, '%s %s' %
+                                         (ds, tn))
+                    figjs = fig.to_json()
+                    htmla.append('<div id="fig%s%s">' % (ds,tn) )
+                    htmla.append('<script>')
+                    htmla.append('var figobj = %s;\n' % figjs)
+                    htmla.append('Plotly.newPlot("fig%s%s", figobj.data, figobj.layout, {});' % (ds,tn) )
+                    htmla.append('</script>')
+                    htmla.append('</div>')
+
+
+                    for pk in asp['parts'].keys():
+                        pttl = '%s %d %s' % (ttl, i, pk)
+                        ptbla = self.aa2table(pttl, asp['parts'][pk])
+                        htmla.extend(ptbla)
+                else:
+                    tbla = self.aa2table('%s %d' % (ttl, i), aa)
+                    htmla.extend(tbla)
+        htmla.append('</html>')
+        return ''.join(htmla)
+
+
     def aa2csv(self, aa):
+        """aa2csv(aa)
+        aa - array of arrays
+        return csv text rendition of aa
+        """
         csva = []
         for a in aa:
             csva.append('"%s"' % '","'.join(a))
@@ -700,6 +904,7 @@ def main():
                       'Regional', 'UnderlyingGDPbyIndustry',
                       'APIDatasetMetaData'],
                       help='dataset name')
+
     argp.add_argument('--tn', help='NIPA NIUnderlyingDetail '
                                       'FixedAssets Regional table name')
     argp.add_argument('--tid', help='InputOutput GDPbyIndustry '
@@ -712,6 +917,7 @@ def main():
                      help='frequency M, Q, A or comma separated list')
     argp.add_argument('--yr',
                       help='year YYYY  X or all')
+
     argp.add_argument('--doi',
                       choices = ['inward', 'outward', 'parent', 'state'],
                       help='MNE direction of investment ')
@@ -719,21 +925,40 @@ def main():
     argp.add_argument('--indstry', help='MNE IntlServSTA GDPbyIndustry '
                                     'UnderlyingGDPbyIndustry Industry')
     argp.add_argument('--cnt', help='MNE country')
+
     argp.add_argument('--indctr', help='ITA indicator')
     argp.add_argument('--aoc', help='ITA IntlServTrade IntlServSTA '
                                     'area or country')
+
     argp.add_argument('--toi', help='IIP type of investment')
     argp.add_argument('--comp', help='IIP component')
+
     argp.add_argument('--tos', help='IntlServTrade type of service')
     argp.add_argument('--tdir', help='IntlServTrade trade direction')
     argp.add_argument('--affl', help='IntlServTrade affiliation')
+
     argp.add_argument('--chan', help='IntlServSTA channel')
     argp.add_argument('--dest', help='IntlServSTA destination')
+
     argp.add_argument('--fips', help='Regional geo FIPS')
     argp.add_argument('--lncd', help='Regional line code')
 
+    argp.add_argument('--csvfn', \
+         help='name of file to store dataset CSV result')
+
+    argp.add_argument('--splitkey', default='LineDescription',
+        help='table column name to use to split the table')
+    argp.add_argument('--xkey', default='TimePeriod',
+        help='table column name to use to plot the data')
+    argp.add_argument('--ykey', default='DataValue',
+        help='table column name to use to plot the data')
+    argp.add_argument('--unitskey', default='METRIC_NAME',
+        help='table column name to use to label the data')
+    argp.add_argument('--htmlfn', \
+        help='name of file to store dataset HTML result')
+
     argp.add_argument('--format', default='json',
-                      choices=['json', 'XML'], help='result format')
+                      choices=['json', 'XML'], help='query result format')
 
     argp.add_argument('--hierarchy',
                       action='store_true', default=False,
@@ -773,14 +998,15 @@ def main():
             argp.print_help()
             sys.exit()
         if d != None:
-            if type(d) == type({}):
-                csv = BN.dd2csv(d)
-                print(csv)
-            elif type(d) == type([]):
-                for i in range(len(d)):
-                    print('\n\n')
-                    csv = BN.dd2csv(d[i])
-                    print(csv)
+            if args.csvfn != None:
+                BN.store2csv(d, args.csvfn)
+            elif args.htmlfn != None:
+                h = BN.d2html(d, args.splitkey, args.xkey, args.ykey,
+                              args.unitskey)
+                with open(args.htmlfn, 'w') as fp:
+                    print(h, file=fp)
+            else:
+                BN.print2csv(d)
     elif args.tid:
         d = None
         if args.dataset =='InputOutput':
@@ -796,14 +1022,15 @@ def main():
             argp.print_help()
             sys.exit()
         if d != None:
-            if type(d) == type({}):
-                csv = BN.dd2csv(d)
-                print(csv)
-            elif type(d) == type([]):
-                for i in range(len(d)):
-                    print('\n\n')
-                    csv = BN.dd2csv(d[i])
-                    print(csv)
+            if args.csvfn != None:
+                BN.store2csv(d, args.csvfn)
+            elif args.htmlfn != None:
+                h = BN.d2html(d, args.splitkey, args.xkey, args.ykey,
+                              args.unitskey)
+                with open(args.htmlfn, 'w') as fp:
+                    print(h, file=fp)
+            else:
+                BN.print2csv(d)
     elif args.sid:
         d = None
         if args.dataset == 'MNE':
@@ -813,14 +1040,15 @@ def main():
             argp.print_help()
             sys.exit()
         if d != None:
-            if type(d) == type({}):
-                csv = BN.dd2csv(d)
-                print(csv)
-            elif type(d) == type([]):
-                for i in range(len(d)):
-                    print('\n\n')
-                    csv = BN.dd2csv(d[i])
-                    print(csv)
+            if args.csvfn != None:
+                BN.store2csv(d, args.csvfn)
+            elif args.htmlfn != None:
+                h = BN.d2html(d, args.splitkey, args.xkey, args.ykey,
+                              args.unitskey)
+                with open(args.htmlfn, 'w') as fp:
+                    print(h, file=fp)
+            else:
+                BN.print2csv(d)
     elif args.toi:
         d = None
         if args.dataset == 'IIP':
@@ -830,14 +1058,15 @@ def main():
             argp.print_help()
             sys.exit()
         if d != None:
-            if type(d) == type({}):
-                csv = BN.dd2csv(d)
-                print(csv)
-            elif type(d) == type([]):
-                for i in range(len(d)):
-                    print('\n\n')
-                    csv = BN.dd2csv(d[i])
-                    print(csv)
+            if args.csvfn != None:
+                BN.store2csv(d, args.csvfn)
+            elif args.htmlfn != None:
+                h = BN.d2html(d, args.splitkey, args.xkey, args.ykey,
+                              args.unitskey)
+                with open(args.htmlfn, 'w') as fp:
+                    print(h, file=fp)
+            else:
+                BN.print2csv(d)
     elif args.indctr:
         d = None
         if args.dataset == 'ITA':
@@ -847,14 +1076,15 @@ def main():
             argp.print_help()
             sys.exit()
         if d != None:
-            if type(d) == type({}):
-                csv = BN.dd2csv(d)
-                print(csv)
-            elif type(d) == type([]):
-                for i in range(len(d)):
-                    print('\n\n')
-                    csv = BN.dd2csv(d[i])
-                    print(csv)
+            if args.csvfn != None:
+                BN.store2csv(d, args.csvfn)
+            elif args.htmlfn != None:
+                h = BN.d2html(d, args.splitkey, args.xkey, args.ykey,
+                              args.unitskey)
+                with open(args.htmlfn, 'w') as fp:
+                    print(h, file=fp)
+            else:
+                BN.print2csv(d)
     elif args.tos:
         d = None
         if args.dataset == 'IntlServTrade':
@@ -864,14 +1094,15 @@ def main():
             argp.print_help()
             sys.exit()
         if d != None:
-            if type(d) == type({}):
-                csv = BN.dd2csv(d)
-                print(csv)
-            elif type(d) == type([]):
-                for i in range(len(d)):
-                    print('\n\n')
-                    csv = BN.dd2csv(d[i])
-                    print(csv)
+            if args.csvfn != None:
+                BN.store2csv(d, args.csvfn)
+            elif args.htmlfn != None:
+                h = BN.d2html(d, args.splitkey, args.xkey, args.ykey,
+                              args.unitskey)
+                with open(args.htmlfn, 'w') as fp:
+                    print(h, file=fp)
+            else:
+                BN.print2csv(d)
     elif args.chan:
         d = None
         if args.dataset == 'IntlServSTA':
@@ -881,14 +1112,15 @@ def main():
             argp.print_help()
             sys.exit()
         if d != None:
-            if type(d) == type({}):
-                csv = BN.dd2csv(d)
-                print(csv)
-            elif type(d) == type([]):
-                for i in range(len(d)):
-                    print('\n\n')
-                    csv = BN.dd2csv(d[i])
-                    print(csv)
+            if args.csvfn != None:
+                BN.store2csv(d, args.csvfn)
+            elif args.htmlfn != None:
+                h = BN.d2html(d, args.splitkey, args.xkey, args.ykey,
+                              args.unitskey)
+                with open(args.htmlfn, 'w') as fp:
+                    print(h, file=fp)
+            else:
+                BN.print2csv(d)
     elif args.hierarchy:
         hd = BN.hierarchy(args.format)
         htm = BN.hierarchyhtml(hd)
