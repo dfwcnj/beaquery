@@ -13,6 +13,8 @@ except Exception as e:
 
 def main():
     argp = argparse.ArgumentParser(description='get BEA IIP data')
+
+    argp.add_argument('--dataset', default='IIP')
     argp.add_argument('--toi', required=True, help='type of investment')
     argp.add_argument('--comp', required=True, help='composition')
     argp.add_argument('--freq', required=True,
@@ -23,20 +25,37 @@ def main():
     argp.add_argument('--format', default='json',
                       choices=['json', 'XML'], help='result format')
 
+    argp.add_argument('--csvfn', \
+         help='name of file to store dataset CSV result')
+
+    argp.add_argument('--splitkey', default='Component',
+        help='table column name to use to split the table')
+    argp.add_argument('--xkey', default='TimePeriod',
+        help='table column name to use to plot the data')
+    argp.add_argument('--ykey', default='DataValue',
+        help='table column name to use to plot the data')
+    argp.add_argument('--unitskey', default='CL_UNIT',
+        help='table column name to use to label the data')
+    argp.add_argument('--htmlfn', \
+        help='name of file to store dataset HTML result')
+
     args=argp.parse_args()
 
     BN = beaqueryq.BEAQueryQ()
-    d = BN.getIIPdata(args.toi, args.comp, args.freq, args.yr, args.format)
+    d = BN.getIIPdata(args)
     if d == None:
-        print('no output', file=sys.stderr)
+        print('%s: no data' % os.path.basename(__file__), file=sys.stderr)
+        sys.exit(1)
     else:
-        if type(d) == type({}):
-            csv = BN.dd2csv(d)
-            print(csv)
-        elif type(d) == type([]):
-            for i in range(len(d)):
-                print('\n\n')
-                csv = BN.dd2csv(d[i])
-                print(csv)
+        if args.csvfn != None:
+            BN.store2csv(d, args.csvfn)
+        elif args.htmlfn != None:
+            h = BN.d2html(d, args)
+            with open(args.htmlfn, 'w') as fp: 
+                print(h, file=fp)
+            webbrowser.open('file://%s' % args.htmlfn)
+        else:
+            BN.print2csv(d)
+
 if __name__ == '__main__':
     main()

@@ -12,7 +12,10 @@ except Exception as e:
     import beaqueryq
 
 def main():
-    argp = argparse.ArgumentParser(description='get BEA UnderlyingGDPbyIndustry data')
+    argp = argparse.ArgumentParser(description='get BEA '
+          'UnderlyingGDPbyIndustry data')
+
+    argp.add_argument('--dataset', default='UnderlyingGDPbyIndustry')
     argp.add_argument('--tid', required=True, help='table id')
     argp.add_argument('--indstry', required=True, help='industry')
     argp.add_argument('--freq', required=True,
@@ -23,21 +26,38 @@ def main():
     argp.add_argument('--format', default='json',
                       choices=['json', 'XML'], help='result format')
 
+    argp.add_argument('--csvfn', \
+         help='name of file to store dataset CSV result')
+
+    argp.add_argument('--splitkey', default='IndustrYDescription',
+        help='table column name to use to split the table')
+    argp.add_argument('--xkey', default='Year',
+        help='table column name to use to plot the data')
+    argp.add_argument('--ykey', default='DataValue',
+        help='table column name to use to plot the data')
+    argp.add_argument('--unitskey', default='Billions?',
+        help='table column name to use to label the data')
+    argp.add_argument('--htmlfn', \
+        help='name of file to store dataset HTML result')
+
     args=argp.parse_args()
 
     BN = beaqueryq.BEAQueryQ()
-    d = BN.getUnderlyingGDPbyIndustrydata(args.tid, args.indstry, args.freq,
-                                          args.yr, args.format)
+    d = BN.getUnderlyingGDPbyIndustrydata(args)
     if d == None:
-        print('no output', file=sys.stderr)
+        print('%s: no data' % os.path.basename(__file__), file=sys.stderr)
+        sys.exit(1)
     else:
-        if type(d) == type({}):
-            csv = BN.dd2csv(d)
-            print(csv)
-        elif type(d) == type([]):
-            for i in range(len(d)):
-                print('\n\n')
-                csv = BN.dd2csv(d[i])
-                print(csv)
+        if args.csvfn != None:
+            BN.store2csv(d, args.csvfn)
+        elif args.htmlfn != None:
+            h = BN.d2html(d, args)
+            with open(args.htmlfn, 'w') as fp:
+                print(h, file=fp)
+            webbrowser.open('file://%s' % args.htmlfn)
+        else:
+            BN.print2csv(d)
+
+
 if __name__ == '__main__':
     main()
