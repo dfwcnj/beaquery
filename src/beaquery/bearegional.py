@@ -43,7 +43,7 @@ def main():
 
     BN = beaqueryq.BEAQueryQ()
     d = BN.getRegionaldata(args)
-    if d == None or 'Data' not in d.keys():
+    if d == None or type(d) == type({}) and 'Data' not in d.keys():
         print('%s: no data' % os.path.basename(__file__), file=sys.stderr)
     else:
         if args.csvfn != None:

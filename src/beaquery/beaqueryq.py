@@ -1158,7 +1158,7 @@ def main():
         else:
             argp.print_help()
             sys.exit()
-        if d == None or 'Data' not in d.keys():
+        if d == None or type(d) == type({}) and 'Data' not in d.keys():
             print('beaqueryq: no data', file=sys.stderr)
         else:
             if args.csvfn != None:
@@ -1181,7 +1181,7 @@ def main():
         else:
             argp.print_help()
             sys.exit()
-        if d == None or 'Data' not in d.keys():
+        if d == None or type(d) == type({}) and 'Data' not in d.keys():
             print('beaqueryq: no data', file=sys.stderr)
         else:
             if args.csvfn != None:
@@ -1200,7 +1200,7 @@ def main():
         else:
             argp.print_help()
             sys.exit()
-        if d == None or 'Data' not in d.keys():
+        if d == None or type(d) == type({}) and 'Data' not in d.keys():
             print('beaqueryq: no data', file=sys.stderr)
         else:
             if args.csvfn != None:
@@ -1219,7 +1219,7 @@ def main():
         else:
             argp.print_help()
             sys.exit()
-        if d == None or 'Data' not in d.keys():
+        if d == None or type(d) == type({}) and 'Data' not in d.keys():
             print('beaqueryq: no data', file=sys.stderr)
         else:
             if args.csvfn != None:
@@ -1238,7 +1238,7 @@ def main():
         else:
             argp.print_help()
             sys.exit()
-        if d == None or 'Data' not in d.keys():
+        if d == None or type(d) == type({}) and 'Data' not in d.keys():
             print('beaqueryq: no data', file=sys.stderr)
         else:
             if args.csvfn != None:
@@ -1257,7 +1257,7 @@ def main():
         else:
             argp.print_help()
             sys.exit()
-        if d == None or 'Data' not in d.keys():
+        if d == None or type(d) == type({}) and 'Data' not in d.keys():
             print('beaqueryq: no data', file=sys.stderr)
         else:
             if args.csvfn != None:
@@ -1276,7 +1276,7 @@ def main():
         else:
             argp.print_help()
             sys.exit()
-        if d == None or 'Data' not in d.keys():
+        if d == None or type(d) == type({}) and 'Data' not in d.keys():
             print('beaqueryq: no data', file=sys.stderr)
         else:
             if args.csvfn != None:
