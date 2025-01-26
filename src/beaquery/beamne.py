@@ -15,9 +15,9 @@ def main():
     argp = argparse.ArgumentParser(description='get BEA MNE data')
 
     argp.add_argument('--dataset', default='MNE')
-    argp.add_argument('--sid', required=True, help='MNE series id')
-    argp.add_argument('--doi', help='direction of investment')
-    argp.add_argument('--cls', help='classification')
+    argp.add_argument('--sid', help='MNE series id')
+    argp.add_argument('--doi', required=True, help='direction of investment')
+    argp.add_argument('--cls', required=True, help='classification')
     argp.add_argument('--cnt', help='country')
     argp.add_argument('--indstry', help='industry')
     argp.add_argument('--yr', required=True,
@@ -44,7 +44,7 @@ def main():
 
     BN = beaqueryq.BEAQueryQ()
     d = BN.getMNEdata(args)
-    if d == None:
+    if d == None or 'Data' not in d.keys():
         print('%s: no data' % os.path.basename(__file__), file=sys.stderr)
         sys.exit(1)
     else:

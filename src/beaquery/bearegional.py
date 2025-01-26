@@ -43,7 +43,7 @@ def main():
 
     BN = beaqueryq.BEAQueryQ()
     d = BN.getRegionaldata(args)
-    if d == None:
+    if d == None or 'Data' not in d.keys():
         print('%s: no data' % os.path.basename(__file__), file=sys.stderr)
         sys.exit(1)
     else:
