@@ -529,11 +529,21 @@ class BEAQueryQ():
                         yi = i
                     elif aa[0][i] == uk:
                         ui = i
+            if xi == None:
+                print('paa2plots bad xkey %s' % xk, file=sys.stderr)
+                sys.exit()
+            if yi == None:
+                print('paa2plots bad ykey %s' % yk, file=sys.stderr)
+                sys.exit()
 
             if uk.endswith('?'):
                 units = uk
             if units == None:
+                if ui == None:
+                    print('paa2plots bad unitskey %s' % uk, file=sys.stderr)
+                    sys.exit()
                 units = aa[1][ui]
+
             xa = []
             ya = []
             for i in range(1, len(aa)):
