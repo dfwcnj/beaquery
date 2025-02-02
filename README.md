@@ -7,6 +7,18 @@
 
 ## Table of Contents
 
+BEA query is a set of commands to investigate, retrieve, or view
+datasets provided by BEA. 
+
+beaillustrated collects information about all of the BEA datasets, their
+parameters, and parameter values. It then displays this information in
+your browser
+
+The remaining commands retrieve and either store data in CSV files or
+display the data along with interactive plots in your browser.
+
+beaqueryq can be used to do all that the commands above do.
+
 - [Installation](#installation)
 - [License](#license)
 
@@ -23,6 +35,20 @@ pip&nbsp;install&nbsp;beaquery<br>
 <p><br>
 <br/>
 
+<br/>
+##<br/>
+## beaillustrated<br/>
+##<br/>
+usage: beaillustrated [-h] [--format FORMAT] [--directory DIRECTORY]<br/>
+<br/>
+get BEA NIPA data<br/>
+<br/>
+options:<br/>
+-h, --help            show this help message and exit<br/>
+--format FORMAT       requested BEA result format<br/>
+--directory DIRECTORY<br/>
+where to store the generated html<br/>
+<br/>
 <br/>
 ##<br/>
 ## beafixedassets<br/>
@@ -207,7 +233,7 @@ options:<br/>
 ##<br/>
 ## beamne<br/>
 ##<br/>
-usage: beamne [-h] [--dataset DATASET] --sid SID [--doi DOI] [--cls CLS]<br/>
+usage: beamne [-h] [--dataset DATASET] [--sid SID] --doi DOI --cls CLS<br/>
 [--cnt CNT] [--indstry INDSTRY] --yr YR [--format {json,XML}]<br/>
 [--csvfn CSVFN] [--splitkey SPLITKEY] [--xkey XKEY]<br/>
 [--ykey YKEY] [--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
