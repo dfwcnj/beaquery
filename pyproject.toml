@@ -32,7 +32,7 @@ Issues = "https://github.com/dfwcnj/beaquery/issues"
 Source = "https://github.com/dfwcnj/beaquery"
 
 [project.scripts]
-beaillustrated = "beaquery.illustrated:main"
+beaillustrated = "beaquery.beaillustrated:main"
 beaqueryq = "beaquery.beaqueryq:main"
 beanipa = "beaquery.beanipa:main"
 beaniud = "beaquery.beaniud:main"
