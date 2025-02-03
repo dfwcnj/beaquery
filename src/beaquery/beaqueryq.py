@@ -248,6 +248,9 @@ class BEAQueryQ():
             print('GetNIPAdata: no response', file=sys.stderr)
             return resp
         rstr = resp.read().decode('utf-8')
+        if rstr == None:
+            print('GetNIPAdata: no data', file=sys.stderr)
+            return resp
         jsd = json.loads(rstr)
         return jsd['BEAAPI']['Results']
 
@@ -266,6 +269,9 @@ class BEAQueryQ():
             print('getNIUnderlyingDetaildata: no response', file=sys.stderr)
             return resp
         rstr = resp.read().decode('utf-8')
+        if rstr == None:
+            print('getNIUnderlyingDetaildata: no data', file=sys.stderr)
+            return resp
         jsd = json.loads(rstr)
         return jsd['BEAAPI']['Results']
 
@@ -290,6 +296,9 @@ class BEAQueryQ():
             print('getMNEdata: no response', file=sys.stderr)
             return resp
         rstr = resp.read().decode('utf-8')
+        if rstr == None:
+            print('getMNEdata: no data', file=sys.stderr)
+            return resp
         jsd = json.loads(rstr)
         return jsd['BEAAPI']['Results']
 
@@ -307,6 +316,9 @@ class BEAQueryQ():
             print('getFixedAssetsdata: no response', file=sys.stderr)
             return resp
         rstr = resp.read().decode('utf-8')
+        if rstr == None:
+            print('getFixedAssetsdata: no data', file=sys.stderr)
+            return resp
         jsd = json.loads(rstr)
         return jsd['BEAAPI']['Results']
 
@@ -324,6 +336,9 @@ class BEAQueryQ():
             print('getITAdata: no response', file=sys.stderr)
             return resp
         rstr = resp.read().decode('utf-8')
+        if rstr == None:
+            print('getITAdata: no data', file=sys.stderr)
+            return resp
         jsd = json.loads(rstr)
         return jsd['BEAAPI']['Results']
 
@@ -343,6 +358,9 @@ class BEAQueryQ():
             print('getIIPdata: no response', file=sys.stderr)
             return resp
         rstr = resp.read().decode('utf-8')
+        if rstr == None:
+            print('getIIPdata: no data', file=sys.stderr)
+            return resp
         jsd = json.loads(rstr)
         return jsd['BEAAPI']['Results']
 
@@ -360,6 +378,9 @@ class BEAQueryQ():
             print('getInputOutputtdata: no response', file=sys.stderr)
             return resp
         rstr = resp.read().decode('utf-8')
+        if rstr == None:
+            print('getInputOutputtdata: no data', file=sys.stderr)
+            return resp
         jsd = json.loads(rstr)
         return jsd['BEAAPI']['Results']
 
@@ -380,6 +401,9 @@ class BEAQueryQ():
             print('getIntlServTradedata: no response', file=sys.stderr)
             return resp
         rstr = resp.read().decode('utf-8')
+        if rstr == None:
+            print('getIntlServTradedata: no data', file=sys.stderr)
+            return resp
         jsd = json.loads(rstr)
         return jsd['BEAAPI']['Results']
 
@@ -401,6 +425,9 @@ class BEAQueryQ():
             print('getIntlServSTAdata: no response', file=sys.stderr)
             return resp
         rstr = resp.read().decode('utf-8')
+        if rstr == None:
+            print('getIntlServSTAdata: no data', file=sys.stderr)
+            return resp
         jsd = json.loads(rstr)
         return jsd['BEAAPI']['Results']
 
@@ -420,6 +447,9 @@ class BEAQueryQ():
             print('getGDPbyIndustrydata: no response', file=sys.stderr)
             return resp
         rstr = resp.read().decode('utf-8')
+        if rstr == None:
+            print('getGDPbyIndustrydata: no data', file=sys.stderr)
+            return resp
         jsd = json.loads(rstr)
         return jsd['BEAAPI']['Results']
 
@@ -439,6 +469,9 @@ class BEAQueryQ():
             print('getRegionaldata: no response', file=sys.stderr)
             return resp
         rstr = resp.read().decode('utf-8')
+        if rstr == None:
+            print('getRegionaldata: no data', file=sys.stderr)
+            return resp
         jsd = json.loads(rstr)
         return jsd['BEAAPI']['Results']
 
@@ -458,6 +491,9 @@ class BEAQueryQ():
             print('getRegionaldata: no response', file=sys.stderr)
             return resp
         rstr = resp.read().decode('utf-8')
+        if rstr == None:
+            print('getRegionaldata: no data', file=sys.stderr)
+            return resp
         jsd = json.loads(rstr)
         return jsd['BEAAPI']['Results']
 
