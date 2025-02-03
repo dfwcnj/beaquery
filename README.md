@@ -169,13 +169,7 @@ options:<br/>
 split the plots<br/>
 --xkey XKEY          table column name(Year) to use to plot the data<br/>
 --ykey YKEY          table column name(DataValue) to use to plot the data<br/>
---unitskey UNITSKEY  table column name({'option_strings': ['--unitskey'],<br/>
-'dest': 'unitskey', 'nargs': None, 'const': None,<br/>
-'default': 'CL_UNIT', 'type': None, 'choices': None,<br/>
-'required': False, 'help': 'table column name(%s) to y<br/>
-label the plot', 'metavar': None, 'container':<br/>
-<argparse._ArgumentGroup object at 0x105401c70>,<br/>
-'prog': 'beaissta'}) to y label the plot<br/>
+--unitskey UNITSKEY  table column name(CL_UNIT) to y label the plot<br/>
 --htmlfn HTMLFN      name of file to store dataset HTML result<br/>
 <br/>
 <br/>
@@ -233,7 +227,7 @@ split the plots<br/>
 'default': 'CL_UNIT', 'type': None, 'choices': None,<br/>
 'required': False, 'help': 'table column name(%s) to y<br/>
 label the plot', 'metavar': None, 'container':<br/>
-<argparse._ArgumentGroup object at 0x1037e8380>,<br/>
+<argparse._ArgumentGroup object at 0x105ad82c0>,<br/>
 'prog': 'beaita'}) to y label the plot<br/>
 --htmlfn HTMLFN      name of file to store dataset HTML result<br/>
 <br/>
@@ -313,7 +307,7 @@ options:<br/>
 None, 'required': False, 'help': 'table column name(%s)<br/>
 to use to split the plots', 'metavar': None,<br/>
 'container': <argparse._ArgumentGroup object at<br/>
-0x1038858e0>, 'prog': 'beaniud'}) to use to split<br/>
+0x104d541d0>, 'prog': 'beaniud'}) to use to split<br/>
 the plots<br/>
 --xkey XKEY          table column name(TimePeriod) to use to plot the data<br/>
 --ykey YKEY          table column name(DataValue) to use to plot the data<br/>
