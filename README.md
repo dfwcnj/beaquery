@@ -39,13 +39,13 @@ pip&nbsp;install&nbsp;beaquery<br>
 ##<br/>
 ## beaillustrated<br/>
 ##<br/>
-usage: beaillustrated [-h] [--format FORMAT] [--directory DIRECTORY]<br/>
+usage: beaillustrated [-h] [--format {json,XML}] [--directory DIRECTORY]<br/>
 <br/>
-get BEA NIPA data<br/>
+display BEA data model<br/>
 <br/>
 options:<br/>
 -h, --help            show this help message and exit<br/>
---format FORMAT       requested BEA result format<br/>
+--format {json,XML}   requested BEA result format(json)<br/>
 --directory DIRECTORY<br/>
 where to store the generated html<br/>
 <br/>
@@ -54,187 +54,195 @@ where to store the generated html<br/>
 ## beafixedassets<br/>
 ##<br/>
 usage: beafixedassets [-h] --tn TN --yr YR [--format {json,XML}]<br/>
-[--csvfn CSVFN] [--dataset DATASET]<br/>
-[--splitkey SPLITKEY] [--xkey XKEY] [--ykey YKEY]<br/>
-[--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
+[--csvfn CSVFN] [--splitkey SPLITKEY] [--xkey XKEY]<br/>
+[--ykey YKEY] [--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
 <br/>
 get BEA FixedAssets data<br/>
 <br/>
 options:<br/>
 -h, --help           show this help message and exit<br/>
 --tn TN              FixedAssets table name<br/>
---yr YR              year YYYY X or all<br/>
---format {json,XML}  result format<br/>
+--yr YR              year YYYY or X for all years<br/>
+--format {json,XML}  result format(json)<br/>
 --csvfn CSVFN        name of file to store dataset CSV result<br/>
---dataset DATASET<br/>
---splitkey SPLITKEY  table column name to use to split the table<br/>
---xkey XKEY          table column name to use to plot the data<br/>
---ykey YKEY          table column name to use to plot the data<br/>
---unitskey UNITSKEY  table column name to use to label the data<br/>
+--splitkey SPLITKEY  table column name(LineDescription) to use to split the<br/>
+plots<br/>
+--xkey XKEY          table column name(TimePeriod) to use to plot the data<br/>
+--ykey YKEY          table column name(DataValue) to use to plot the data<br/>
+--unitskey UNITSKEY  table column name(METRIC_NAME) to use to label the data<br/>
 --htmlfn HTMLFN      name of file to store dataset HTML result<br/>
 <br/>
 <br/>
 ##<br/>
 ## beagdpbyind<br/>
 ##<br/>
-usage: beagdpbyind [-h] [--dataset DATASET] --tid TID --indstry INDSTRY<br/>
---freq FREQ --yr YR [--format {json,XML}]<br/>
-[--csvfn CSVFN] [--splitkey SPLITKEY] [--xkey XKEY]<br/>
-[--ykey YKEY] [--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
+usage: beagdpbyind [-h] --tid TID --indstry INDSTRY --freq FREQ --yr YR<br/>
+[--format {json,XML}] [--csvfn CSVFN]<br/>
+[--splitkey SPLITKEY] [--xkey XKEY] [--ykey YKEY]<br/>
+[--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
 <br/>
 get BEA GDPbyIndustry data<br/>
 <br/>
 options:<br/>
 -h, --help           show this help message and exit<br/>
---dataset DATASET<br/>
 --tid TID            table id<br/>
 --indstry INDSTRY    industry<br/>
 --freq FREQ          frequency M, Q, A or comma separated list<br/>
---yr YR              year YYYY X or all<br/>
---format {json,XML}  result format<br/>
+--yr YR              year YYYY or ALL<br/>
+--format {json,XML}  query result format(json)<br/>
 --csvfn CSVFN        name of file to store dataset CSV result<br/>
---splitkey SPLITKEY  table column name to use to split the table<br/>
---xkey XKEY          table column name to use to plot the data<br/>
---ykey YKEY          table column name to use to plot the data<br/>
---unitskey UNITSKEY  table column name to use to label the data<br/>
+--splitkey SPLITKEY  table column name(IndustrYDescription) to use to split<br/>
+the plots<br/>
+--xkey XKEY          table column name(Year) to use to plot the data<br/>
+--ykey YKEY          table column name(DataValue) to use to plot the data<br/>
+--unitskey UNITSKEY  y key units(Billions?) to use to label the plotdata<br/>
 --htmlfn HTMLFN      name of file to store dataset HTML result<br/>
 <br/>
 <br/>
 ##<br/>
 ## beaiip<br/>
 ##<br/>
-usage: beaiip [-h] [--dataset DATASET] --toi TOI --comp COMP --freq FREQ<br/>
---yr YR [--format {json,XML}] [--csvfn CSVFN]<br/>
-[--splitkey SPLITKEY] [--xkey XKEY] [--ykey YKEY]<br/>
-[--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
+usage: beaiip [-h] --toi TOI --comp COMP --freq FREQ --yr YR<br/>
+[--format {json,XML}] [--csvfn CSVFN] [--splitkey SPLITKEY]<br/>
+[--xkey XKEY] [--ykey YKEY] [--unitskey UNITSKEY]<br/>
+[--htmlfn HTMLFN]<br/>
 <br/>
 get BEA IIP data<br/>
 <br/>
 options:<br/>
 -h, --help           show this help message and exit<br/>
---dataset DATASET<br/>
 --toi TOI            type of investment<br/>
 --comp COMP          composition<br/>
 --freq FREQ          frequency M, Q, A or comma separated list<br/>
---yr YR              year YYYY X or all<br/>
---format {json,XML}  result format<br/>
+--yr YR              year YYYY or ALL<br/>
+--format {json,XML}  result format(json)<br/>
 --csvfn CSVFN        name of file to store dataset CSV result<br/>
---splitkey SPLITKEY  table column name to use to split the table<br/>
---xkey XKEY          table column name to use to plot the data<br/>
---ykey YKEY          table column name to use to plot the data<br/>
---unitskey UNITSKEY  table column name to use to label the data<br/>
+--splitkey SPLITKEY  table column name(Component) to use to split the plots<br/>
+--xkey XKEY          table column name(TimePeriod) to use to plot the data<br/>
+--ykey YKEY          table column name(DataValue) to use to plot the data<br/>
+--unitskey UNITSKEY  table column name(CL_UNIT) to use to label the data<br/>
 --htmlfn HTMLFN      name of file to store dataset HTML result<br/>
 <br/>
 <br/>
 ##<br/>
 ## beainputoutput<br/>
 ##<br/>
-usage: beainputoutput [-h] [--dataset DATASET] --tid TID --yr YR<br/>
-[--format {json,XML}] [--csvfn CSVFN]<br/>
-[--splitkey SPLITKEY] [--xkey XKEY] [--ykey YKEY]<br/>
-[--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
+usage: beainputoutput [-h] --tid TID --yr YR [--format {json,XML}]<br/>
+[--csvfn CSVFN] [--splitkey SPLITKEY] [--xkey XKEY]<br/>
+[--ykey YKEY] [--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
 <br/>
 get BEA InputOutput data<br/>
 <br/>
 options:<br/>
 -h, --help           show this help message and exit<br/>
---dataset DATASET<br/>
 --tid TID            table id<br/>
---yr YR              year YYYY X or all<br/>
---format {json,XML}  result format<br/>
+--yr YR              year YYYY or ALL<br/>
+--format {json,XML}  request result format(json)<br/>
 --csvfn CSVFN        name of file to store dataset CSV result<br/>
---splitkey SPLITKEY  table column name to use to split the table<br/>
---xkey XKEY          table column name to use to plot the data<br/>
---ykey YKEY          table column name to use to plot the data<br/>
---unitskey UNITSKEY  table column name to use to label the data<br/>
+--splitkey SPLITKEY  table column name(ColDescr) to use to split the plots<br/>
+--xkey XKEY          table column name(Year) to use to plot the data<br/>
+--ykey YKEY          table column name(DataValue) to use to plot the data<br/>
+--unitskey UNITSKEY  table column name(ColType) to y label the plot<br/>
 --htmlfn HTMLFN      name of file to store dataset HTML result<br/>
 <br/>
 <br/>
 ##<br/>
 ## beaissta<br/>
 ##<br/>
-usage: beaissta [-h] [--dataset DATASET] --chan CHAN --dest DEST --indstry<br/>
-INDSTRY --aoc AOC --yr YR [--format {json,XML}]<br/>
-[--csvfn CSVFN] [--splitkey SPLITKEY] [--xkey XKEY]<br/>
-[--ykey YKEY] [--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
+usage: beaissta [-h] --chan CHAN --dest DEST --indstry INDSTRY --aoc AOC<br/>
+--yr YR [--format {json,XML}] [--csvfn CSVFN]<br/>
+[--splitkey SPLITKEY] [--xkey XKEY] [--ykey YKEY]<br/>
+[--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
 <br/>
 get BEA IntlServSTA data<br/>
 <br/>
 options:<br/>
 -h, --help           show this help message and exit<br/>
---dataset DATASET<br/>
 --chan CHAN          channel<br/>
 --dest DEST          destination<br/>
 --indstry INDSTRY    industry<br/>
 --aoc AOC            area or country<br/>
---yr YR              year YYYY X or all<br/>
---format {json,XML}  result format<br/>
+--yr YR              year YYYY or ALL<br/>
+--format {json,XML}  query result format(json)<br/>
 --csvfn CSVFN        name of file to store dataset CSV result<br/>
---splitkey SPLITKEY  table column name to use to split the table<br/>
---xkey XKEY          table column name to use to plot the data<br/>
---ykey YKEY          table column name to use to plot the data<br/>
---unitskey UNITSKEY  table column name to use to label the data<br/>
+--splitkey SPLITKEY  table column name(TimeSeriesDescription) to use to<br/>
+split the plots<br/>
+--xkey XKEY          table column name(Year) to use to plot the data<br/>
+--ykey YKEY          table column name(DataValue) to use to plot the data<br/>
+--unitskey UNITSKEY  table column name({'option_strings': ['--unitskey'],<br/>
+'dest': 'unitskey', 'nargs': None, 'const': None,<br/>
+'default': 'CL_UNIT', 'type': None, 'choices': None,<br/>
+'required': False, 'help': 'table column name(%s) to y<br/>
+label the plot', 'metavar': None, 'container':<br/>
+<argparse._ArgumentGroup object at 0x105401c70>,<br/>
+'prog': 'beaissta'}) to y label the plot<br/>
 --htmlfn HTMLFN      name of file to store dataset HTML result<br/>
 <br/>
 <br/>
 ##<br/>
 ## beaistrade<br/>
 ##<br/>
-usage: beaistrade [-h] [--dataset DATASET] --tos TOS [--tdir TDIR]<br/>
-[--affl AFFL] [--aoc AOC] --yr YR [--format {json,XML}]<br/>
-[--csvfn CSVFN] [--splitkey SPLITKEY] [--xkey XKEY]<br/>
-[--ykey YKEY] [--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
+usage: beaistrade [-h] --tos TOS [--tdir TDIR] [--affl AFFL] [--aoc AOC]<br/>
+--yr YR [--format {json,XML}] [--csvfn CSVFN]<br/>
+[--splitkey SPLITKEY] [--xkey XKEY] [--ykey YKEY]<br/>
+[--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
 <br/>
 get BEA IntlServTrade data<br/>
 <br/>
 options:<br/>
 -h, --help           show this help message and exit<br/>
---dataset DATASET<br/>
 --tos TOS            type of service<br/>
 --tdir TDIR          trade direction<br/>
 --affl AFFL          affiliation<br/>
 --aoc AOC            area or country<br/>
---yr YR              year YYYY X or all<br/>
---format {json,XML}  result format<br/>
+--yr YR              year YYYY or ALL<br/>
+--format {json,XML}  query result format(json)<br/>
 --csvfn CSVFN        name of file to store dataset CSV result<br/>
---splitkey SPLITKEY  table column name to use to split the table<br/>
---xkey XKEY          table column name to use to plot the data<br/>
---ykey YKEY          table column name to use to plot the data<br/>
---unitskey UNITSKEY  table column name to use to label the data<br/>
+--splitkey SPLITKEY  table column name(TimeSeriesDescription) to use to<br/>
+split the plots<br/>
+--xkey XKEY          table column name(Year) to use to plot the data<br/>
+--ykey YKEY          table column name(DataValue) to use to plot the data<br/>
+--unitskey UNITSKEY  table column name(CL_UNIT) to use to label the data<br/>
 --htmlfn HTMLFN      name of file to store dataset HTML result<br/>
 <br/>
 <br/>
 ##<br/>
 ## beaita<br/>
 ##<br/>
-usage: beaita [-h] [--dataset DATASET] --indctr INDCTR --aoc AOC --freq<br/>
-FREQ --yr YR [--format {json,XML}] [--csvfn CSVFN]<br/>
-[--splitkey SPLITKEY] [--xkey XKEY] [--ykey YKEY]<br/>
-[--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
+usage: beaita [-h] --indctr INDCTR --aoc AOC --freq FREQ --yr YR<br/>
+[--format {json,XML}] [--csvfn CSVFN] [--splitkey SPLITKEY]<br/>
+[--xkey XKEY] [--ykey YKEY] [--unitskey UNITSKEY]<br/>
+[--htmlfn HTMLFN]<br/>
 <br/>
 get BEA ITA data<br/>
 <br/>
 options:<br/>
 -h, --help           show this help message and exit<br/>
---dataset DATASET<br/>
 --indctr INDCTR      ITA indicator<br/>
 --aoc AOC            ITA area or country<br/>
 --freq FREQ          frequency M, Q, A or comma separated list<br/>
---yr YR              year YYYY X or all<br/>
---format {json,XML}  result format<br/>
+--yr YR              year YYYY or ALL<br/>
+--format {json,XML}  query result format(json)<br/>
 --csvfn CSVFN        name of file to store dataset CSV result<br/>
---splitkey SPLITKEY  table column name to use to split the table<br/>
---xkey XKEY          table column name to use to plot the data<br/>
---ykey YKEY          table column name to use to plot the data<br/>
---unitskey UNITSKEY  table column name to use to label the data<br/>
+--splitkey SPLITKEY  table column name(TimeSeriesDescription) to use to<br/>
+split the plots<br/>
+--xkey XKEY          table column name(Year) to use to plot the data<br/>
+--ykey YKEY          table column name(DataValue) to use to plot the data<br/>
+--unitskey UNITSKEY  table column name({'option_strings': ['--unitskey'],<br/>
+'dest': 'unitskey', 'nargs': None, 'const': None,<br/>
+'default': 'CL_UNIT', 'type': None, 'choices': None,<br/>
+'required': False, 'help': 'table column name(%s) to y<br/>
+label the plot', 'metavar': None, 'container':<br/>
+<argparse._ArgumentGroup object at 0x1037e8380>,<br/>
+'prog': 'beaita'}) to y label the plot<br/>
 --htmlfn HTMLFN      name of file to store dataset HTML result<br/>
 <br/>
 <br/>
 ##<br/>
 ## beamne<br/>
 ##<br/>
-usage: beamne [-h] [--dataset DATASET] [--sid SID] --doi DOI --cls CLS<br/>
-[--cnt CNT] [--indstry INDSTRY] --yr YR [--format {json,XML}]<br/>
+usage: beamne [-h] [--sid SID] --doi DOI --cls CLS [--cnt CNT]<br/>
+[--indstry INDSTRY] --yr YR [--format {json,XML}]<br/>
 [--csvfn CSVFN] [--splitkey SPLITKEY] [--xkey XKEY]<br/>
 [--ykey YKEY] [--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
 <br/>
@@ -242,78 +250,82 @@ get BEA MNE data<br/>
 <br/>
 options:<br/>
 -h, --help           show this help message and exit<br/>
---dataset DATASET<br/>
 --sid SID            MNE series id<br/>
 --doi DOI            direction of investment<br/>
 --cls CLS            classification<br/>
 --cnt CNT            country<br/>
 --indstry INDSTRY    industry<br/>
---yr YR              year YYYY X or all<br/>
---format {json,XML}  result format<br/>
+--yr YR              year YYYY or all<br/>
+--format {json,XML}  query result format(json)<br/>
 --csvfn CSVFN        name of file to store dataset CSV result<br/>
---splitkey SPLITKEY  table column name to use to split the table<br/>
---xkey XKEY          table column name to use to plot the data<br/>
---ykey YKEY          table column name to use to plot the data<br/>
---unitskey UNITSKEY  table column name to use to label the data<br/>
+--splitkey SPLITKEY  table column name(SeriesName) to use to split the plots<br/>
+--xkey XKEY          table column name(Year) to use to plot the data<br/>
+--ykey YKEY          table column name(DataValue) to use to plot the data<br/>
+--unitskey UNITSKEY  table column name(TableScale) to to y label the plot<br/>
 --htmlfn HTMLFN      name of file to store dataset HTML result<br/>
 <br/>
 <br/>
 ##<br/>
 ## beanipa<br/>
 ##<br/>
-usage: beanipa [-h] [--dataset DATASET] --tn TN [--showm SHOWM] --freq FREQ<br/>
---yr YR [--format {json,XML}] [--csvfn CSVFN]<br/>
-[--splitkey SPLITKEY] [--xkey XKEY] [--ykey YKEY]<br/>
-[--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
+usage: beanipa [-h] --tn TN [--showm SHOWM] --freq FREQ --yr YR<br/>
+[--format {json,XML}] [--csvfn CSVFN] [--splitkey SPLITKEY]<br/>
+[--xkey XKEY] [--ykey YKEY] [--unitskey UNITSKEY]<br/>
+[--htmlfn HTMLFN]<br/>
 <br/>
 get BEA NIPA data<br/>
 <br/>
 options:<br/>
 -h, --help           show this help message and exit<br/>
---dataset DATASET<br/>
 --tn TN              NIPA table name<br/>
 --showm SHOWM        NIPA show millions<br/>
 --freq FREQ          frequency M, Q, A or comma separated list<br/>
---yr YR              year YYYY X or all<br/>
---format {json,XML}  result format<br/>
+--yr YR              year YYYY or X for all<br/>
+--format {json,XML}  query result format(json)<br/>
 --csvfn CSVFN        name of file to store dataset CSV result<br/>
---splitkey SPLITKEY  table column name to use to split the table<br/>
---xkey XKEY          table column name to use to plot the data<br/>
---ykey YKEY          table column name to use to plot the data<br/>
---unitskey UNITSKEY  table column name to use to label the data<br/>
+--splitkey SPLITKEY  table column name(LineDescription) to use to split the<br/>
+plots<br/>
+--xkey XKEY          table column name(TimePeriod) to use to plot the data<br/>
+--ykey YKEY          table column name(DataValue) to use to plot the data<br/>
+--unitskey UNITSKEY  table column name(METRIC_NAME) to y label the plot<br/>
 --htmlfn HTMLFN      name of file to store dataset HTML result<br/>
 <br/>
 <br/>
 ##<br/>
 ## beaniud<br/>
 ##<br/>
-usage: beaniud [-h] [--dataset DATASET] --tn TN --freq FREQ --yr YR<br/>
-[--format {json,XML}] [--csvfn CSVFN] [--splitkey SPLITKEY]<br/>
-[--xkey XKEY] [--ykey YKEY] [--unitskey UNITSKEY]<br/>
-[--htmlfn HTMLFN]<br/>
+usage: beaniud [-h] --tn TN --freq FREQ --yr YR [--format {json,XML}]<br/>
+[--csvfn CSVFN] [--splitkey SPLITKEY] [--xkey XKEY]<br/>
+[--ykey YKEY] [--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
 <br/>
 get BEA NIUnderlyingDetail data<br/>
 <br/>
 options:<br/>
 -h, --help           show this help message and exit<br/>
---dataset DATASET<br/>
 --tn TN              NIUnderlyingDetail table name<br/>
 --freq FREQ          frequency M, Q, A or comma separated list<br/>
---yr YR              year YYYY X or all<br/>
---format {json,XML}  result format<br/>
+--yr YR              year YYYY or X or all<br/>
+--format {json,XML}  query result format(json)<br/>
 --csvfn CSVFN        name of file to store dataset CSV result<br/>
---splitkey SPLITKEY  table column name to use to split the table<br/>
---xkey XKEY          table column name to use to plot the data<br/>
---ykey YKEY          table column name to use to plot the data<br/>
---unitskey UNITSKEY  table column name to use to label the data<br/>
+--splitkey SPLITKEY  table column name({'option_strings': ['--splitkey'],<br/>
+'dest': 'splitkey', 'nargs': None, 'const': None,<br/>
+'default': 'LineDescription', 'type': None, 'choices':<br/>
+None, 'required': False, 'help': 'table column name(%s)<br/>
+to use to split the plots', 'metavar': None,<br/>
+'container': <argparse._ArgumentGroup object at<br/>
+0x1038858e0>, 'prog': 'beaniud'}) to use to split<br/>
+the plots<br/>
+--xkey XKEY          table column name(TimePeriod) to use to plot the data<br/>
+--ykey YKEY          table column name(DataValue) to use to plot the data<br/>
+--unitskey UNITSKEY  table column name(METRIC_NAME) to y label the plot<br/>
 --htmlfn HTMLFN      name of file to store dataset HTML result<br/>
 <br/>
 <br/>
 ##<br/>
 ## bearegional<br/>
 ##<br/>
-usage: bearegional [-h] [--dataset DATASET] --tn TN --fips FIPS --lncd LNCD<br/>
---yr YR [--format {json,XML}] [--csvfn CSVFN]<br/>
+usage: bearegional [-h] --tn TN --fips FIPS --lncd LNCD --yr YR<br/>
+[--format {json,XML}] [--csvfn CSVFN]<br/>
 [--splitkey SPLITKEY] [--xkey XKEY] [--ykey YKEY]<br/>
 [--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
 <br/>
@@ -321,43 +333,42 @@ get BEA Regional data<br/>
 <br/>
 options:<br/>
 -h, --help           show this help message and exit<br/>
---dataset DATASET<br/>
 --tn TN              table name<br/>
 --fips FIPS          geo fips<br/>
 --lncd LNCD          line code<br/>
---yr YR              year YYYY X or all<br/>
---format {json,XML}  result format<br/>
+--yr YR              year YYYY or ALL<br/>
+--format {json,XML}  query result format(json)<br/>
 --csvfn CSVFN        name of file to store dataset CSV result<br/>
---splitkey SPLITKEY  table column name to use to split the table<br/>
---xkey XKEY          table column name to use to plot the data<br/>
---ykey YKEY          table column name to use to plot the data<br/>
---unitskey UNITSKEY  table column name to use to label the data<br/>
+--splitkey SPLITKEY  table column name(GeoName) to use to split the plots<br/>
+--xkey XKEY          table column name(TimePeriod) to use to plot the data<br/>
+--ykey YKEY          table column name(DataValue) to use to plot the data<br/>
+--unitskey UNITSKEY  table column name(CL_UNIT) to y label the plot<br/>
 --htmlfn HTMLFN      name of file to store dataset HTML result<br/>
 <br/>
 <br/>
 ##<br/>
 ## beaugdpbyind<br/>
 ##<br/>
-usage: beaugdpbyind [-h] [--dataset DATASET] --tid TID --indstry INDSTRY<br/>
---freq FREQ --yr YR [--format {json,XML}]<br/>
-[--csvfn CSVFN] [--splitkey SPLITKEY] [--xkey XKEY]<br/>
-[--ykey YKEY] [--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
+usage: beaugdpbyind [-h] --tid TID --indstry INDSTRY --freq FREQ --yr YR<br/>
+[--format {json,XML}] [--csvfn CSVFN]<br/>
+[--splitkey SPLITKEY] [--xkey XKEY] [--ykey YKEY]<br/>
+[--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
 <br/>
 get BEA UnderlyingGDPbyIndustry data<br/>
 <br/>
 options:<br/>
 -h, --help           show this help message and exit<br/>
---dataset DATASET<br/>
 --tid TID            table id<br/>
 --indstry INDSTRY    industry<br/>
 --freq FREQ          frequency M, Q, A or comma separated list<br/>
---yr YR              year YYYY X or all<br/>
+--yr YR              year YYYY or ALL<br/>
 --format {json,XML}  result format<br/>
 --csvfn CSVFN        name of file to store dataset CSV result<br/>
---splitkey SPLITKEY  table column name to use to split the table<br/>
---xkey XKEY          table column name to use to plot the data<br/>
---ykey YKEY          table column name to use to plot the data<br/>
---unitskey UNITSKEY  table column name to use to label the data<br/>
+--splitkey SPLITKEY  table column name(IndustrYDescription) to split the<br/>
+plots<br/>
+--xkey XKEY          table column name(Year) to use to plot the data<br/>
+--ykey YKEY          table column name(DataValue) to use to plot the data<br/>
+--unitskey UNITSKEY  name(Billions?) to y label the plot<br/>
 --htmlfn HTMLFN      name of file to store dataset HTML result<br/>
 <br/>
 <br/>

@@ -12,16 +12,22 @@ except Exception as e:
     import beaqueryq
 
 def main():
+    dfmt = 'json'
+    dsk  = 'IndustrYDescription'
+    dxk  = 'Year'
+    dyk  = 'DataValue'
+    duk  = 'Billions?'
     argp = argparse.ArgumentParser(description='get BEA '
           'UnderlyingGDPbyIndustry data')
 
-    argp.add_argument('--dataset', default='UnderlyingGDPbyIndustry')
+    argp.add_argument('--dataset', default='UnderlyingGDPbyIndustry',
+                       help=argparse.SUPPRESS)
     argp.add_argument('--tid', required=True, help='table id')
     argp.add_argument('--indstry', required=True, help='industry')
     argp.add_argument('--freq', required=True,
                      help='frequency M, Q, A or comma separated list')
     argp.add_argument('--yr', required=True,
-                      help='year YYYY  X or all')
+                      help='year YYYY or ALL')
 
     argp.add_argument('--format', default='json',
                       choices=['json', 'XML'], help='result format')
@@ -29,14 +35,14 @@ def main():
     argp.add_argument('--csvfn', \
          help='name of file to store dataset CSV result')
 
-    argp.add_argument('--splitkey', default='IndustrYDescription',
-        help='table column name to use to split the table')
-    argp.add_argument('--xkey', default='Year',
-        help='table column name to use to plot the data')
-    argp.add_argument('--ykey', default='DataValue',
-        help='table column name to use to plot the data')
-    argp.add_argument('--unitskey', default='Billions?',
-        help='table column name to use to label the data')
+    argp.add_argument('--splitkey', default=dsk,
+        help='table column name(%s) to split the plots' % dsk)
+    argp.add_argument('--xkey', default=dxk,
+        help='table column name(%s) to use to plot the data' % dxk)
+    argp.add_argument('--ykey', default=dyk,
+        help='table column name(%s) to use to plot the data' % dyk)
+    argp.add_argument('--unitskey', default=duk,
+        help='name(%s) to y label the plot' % duk)
     argp.add_argument('--htmlfn', \
         help='name of file to store dataset HTML result')
 

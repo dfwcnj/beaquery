@@ -12,31 +12,38 @@ except Exception as e:
     import beaqueryq
 
 def main():
+    dfmt = 'json'
+    dsk  = 'SeriesName'
+    dxk  = 'Year'
+    dyk  = 'DataValue'
+    duk  = 'TableScale'
     argp = argparse.ArgumentParser(description='get BEA MNE data')
 
-    argp.add_argument('--dataset', default='MNE')
+    argp.add_argument('--dataset', default='MNE',
+                      help=argparse.SUPPRESS)
     argp.add_argument('--sid', help='MNE series id')
     argp.add_argument('--doi', required=True, help='direction of investment')
     argp.add_argument('--cls', required=True, help='classification')
     argp.add_argument('--cnt', help='country')
     argp.add_argument('--indstry', help='industry')
     argp.add_argument('--yr', required=True,
-                      help='year YYYY  X or all')
+                      help='year YYYY or all')
 
-    argp.add_argument('--format', default='json',
-                      choices=['json', 'XML'], help='result format')
+    argp.add_argument('--format', default=dfmt,
+                      choices=['json', 'XML'],
+                      help='query result format(%s)'% dfmt)
 
     argp.add_argument('--csvfn', \
          help='name of file to store dataset CSV result')
 
-    argp.add_argument('--splitkey', default='SeriesName',
-        help='table column name to use to split the table')
-    argp.add_argument('--xkey', default='Year',
-        help='table column name to use to plot the data')
-    argp.add_argument('--ykey', default='DataValue',
-        help='table column name to use to plot the data')
-    argp.add_argument('--unitskey', default='TableScale',
-        help='table column name to use to label the data')
+    argp.add_argument('--splitkey', default=dsk,
+        help='table column name(%s) to use to split the plots' % dsk)
+    argp.add_argument('--xkey', default=dxk,
+        help='table column name(%s) to use to plot the data' % dxk)
+    argp.add_argument('--ykey', default=dyk,
+        help='table column name(%s) to use to plot the data' % dyk)
+    argp.add_argument('--unitskey', default=duk,
+        help='table column name(%s) to to y label the plot' % duk)
     argp.add_argument('--htmlfn', \
         help='name of file to store dataset HTML result')
 

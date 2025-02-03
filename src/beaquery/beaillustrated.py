@@ -12,10 +12,13 @@ except Exception as e:
     import beaqueryq
 
 def main():
-    argp = argparse.ArgumentParser(description='get BEA NIPA data')
+    dfmt = 'json'
+    ddir = '/tmp'
+    argp = argparse.ArgumentParser(description='display BEA data model')
 
-    argp.add_argument('--format', default='json',
-        help='requested BEA result format')
+    argp.add_argument('--format', default=dfmt,
+                      choices=['json', 'XML'],
+        help='requested BEA result format(%s)' % dfmt)
 
     argp.add_argument('--directory', default='/tmp',
         help='where to store the generated html')
