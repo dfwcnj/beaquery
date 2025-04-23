@@ -19,6 +19,9 @@ display the data along with interactive plots in your browser.
 
 beaqueryq can be used to do all that the commands above do.
 
+I have changed the arguments to the commands to correspond with those
+used by BEA.
+
 - [Installation](#installation)
 - [License](#license)
 
