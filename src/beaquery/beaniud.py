@@ -19,13 +19,13 @@ def main():
     duk  = 'METRIC_NAME'
     argp = argparse.ArgumentParser(description='get BEA NIUnderlyingDetail'
                                    ' data')
-    argp.add_argument('--dataset', default='NIUnderlyingDetail',
+    argp.add_argument('--DatasetName', default='NIUnderlyingDetail',
                       help=argparse.SUPPRESS)
-    argp.add_argument('--tn', required=True,
+    argp.add_argument('--TableName', required=True,
                       help='NIUnderlyingDetail table name')
-    argp.add_argument('--freq', required=True,
+    argp.add_argument('--Frequency', required=True,
                      help='frequency M, Q, A or comma separated list')
-    argp.add_argument('--yr', required=True,
+    argp.add_argument('--Year', required=True,
                       help='year YYYY or X or all')
 
     argp.add_argument('--format', default=dfmt,

@@ -19,13 +19,13 @@ def main():
     duk  = 'CL_UNIT'
     argp = argparse.ArgumentParser(description='get BEA IIP data')
 
-    argp.add_argument('--dataset', default='IIP',
+    argp.add_argument('--DatasetName', default='IIP',
                       help=argparse.SUPPRESS)
-    argp.add_argument('--toi', required=True, help='type of investment')
-    argp.add_argument('--comp', required=True, help='composition')
-    argp.add_argument('--freq', required=True,
+    argp.add_argument('--TypeOfInvestment', required=True, help='type of investment')
+    argp.add_argument('--Composition', required=True, help='composition')
+    argp.add_argument('--Frequency', required=True,
                      help='frequency M, Q, A or comma separated list')
-    argp.add_argument('--yr', required=True,
+    argp.add_argument('--Year', required=True,
                       help='year YYYY or ALL')
 
     argp.add_argument('--format', default=dfmt,

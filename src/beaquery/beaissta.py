@@ -19,13 +19,13 @@ def main():
     duk  = 'CL_UNIT'
     argp = argparse.ArgumentParser(description='get BEA IntlServSTA data')
 
-    argp.add_argument('--dataset', default='IntlServSTA',
+    argp.add_argument('--DatasetName', default='IntlServSTA',
                        help=argparse.SUPPRESS)
-    argp.add_argument('--chan', required=True, help='channel')
-    argp.add_argument('--dest', required=True, help='destination')
-    argp.add_argument('--indstry', required=True, help='industry')
-    argp.add_argument('--aoc', required=True, help='area or country')
-    argp.add_argument('--yr', required=True,
+    argp.add_argument('--Channel', required=True, help='channel')
+    argp.add_argument('--Destination', required=True, help='destination')
+    argp.add_argument('--Industry', required=True, help='industry')
+    argp.add_argument('--AreaOrCountry', required=True, help='area or country')
+    argp.add_argument('--Year', required=True,
                       help='year YYYY or ALL')
 
     argp.add_argument('--format', default=dfmt,

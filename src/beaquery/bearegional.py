@@ -19,13 +19,13 @@ def main():
     duk  = 'CL_UNIT'
     argp = argparse.ArgumentParser(description='get BEA Regional data')
 
-    argp.add_argument('--dataset', default='Regional',
+    argp.add_argument('--DatasetName', default='Regional',
                       help=argparse.SUPPRESS)
-    argp.add_argument('--tn', required=True, help='table name')
-    argp.add_argument('--fips', required=True,
+    argp.add_argument('--TableName', required=True, help='table name')
+    argp.add_argument('--GeoFips', required=True,
                       help='geo fips')
-    argp.add_argument('--lncd', required=True, help='line code')
-    argp.add_argument('--yr', required=True,
+    argp.add_argument('--LineCode', required=True, help='line code')
+    argp.add_argument('--Year', required=True,
                       help='year YYYY or ALL')
 
     argp.add_argument('--format', default=dfmt,

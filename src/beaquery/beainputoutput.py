@@ -19,10 +19,10 @@ def main():
     duk  = 'ColType'
     argp = argparse.ArgumentParser(description='get BEA InputOutput data')
 
-    argp.add_argument('--dataset', default='InputOutput',
+    argp.add_argument('--DatasetName', default='InputOutput',
                       help=argparse.SUPPRESS)
-    argp.add_argument('--tid', required=True, help='table id')
-    argp.add_argument('--yr', required=True,
+    argp.add_argument('--TableID', required=True, help='table id')
+    argp.add_argument('--Year', required=True,
                       help='year YYYY or ALL')
 
     argp.add_argument('--format', default='json',

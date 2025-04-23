@@ -54,7 +54,7 @@ class BEAQueryQ():
 
     # not using TableID Parameter
     def NIPAParams(self, args):
-        if args.freq == None or args.yr == None:
+        if args.Frequency == None or args.Year == None:
             print('NIPAParams: Frequency and Year required', file=sys.stderr)
             sys.exit()
         params = ('&method=GetData&'
@@ -64,12 +64,13 @@ class BEAQueryQ():
                   'Frequency=%s&'
                   'Year=%s&'
                   'ResultFormat=%s' %
-                  ('NIPA', args.tn, args.showm, args.freq, args.yr,
+                  ('NIPA', args.TableName, args.ShowMillions,
+                  args.Frequency, args.Year,
                   args.format) )
         return params
 
     def NIUnderlyingDetailParams(self, args):
-        if args.freq == None or args.yr == None:
+        if args.Frequency == None or args.Year == None:
             print('NIUnderlyingDetailParams: Frequency and Year required',
                    file=sys.stderr)
             sys.exit()
@@ -79,13 +80,14 @@ class BEAQueryQ():
                   'Frequency=%s&'
                   'Year=%s&'
                   'ResultFormat=%s' %
-                  ('NIUnderlyingDetail', args.tn, args.freq, args.yr,
+                  ('NIUnderlyingDetail', args.TableName, args.Frequency,
+                  args.Year,
                   args.format) )
         return params
 
 
     def MNEParameters(self, args):
-        if args.doi == None or args.cls == None or args.yr == None:
+        if args.DirectionOfInvestment == None or args.Classification == None or args.Year == None:
             print('MNEParameters: DirectionOfInvestment,'
                   'Classification,and Year required', file=sys.stderr)
             sys.exit()
@@ -98,12 +100,13 @@ class BEAQueryQ():
                   'Industry=%s&'
                   'Year=%s&'
                   'ResultFormat=%s' %
-                  ('MNE', args.sid, args.doi, args.cls, args.cnt,
-                  args.indstry, args.yr, args.format) )
+                  ('MNE', args.SeriesID, args.DirectionOfInvestment,
+                  args.Classification, args.Country,
+                  args.Industry, args.Year, args.format) )
         return params
 
     def FixedAssetsParameters(self, args):
-        if args.tn == None or args.yr == None:
+        if args.TableName == None or args.Year == None:
             print('FixedAssetsParameters TableName and Year required',
                   file=sys.stderr)
             sys.exit()
@@ -112,7 +115,7 @@ class BEAQueryQ():
                   'TableName=%s&'
                   'Year=%s&'
                   'ResultFormat=%s' %
-                  ('FixedAssets', args.tn, args.yr, args.format) )
+                  ('FixedAssets', args.TableName, args.Year, args.format) )
         return params
 
     def ITAParameters(self, args):
@@ -123,7 +126,8 @@ class BEAQueryQ():
                   'Frequency=%s&'
                   'Year=%s&'
                   'ResultFormat=%s' %
-                  ('ITA', args.indctr, args.aoc, args.freq, args.yr,
+                  ('ITA', args.Indicator, args.AreaOrCountry, args.Frequency,
+                  args.Year,
                   args.format) )
         return params
 
@@ -135,12 +139,12 @@ class BEAQueryQ():
                   'Frequency=%s&'
                   'Year=%s&'
                   'ResultFormat=%s' %
-                  ('IIP', args.toi, args.comp, args.freq, args.yr,
+                  ('IIP', args.TypeOfInvestment, args.Component, args.Frequency, args.Year,
                   args.format) )
         return params
 
     def InputOutputParameters(self, args):
-        if args.tid == None or args.yr == None:
+        if args.TableID == None or args.Year == None:
             print('InputOutputParameters TableID and Year required',
                   file=sys.stderr)
             sys.exit()
@@ -149,7 +153,7 @@ class BEAQueryQ():
                   'TableID=%s&'
                   'Year=%s&'
                   'ResultFormat=%s' %
-                  ('InputOutput', args.tid, args.yr, args.format) )
+                  ('InputOutput', args.TableID, args.Year, args.format) )
         return params
 
     def IntlServTradeParameters(self, args):
@@ -161,8 +165,9 @@ class BEAQueryQ():
                   'AreaOrCountry=%s&'
                   'Year=%s&'
                   'ResultFormat=%s' %
-                  ('IntlServTrade', args.tos, args.tdir, args.affl,
-                  args.aoc, args.yr, args.format) )
+                  ('IntlServTrade', args.TypeOfService,
+                  args.TradeDirection, args.Affiliation,
+                  args.AreaOrCountry, args.Year, args.format) )
         return params
 
     def IntlServSTAParameters(self, args):
@@ -174,13 +179,13 @@ class BEAQueryQ():
                   'AreaOrCountry=%s&'
                   'Year=%s&'
                   'ResultFormat=%s' %
-                  ('IntlServSTA', args.chan, args.dest, args.indstry,
-                  args.aoc, args.yr, args.format) )
+                  ('IntlServSTA', args.Channel, args.Destination, args.Industry,
+                  args.AreaOrCountry, args.Year, args.format) )
         return params
 
     def GDPbyIndustryParameters(self, args):
-        if args.freq == None or args.indstry == None or args.tid == None \
-        or args.yr == None:
+        if args.Frequency == None or args.Industry == None or args.TableID == None \
+        or args.Year == None:
             print('GDPbyIndustryParameters Frequency, Industry,'
             'TableID, Year required', file=sys.stderr)
             sys.exit()
@@ -191,12 +196,13 @@ class BEAQueryQ():
                   'Frequency=%s&'
                   'Year=%s&'
                   'ResultFormat=%s' %
-                  ('GDPbyIndustry', args.tid, args.indstry, args.freq,
-                  args.yr, args.format) )
+                  ('GDPbyIndustry', args.TableID, args.Industry,
+                  args.Frequency,
+                  args.Year, args.format) )
         return params
 
     def RegionalParameters(self, args):
-        if args.fips == None or args.tn == None or args.lncd == None:
+        if args.GeoFips == None or args.TableName == None or args.LineCode == None:
             print('Regional GeoFips, LineCode, TableName required',
                   file=sys.stderr)
             sys.exit()
@@ -207,13 +213,15 @@ class BEAQueryQ():
                   'LineCode=%s&'
                   'Year=%s&'
                   'ResultFormat=%s' %
-                  ('Regional', args.fips, args.tn, args.lncd, args.yr,
+                  ('Regional', args.GeoFips, args.TableName,
+                  args.LineCode,
+                  args.Year,
                   args.format) )
         return params
 
     def UnderlyingGDPbyIndustryParameters(self, args):
-        if args.freq == None or args.indstry == None or args.tid == None or \
-           args.yr == None:
+        if args.Frequency == None or args.Industry == None or args.TableID == None or \
+           args.Year == None:
             print('UnderlyingGDPbyIndustryParameters TableID, Industry,'
                   'Frequency, Year required', file=sys.stderr)
             sys.exit()
@@ -224,8 +232,9 @@ class BEAQueryQ():
                   'Frequency=%s&'
                   'Year=%s&'
                   'ResultFormat=%s' %
-                  ('UnderlyingGDPbyIndustry', args.tid, args.indstry,
-                  args.freq, args.yr, args.format) )
+                  ('UnderlyingGDPbyIndustry', args.TableID,
+                  args.Industry,
+                  args.Frequency, args.Year, args.format) )
         return params
 
 # dict_keys(['TableName', 'SeriesCode', 'LineNumber', 'LineDescription', 'TimePeriod', 'METRIC_NAME', 'CL_UNIT', 'UNIT_MULT', 'DataValue', 'NoteRef'])
@@ -233,8 +242,8 @@ class BEAQueryQ():
 # {'TableName': 'FAAt101', 'SeriesCode': 'k1ttotl1es00', 'LineNumber': '2', 'LineDescription': 'Fixed assets', 'TimePeriod': '1926', 'METRIC_NAME': 'Current Dollars', 'CL_UNIT': 'Level', 'UNIT_MULT': '6', 'DataValue': '270,574', 'NoteRef': 'FAAt101'}
 
     def getNIPAdata(self, args):
-        """ getNIPAdata(tn, fq, yr, fmt)
-        tn - table name
+        """ getNIPAdata(TableName, fq, yr, fmt)
+        TableName - table name
         fq - frequency
         yr - year
         shm - show millions
@@ -255,8 +264,8 @@ class BEAQueryQ():
         return jsd['BEAAPI']['Results']
 
     def getNIUnderlyingDetaildata(self, args):
-        """ getNIUnderlyingDetaildata(tn, fq, yr, fmt)
-        tn - table name
+        """ getNIUnderlyingDetaildata(TableName, fq, yr, fmt)
+        TableName - table name
         fq - frequency
         yr - year
         fmt - result format
@@ -304,7 +313,7 @@ class BEAQueryQ():
 
     def getFixedAssetsdata(self, args):
         """ getFixedAssetsdata()
-        tn - table name
+        TableName - table name
         yr  - yr
         fmt - result format
         return fixed assets data
@@ -324,7 +333,7 @@ class BEAQueryQ():
 
     def getITAdata(self, args):
         """ getITAdata(ind, area, fq, yr, fmt)
-        tn - table name
+        TableName - table name
         yr  - yr
         fmt - result format
         return international transactions accounts data
@@ -454,8 +463,8 @@ class BEAQueryQ():
         return jsd['BEAAPI']['Results']
 
     def getRegionaldata(self, args):
-        """ getRegionaldata(tn, lc, fips, yr, fmt)
-        tn - table name
+        """ getRegionaldata(TableName, lc, fips, yr, fmt)
+        TableName - table name
         lc - line code
         fips - geo fips code
         yr  - yr
@@ -776,17 +785,17 @@ class BEAQueryQ():
         args - command arguments
         return y axis units key
         """
-        if args.dataset in ['NIPA', 'NIUnderlyingDetail', 'FixedAssets']:
+        if args.DatasetName in ['NIPA', 'NIUnderlyingDetail', 'FixedAssets']:
             uk = 'METRIC_NAME'
-        elif args.dataset in ['InputOutput']:
+        elif args.DatasetName in ['InputOutput']:
             uk = 'ColType'
-        elif args.dataset in ['GDPbyIndustry', 'UnderlyingGDPbyIndustry']:
+        elif args.DatasetName in ['GDPbyIndustry', 'UnderlyingGDPbyIndustry']:
             uk = 'Billions?'
-        elif args.dataset in ['MNE']:
+        elif args.DatasetName in ['MNE']:
             uk = 'TableScale'
-        elif args.dataset in ['IIP', 'Regional']:
+        elif args.DatasetName in ['IIP', 'Regional']:
             uk = 'CL_UNIT'
-        elif args.dataset in ['ITA', 'IntlServTrade', 'IntlServSTA']:
+        elif args.DatasetName in ['ITA', 'IntlServTrade', 'IntlServSTA']:
             uk = 'CL_UNIT'
         else:
             return None
@@ -797,18 +806,18 @@ class BEAQueryQ():
         args - command arguments
         return x key
         """
-        if args.dataset in ['NIPA', 'NIUnderlyingDetail', 'FixedAssets',
+        if args.DatasetName in ['NIPA', 'NIUnderlyingDetail', 'FixedAssets',
                             'Regional']:
             xk = 'TimePeriod'
-        elif args.dataset in ['InputOutput']:
+        elif args.DatasetName in ['InputOutput']:
             xk = 'Year'
-        elif args.dataset in ['GDPbyIndustry', 'UnderlyingGDPbyIndustry']:
+        elif args.DatasetName in ['GDPbyIndustry', 'UnderlyingGDPbyIndustry']:
             xk = 'Year'
-        elif args.dataset in ['MNE']:
+        elif args.DatasetName in ['MNE']:
             xk = 'Year'
-        elif args.dataset in ['IIP']:
+        elif args.DatasetName in ['IIP']:
             xk = 'Year'
-        elif args.dataset in ['ITA', 'IntlServTrade', 'IntlServSTA']:
+        elif args.DatasetName in ['ITA', 'IntlServTrade', 'IntlServSTA']:
             xk = 'Year'
         else:
             return None
@@ -820,18 +829,18 @@ class BEAQueryQ():
         args - command arguments
         return y key
         """
-        if args.dataset in ['NIPA', 'NIUnderlyingDetail', 'FixedAssets',
+        if args.DatasetName in ['NIPA', 'NIUnderlyingDetail', 'FixedAssets',
                             'Regional']:
             yk = 'DataValue'
-        elif args.dataset in ['InputOutput']:
+        elif args.DatasetName in ['InputOutput']:
             yk = 'DataValue'
-        elif args.dataset in ['GDPbyIndustry', 'UnderlyingGDPbyIndustry']:
+        elif args.DatasetName in ['GDPbyIndustry', 'UnderlyingGDPbyIndustry']:
             yk = 'DataValue'
-        elif args.dataset in ['MNE']:
+        elif args.DatasetName in ['MNE']:
             yk = 'DataValue'
-        elif args.dataset in ['IIP']:
+        elif args.DatasetName in ['IIP']:
             yk = 'DataValue'
-        elif args.dataset in ['ITA', 'IntlServTrade', 'IntlServSTA']:
+        elif args.DatasetName in ['ITA', 'IntlServTrade', 'IntlServSTA']:
             yk = 'DataValue'
         else:
             return None
@@ -842,20 +851,20 @@ class BEAQueryQ():
         args - command arguments
         return qualifying name for dataset
         """
-        if args.dataset in ['NIPA', 'NIUnderlyingDetail', 'FixedAssets']:
+        if args.DatasetName in ['NIPA', 'NIUnderlyingDetail', 'FixedAssets']:
             sk = 'LineDescription'
-        elif args.dataset in ['InputOutput']:
+        elif args.DatasetName in ['InputOutput']:
             sk = 'ColDescr'
-        elif args.dataset in ['GDPbyIndustry', 'UnderlyingGDPbyIndustry']:
+        elif args.DatasetName in ['GDPbyIndustry', 'UnderlyingGDPbyIndustry']:
             sk = 'IndustrYDescription'
-        elif args.dataset in ['MNE']:
-            #sk = args.sid
+        elif args.DatasetName in ['MNE']:
+            #sk = args.SeriesID
             sk = 'SeriesName'
-        elif args.dataset in ['IIP']:
+        elif args.DatasetName in ['IIP']:
             sk = 'Component'
-        elif args.dataset in ['ITA', 'IntlServTrade', 'IntlServSTA']:
+        elif args.DatasetName in ['ITA', 'IntlServTrade', 'IntlServSTA']:
             sk = 'TimeSeriesDescription'
-        elif args.dataset in ['Regional']:
+        elif args.DatasetName in ['Regional']:
             sk = 'GeoName'
         else:
             return None
@@ -867,23 +876,23 @@ class BEAQueryQ():
         args - command arguments
         return qualifying name for dataset
         """
-        if args.dataset in ['NIPA', 'NIUnderlyingDetail', 'FixedAssets',
+        if args.DatasetName in ['NIPA', 'NIUnderlyingDetail', 'FixedAssets',
                             'Regional']:
-            dn = args.tn
-        elif args.dataset in ['InputOutput', 'GDPbyIndustry',
+            dn = args.TableName
+        elif args.DatasetName in ['InputOutput', 'GDPbyIndustry',
                               'UnderlyingGDPbyIndustry']:
-            dn = args.tid
-        elif args.dataset in ['MNE']:
-            #dn = args.sid
-            dn = args.doi
-        elif args.dataset in ['IIP']:
-            dn = args.toi
-        elif args.dataset in ['ITA']:
-            dn = args.indctr
-        elif args.dataset in ['IntlServTrade']:
-            dn = args.tos
-        elif args.dataset in ['IntlServSTA']:
-            dn = args.chan
+            dn = args.TableID
+        elif args.DatasetName in ['MNE']:
+            #dn = args.SeriesID
+            dn = args.DirectionOfInvestment
+        elif args.DatasetName in ['IIP']:
+            dn = args.TypeOfInvestment
+        elif args.DatasetName in ['ITA']:
+            dn = args.Indicator
+        elif args.DatasetName in ['IntlServTrade']:
+            dn = args.TypeOfService
+        elif args.DatasetName in ['IntlServSTA']:
+            dn = args.Channel
         else:
             dn =  'Unkown'
         return dn
@@ -898,7 +907,7 @@ class BEAQueryQ():
         uk - key to y axis units
         """
 
-        ds = args.dataset
+        ds = args.DatasetName
         dn = self.ds2dn(args)
         sk = args.splitkey
         if sk == None:
@@ -1097,50 +1106,50 @@ class BEAQueryQ():
 def main():
     argp = argparse.ArgumentParser(description='get BEA data')
 
-    argp.add_argument('--dataset', choices=['NIPA', 'NIUnderlyingDetail', 'MNE',
+    argp.add_argument('--DatasetName', choices=['NIPA', 'NIUnderlyingDetail', 'MNE',
                       'FixedAssets', 'ITA', 'IIP', 'InputOutput',
                       'IntlServTrade', 'IntlServSTA', 'GDPbyIndustry',
                       'Regional', 'UnderlyingGDPbyIndustry',
                       'APIDatasetMetaData'],
                       help='dataset name')
 
-    argp.add_argument('--tn', help='NIPA NIUnderlyingDetail '
+    argp.add_argument('--TableName', help='NIPA NIUnderlyingDetail '
                                       'FixedAssets Regional table name')
-    argp.add_argument('--tid', help='InputOutput GDPbyIndustry '
+    argp.add_argument('--TableID', help='InputOutput GDPbyIndustry '
                                       'UnderlyingGDPbyIndustry table id')
-    argp.add_argument('--sid', help='MNE series id')
+    argp.add_argument('--SeriesID', help='MNE series id')
 
-    argp.add_argument('--showm', default='N',
+    argp.add_argument('--ShowMillions', default='N',
                       help='NIPA show millions')
-    argp.add_argument('--freq',
+    argp.add_argument('--Frequency',
                      help='frequency M, Q, A or comma separated list')
-    argp.add_argument('--yr',
+    argp.add_argument('--Year',
                       help='year YYYY  X or all')
 
-    argp.add_argument('--doi',
+    argp.add_argument('--DirectionOfInvestment',
                       choices = ['inward', 'outward', 'parent', 'state'],
                       help='MNE direction of investment ')
-    argp.add_argument('--cls', help='MNE classification')
-    argp.add_argument('--indstry', help='MNE IntlServSTA GDPbyIndustry '
+    argp.add_argument('--Classification', help='MNE classification')
+    argp.add_argument('--Industry', help='MNE IntlServSTA GDPbyIndustry '
                                     'UnderlyingGDPbyIndustry Industry')
-    argp.add_argument('--cnt', help='MNE country')
+    argp.add_argument('--Country', help='MNE country')
 
-    argp.add_argument('--indctr', help='ITA indicator')
-    argp.add_argument('--aoc', help='ITA IntlServTrade IntlServSTA '
+    argp.add_argument('--Indicator', help='ITA indicator')
+    argp.add_argument('--AreaOrCountry', help='ITA IntlServTrade IntlServSTA '
                                     'area or country')
 
-    argp.add_argument('--toi', help='IIP type of investment')
-    argp.add_argument('--comp', help='IIP component')
+    argp.add_argument('--TypeOfInvestment', help='IIP type of investment')
+    argp.add_argument('--Component', help='IIP component')
 
-    argp.add_argument('--tos', help='IntlServTrade type of service')
-    argp.add_argument('--tdir', help='IntlServTrade trade direction')
-    argp.add_argument('--affl', help='IntlServTrade affiliation')
+    argp.add_argument('--TypeOfService', help='IntlServTrade type of service')
+    argp.add_argument('--TradeDirection', help='IntlServTrade trade direction')
+    argp.add_argument('--Affiliation', help='IntlServTrade affiliation')
 
-    argp.add_argument('--chan', help='IntlServSTA channel')
-    argp.add_argument('--dest', help='IntlServSTA destination')
+    argp.add_argument('--Channel', help='IntlServSTA channel')
+    argp.add_argument('--Destination', help='IntlServSTA destination')
 
-    argp.add_argument('--fips', help='Regional geo FIPS')
-    argp.add_argument('--lncd', help='Regional line code')
+    argp.add_argument('--GeoFips', help='Regional geo FIPS')
+    argp.add_argument('--LineCode', help='Regional line code')
 
     argp.add_argument('--csvfn', \
          help='name of file to store dataset CSV result')
@@ -1174,22 +1183,22 @@ def main():
     if args.tableregister:
        txt = BN.getNIPAregister()
        print(txt)
-    elif args.tn:
+    elif args.TableName:
         d = None
-        if args.dataset == None:
+        if args.DatasetName == None:
             print('dataset required to print dataset tables')
             argp.print_help()
             sys.exit()
-        if args.dataset == 'NIPA':
-            if args.freq == None or args.yr == None:
+        if args.DatasetName == 'NIPA':
+            if args.Frequency == None or args.Year == None:
                 argp.print_help()
                 sys.exit()
             d = BN.getNIPAdata(args)
-        elif args.dataset == 'NIUnderlyingDetail':
+        elif args.DatasetName == 'NIUnderlyingDetail':
             d = BN.getNIUnderlyingDetaildata(args)
-        elif args.dataset == 'FixedAssets':
+        elif args.DatasetName == 'FixedAssets':
             d = BN.getFixedAssetsdata(args)
-        elif args.dataset == 'Regional':
+        elif args.DatasetName == 'Regional':
             d = BN.getRegionaldata(args)
         else:
             argp.print_help()
@@ -1206,13 +1215,13 @@ def main():
                 webbrowser.open('file://%s' % args.htmlfn)
             else:
                 BN.print2csv(d)
-    elif args.tid:
+    elif args.TableID:
         d = None
-        if args.dataset =='InputOutput':
+        if args.DatasetName =='InputOutput':
             d = BN.getInputOutputdata(args)
-        elif args.dataset == 'GDPbyIndustry':
+        elif args.DatasetName == 'GDPbyIndustry':
             d = BN.getGDPbyIndustrydata(args)
-        elif args.dataset == 'UnderlyingGDPbyIndustry':
+        elif args.DatasetName == 'UnderlyingGDPbyIndustry':
             d = BN.getUnderlyingGDPbyIndustrydata(args)
         else:
             argp.print_help()
@@ -1229,9 +1238,9 @@ def main():
                 webbrowser.open('file://%s' % args.htmlfn)
             else:
                 BN.print2csv(d)
-    elif args.sid:
+    elif args.SeriesID:
         d = None
-        if args.dataset == 'MNE':
+        if args.DatasetName == 'MNE':
             d = BN.getMNEdata(args)
         else:
             argp.print_help()
@@ -1248,9 +1257,9 @@ def main():
                 webbrowser.open('file://%s' % args.htmlfn)
             else:
                 BN.print2csv(d)
-    elif args.toi:
+    elif args.TypeOfInvestment:
         d = None
-        if args.dataset == 'IIP':
+        if args.DatasetName == 'IIP':
             d = BN.getIIPdata(args)
         else:
             argp.print_help()
@@ -1267,9 +1276,9 @@ def main():
                 webbrowser.open('file://%s' % args.htmlfn)
             else:
                 BN.print2csv(d)
-    elif args.indctr:
+    elif args.Indicator:
         d = None
-        if args.dataset == 'ITA':
+        if args.DatasetName == 'ITA':
             d = BN.getITAdata(args)
         else:
             argp.print_help()
@@ -1286,9 +1295,9 @@ def main():
                 webbrowser.open('file://%s' % args.htmlfn)
             else:
                 BN.print2csv(d)
-    elif args.tos:
+    elif args.TypeOfService:
         d = None
-        if args.dataset == 'IntlServTrade':
+        if args.DatasetName == 'IntlServTrade':
             d = BN.getIntlServTradedata(args)
         else:
             argp.print_help()
@@ -1305,9 +1314,9 @@ def main():
                 webbrowser.open('file://%s' % args.htmlfn)
             else:
                 BN.print2csv(d)
-    elif args.chan:
+    elif args.Channel:
         d = None
-        if args.dataset == 'IntlServSTA':
+        if args.DatasetName == 'IntlServSTA':
             d = BN.getIntlServSTAdata(args)
         else:
             argp.print_help()

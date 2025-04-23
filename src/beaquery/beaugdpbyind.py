@@ -20,13 +20,13 @@ def main():
     argp = argparse.ArgumentParser(description='get BEA '
           'UnderlyingGDPbyIndustry data')
 
-    argp.add_argument('--dataset', default='UnderlyingGDPbyIndustry',
+    argp.add_argument('--DatasetName', default='UnderlyingGDPbyIndustry',
                        help=argparse.SUPPRESS)
-    argp.add_argument('--tid', required=True, help='table id')
-    argp.add_argument('--indstry', required=True, help='industry')
-    argp.add_argument('--freq', required=True,
+    argp.add_argument('--TableID', required=True, help='table id')
+    argp.add_argument('--Industry', required=True, help='industry')
+    argp.add_argument('--Frequency', required=True,
                      help='frequency M, Q, A or comma separated list')
-    argp.add_argument('--yr', required=True,
+    argp.add_argument('--Year', required=True,
                       help='year YYYY or ALL')
 
     argp.add_argument('--format', default='json',

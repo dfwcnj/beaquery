@@ -20,11 +20,11 @@ def main():
     duk  = 'METRIC_NAME'
     argp = argparse.ArgumentParser(description='get BEA FixedAssets data')
 
-    argp.add_argument('--dataset', default='FixedAssets',
+    argp.add_argument('--DatasetName', default='FixedAssets',
                       help=argparse.SUPPRESS)
 
-    argp.add_argument('--tn', required=True, help='FixedAssets table name')
-    argp.add_argument('--yr', required=True,
+    argp.add_argument('--TableName', required=True, help='FixedAssets table name')
+    argp.add_argument('--Year', required=True,
                       help='year YYYY  or X for all years')
 
 

@@ -19,13 +19,13 @@ def main():
     duk  = 'CL_UNIT'
     argp = argparse.ArgumentParser(description='get BEA ITA data')
 
-    argp.add_argument('--dataset', default='ITA',
+    argp.add_argument('--DatasetName', default='ITA',
                       help=argparse.SUPPRESS)
-    argp.add_argument('--indctr', required=True, help='ITA indicator')
-    argp.add_argument('--aoc', required=True, help='ITA area or country')
-    argp.add_argument('--freq', required=True,
+    argp.add_argument('--Indicator', required=True, help='ITA indicator')
+    argp.add_argument('--AreaOrCountry', required=True, help='ITA area or country')
+    argp.add_argument('--Frequency', required=True,
                      help='frequency M, Q, A or comma separated list')
-    argp.add_argument('--yr', required=True,
+    argp.add_argument('--Year', required=True,
                       help='year YYYY or ALL')
 
     argp.add_argument('--format', default=dfmt,

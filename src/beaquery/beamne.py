@@ -19,14 +19,14 @@ def main():
     duk  = 'TableScale'
     argp = argparse.ArgumentParser(description='get BEA MNE data')
 
-    argp.add_argument('--dataset', default='MNE',
+    argp.add_argument('--DatasetName', default='MNE',
                       help=argparse.SUPPRESS)
-    argp.add_argument('--sid', help='MNE series id')
-    argp.add_argument('--doi', required=True, help='direction of investment')
-    argp.add_argument('--cls', required=True, help='classification')
-    argp.add_argument('--cnt', help='country')
-    argp.add_argument('--indstry', help='industry')
-    argp.add_argument('--yr', required=True,
+    argp.add_argument('--SeriesID', help='MNE series id')
+    argp.add_argument('--DirectionOfInvestment', required=True, help='direction of investment')
+    argp.add_argument('--Classification', required=True, help='classification')
+    argp.add_argument('--Country', help='country')
+    argp.add_argument('--Industry', help='industry')
+    argp.add_argument('--Year', required=True,
                       help='year YYYY or all')
 
     argp.add_argument('--format', default=dfmt,
