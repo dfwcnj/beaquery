@@ -261,6 +261,8 @@ class BEAQueryQ():
             print('GetNIPAdata: no data', file=sys.stderr)
             return resp
         jsd = json.loads(rstr)
+        if 'Results' not in jsd['BEAAPI'].keys():
+            return None
         return jsd['BEAAPI']['Results']
 
     def getNIUnderlyingDetaildata(self, args):
@@ -282,6 +284,8 @@ class BEAQueryQ():
             print('getNIUnderlyingDetaildata: no data', file=sys.stderr)
             return resp
         jsd = json.loads(rstr)
+        if 'Results' not in jsd['BEAAPI'].keys():
+            return None
         return jsd['BEAAPI']['Results']
 
 # dict_keys(['Year', 'SeriesID', 'SeriesName', 'Row', 'ColumnGParent', 'ColumnParent', 'Column', 'RowCode', 'ColumnCode', 'ColumnParentCode', 'ColumnGParentCode', 'TableScale', 'DataValueUnformatted', 'TableColumnDisplayOrder', 'TableRowDisplayOrder', 'DataValue'])
@@ -309,6 +313,8 @@ class BEAQueryQ():
             print('getMNEdata: no data', file=sys.stderr)
             return resp
         jsd = json.loads(rstr)
+        if 'Results' not in jsd['BEAAPI'].keys():
+            return None
         return jsd['BEAAPI']['Results']
 
     def getFixedAssetsdata(self, args):
@@ -329,6 +335,8 @@ class BEAQueryQ():
             print('getFixedAssetsdata: no data', file=sys.stderr)
             return resp
         jsd = json.loads(rstr)
+        if 'Results' not in jsd['BEAAPI'].keys():
+            return None
         return jsd['BEAAPI']['Results']
 
     def getITAdata(self, args):
@@ -349,6 +357,8 @@ class BEAQueryQ():
             print('getITAdata: no data', file=sys.stderr)
             return resp
         jsd = json.loads(rstr)
+        if 'Results' not in jsd['BEAAPI'].keys():
+            return None
         return jsd['BEAAPI']['Results']
 
     def getIIPdata(self, args):
@@ -371,6 +381,8 @@ class BEAQueryQ():
             print('getIIPdata: no data', file=sys.stderr)
             return resp
         jsd = json.loads(rstr)
+        if 'Results' not in jsd['BEAAPI'].keys():
+            return None
         return jsd['BEAAPI']['Results']
 
     def getInputOutputdata(self, args):
@@ -391,6 +403,8 @@ class BEAQueryQ():
             print('getInputOutputtdata: no data', file=sys.stderr)
             return resp
         jsd = json.loads(rstr)
+        if 'Results' not in jsd['BEAAPI'].keys():
+            return None
         return jsd['BEAAPI']['Results']
 
     def getIntlServTradedata(self, args):
@@ -414,6 +428,8 @@ class BEAQueryQ():
             print('getIntlServTradedata: no data', file=sys.stderr)
             return resp
         jsd = json.loads(rstr)
+        if 'Results' not in jsd['BEAAPI'].keys():
+            return None
         return jsd['BEAAPI']['Results']
 
     def getIntlServSTAdata(self, args):
@@ -438,6 +454,8 @@ class BEAQueryQ():
             print('getIntlServSTAdata: no data', file=sys.stderr)
             return resp
         jsd = json.loads(rstr)
+        if 'Results' not in jsd['BEAAPI'].keys():
+            return None
         return jsd['BEAAPI']['Results']
 
     def getGDPbyIndustrydata(self, args):
@@ -460,6 +478,8 @@ class BEAQueryQ():
             print('getGDPbyIndustrydata: no data', file=sys.stderr)
             return resp
         jsd = json.loads(rstr)
+        if 'Results' not in jsd['BEAAPI'].keys():
+            return None
         return jsd['BEAAPI']['Results']
 
     def getRegionaldata(self, args):
@@ -482,6 +502,8 @@ class BEAQueryQ():
             print('getRegionaldata: no data', file=sys.stderr)
             return resp
         jsd = json.loads(rstr)
+        if 'Results' not in jsd['BEAAPI'].keys():
+            return None
         return jsd['BEAAPI']['Results']
 
     def getUnderlyingGDPbyIndustrydata(self, args):
@@ -504,6 +526,8 @@ class BEAQueryQ():
             print('getRegionaldata: no data', file=sys.stderr)
             return resp
         jsd = json.loads(rstr)
+        if 'Results' not in jsd['BEAAPI'].keys():
+            return None
         return jsd['BEAAPI']['Results']
 
     def dd2csv(self, jsd):
