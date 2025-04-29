@@ -929,6 +929,12 @@ class BEAQueryQ():
         return dn
 
     def xiyiui(self, hdr, xk, yk, uk):
+        """xiyiui(hdr, xk, yk, uk)
+        hdr - aa header
+        xk  - header value for plot x axis
+        yk  - header value for plot y axis
+        uk  - header value for y axis units
+        """
         xi = yi = ui = None
         for i in range(len(hdr)):
             if hdr[i] == xk:
@@ -937,6 +943,7 @@ class BEAQueryQ():
                 yi = i
             elif hdr[i] == uk:
                 ui = i
+        # GDP datasets have no units data
         if ui == None:
             for i in range(len(hdr)):
                 if hdr[i] == 'DataValue':
