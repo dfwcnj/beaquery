@@ -1,4 +1,3 @@
-
 #! env python
 #
 import argparse
@@ -637,12 +636,20 @@ class BEAQueryQ():
         t - plot title
         return plot figure
         """
-        print('aa2plot add units', file =sys.stderr)
+        if xi == None:
+            print('aa2plot bad xi %s' % xi, file=sys.stderr)
+            sys.exit()
+        if yi == None:
+            print('aa2plot bad yi %s' % yi, file=sys.stderr)
+            sys.exit()
+
         fig  = make_subplots(shared_yaxes=True, shared_xaxes=True)
 
         xa = []
         ya = []
         units = aa[1][ui]
+        if aa[0][ui] == 'DataValue':
+            units = 'Billions?'
         for i in range(len(aa)):
             xa.append(aa[i][xi])
             ya.append(aa[i][yi])
@@ -921,6 +928,22 @@ class BEAQueryQ():
             dn =  'Unkown'
         return dn
 
+    def xiyiui(self, hdr, xk, yk, uk):
+        xi = yi = ui = None
+        for i in range(len(hdr)):
+            if hdr[i] == xk:
+                xi = i
+            elif hdr[i] == yk:
+                yi = i
+            elif hdr[i] == uk:
+                ui = i
+        if ui == None:
+            for i in range(len(hdr)):
+                if hdr[i] == 'DataValue':
+                    ui = i
+                    break
+        return xi, yi, ui
+
     def d2html(self, d, args):
         """d2html(d, ds, d, sk, xk, yk, uk)
         d - dictionary from table query
@@ -958,17 +981,18 @@ class BEAQueryQ():
             if sk != None:
                 asp = self.aasplit(aa, sk)
 
-                fig = self.paa2plots(asp['parts'], xk, yk, uk, '%s %s' %
-                      (ds, dn))
-                figjs = fig.to_json()
-                htmla.append('<div id="fig%s%s">' % (ds,dn) )
-                htmla.append('<script>')
-                htmla.append('var figobj = %s;\n' % figjs)
-                htmla.append('Plotly.newPlot("fig%s%s", figobj.data, figobj.layout, {});' % (ds,dn) )
-                htmla.append('</script>')
-                htmla.append('</div>')
-
                 for pk in asp['parts'].keys():
+                    xi, yi, ui = self.xiyiui(asp['parts'][pk][0], xk, yk, uk)
+                    fig = self.aa2plot(asp['parts'][pk], xi, yi, ui, '%s %s' %
+                          (ds, dn))
+                    figjs = fig.to_json()
+                    htmla.append('<div id="fig%s%s%s">' % (ds,dn,pk) )
+                    htmla.append('<script>')
+                    htmla.append('var figobj = %s;\n' % figjs)
+                    htmla.append('Plotly.newPlot("fig%s%s%s", figobj.data, figobj.layout, {});' % (ds,dn,pk) )
+                    htmla.append('</script>')
+                    htmla.append('</div>')
+
                     pttl = '%s %s' % (ttl, pk)
                     ptbla = self.aa2table(pttl, asp['parts'][pk])
                     htmla.extend(ptbla)
@@ -981,18 +1005,19 @@ class BEAQueryQ():
                 if sk != None:
                     asp = self.aasplit(aa, sk)
 
-                    fig = self.paa2plots(asp['parts'], xk, yk, uk, '%s %s' %
-                                         (ds, dn))
-                    figjs = fig.to_json()
-                    htmla.append('<div id="fig%s%s">' % (ds,dn) )
-                    htmla.append('<script>')
-                    htmla.append('var figobj = %s;\n' % figjs)
-                    htmla.append('Plotly.newPlot("fig%s%s", figobj.data, figobj.layout, {});' % (ds,dn) )
-                    htmla.append('</script>')
-                    htmla.append('</div>')
-
-
                     for pk in asp['parts'].keys():
+                        xi, yi, ui = self.xiyiui(asp['parts'][pk][0],
+                                      xk, yk, uk)
+                        fig = self.aa2plot(asp['parts'][pk], xi, yi, ui, '%s %s' %
+                                             (ds, dn))
+                        figjs = fig.to_json()
+                        htmla.append('<div id="fig%s%s%s">' % (ds,dn,pk) )
+                        htmla.append('<script>')
+                        htmla.append('var figobj = %s;\n' % figjs)
+                        htmla.append('Plotly.newPlot("fig%s%s%s", figobj.data, figobj.layout, {});' % (ds,dn,pk) )
+                        htmla.append('</script>')
+                        htmla.append('</div>')
+
                         pttl = '%s %d %s' % (ttl, i, pk)
                         ptbla = self.aa2table(pttl, asp['parts'][pk])
                         htmla.extend(ptbla)
