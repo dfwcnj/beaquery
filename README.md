@@ -26,6 +26,9 @@ used by BEA.
 - [License](#license)
 
 ## Installation
+pip install beaquery
+
+## Usage
 
 <br/>
 ##<br/>
@@ -47,8 +50,9 @@ where to store the generated html<br/>
 ##<br/>
 usage: beafixedassets [-h] --TableName TABLENAME --Year YEAR<br/>
 [--format {json,XML}] [--csvfn CSVFN]<br/>
-[--splitkey SPLITKEY] [--xkey XKEY] [--ykey YKEY]<br/>
-[--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
+[--csvzipfn CSVZIPFN] [--splitkey SPLITKEY]<br/>
+[--xkey XKEY] [--ykey YKEY] [--unitskey UNITSKEY]<br/>
+[--htmlfn HTMLFN]<br/>
 <br/>
 get BEA FixedAssets data<br/>
 <br/>
@@ -59,6 +63,7 @@ FixedAssets table name<br/>
 --Year YEAR           year YYYY or X for all years<br/>
 --format {json,XML}   result format(json)<br/>
 --csvfn CSVFN         name of file to store dataset CSV result<br/>
+--csvzipfn CSVZIPFN   name of zip file to store dataset CSV results<br/>
 --splitkey SPLITKEY   table column name(LineDescription) to use to split the<br/>
 plots<br/>
 --xkey XKEY           table column name(TimePeriod) to use to plot the data<br/>
@@ -73,8 +78,9 @@ data<br/>
 ##<br/>
 usage: beagdpbyind [-h] --TableID TABLEID --Industry INDUSTRY --Frequency<br/>
 FREQUENCY --Year YEAR [--format {json,XML}]<br/>
-[--csvfn CSVFN] [--splitkey SPLITKEY] [--xkey XKEY]<br/>
-[--ykey YKEY] [--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
+[--csvfn CSVFN] [--csvzipfn CSVZIPFN]<br/>
+[--splitkey SPLITKEY] [--xkey XKEY] [--ykey YKEY]<br/>
+[--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
 <br/>
 get BEA GDPbyIndustry data<br/>
 <br/>
@@ -87,6 +93,7 @@ frequency M, Q, A or comma separated list<br/>
 --Year YEAR           year YYYY or ALL<br/>
 --format {json,XML}   query result format(json)<br/>
 --csvfn CSVFN         name of file to store dataset CSV result<br/>
+--csvzipfn CSVZIPFN   name of zip file to store dataset CSV results<br/>
 --splitkey SPLITKEY   table column name(IndustrYDescription) to use to split<br/>
 the plots<br/>
 --xkey XKEY           table column name(Year) to use to plot the data<br/>
@@ -98,11 +105,11 @@ the plots<br/>
 ##<br/>
 ## beaiip<br/>
 ##<br/>
-usage: beaiip [-h] --TypeOfInvestment TYPEOFINVESTMENT --Composition<br/>
-COMPOSITION --Frequency FREQUENCY --Year YEAR<br/>
-[--format {json,XML}] [--csvfn CSVFN] [--splitkey SPLITKEY]<br/>
-[--xkey XKEY] [--ykey YKEY] [--unitskey UNITSKEY]<br/>
-[--htmlfn HTMLFN]<br/>
+usage: beaiip [-h] --TypeOfInvestment TYPEOFINVESTMENT --Component<br/>
+COMPONENT --Frequency FREQUENCY --Year YEAR<br/>
+[--format {json,XML}] [--csvfn CSVFN] [--csvzipfn CSVZIPFN]<br/>
+[--splitkey SPLITKEY] [--xkey XKEY] [--ykey YKEY]<br/>
+[--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
 <br/>
 get BEA IIP data<br/>
 <br/>
@@ -110,13 +117,14 @@ options:<br/>
 -h, --help            show this help message and exit<br/>
 --TypeOfInvestment TYPEOFINVESTMENT<br/>
 type of investment<br/>
---Composition COMPOSITION<br/>
-composition<br/>
+--Component COMPONENT<br/>
+component of changes of position<br/>
 --Frequency FREQUENCY<br/>
 frequency M, Q, A or comma separated list<br/>
 --Year YEAR           year YYYY or ALL<br/>
 --format {json,XML}   result format(json)<br/>
 --csvfn CSVFN         name of file to store dataset CSV result<br/>
+--csvzipfn CSVZIPFN   name of zip file to store dataset CSV results<br/>
 --splitkey SPLITKEY   table column name(Component) to use to split the plots<br/>
 --xkey XKEY           table column name(TimePeriod) to use to plot the data<br/>
 --ykey YKEY           table column name(DataValue) to use to plot the data<br/>
@@ -129,8 +137,9 @@ frequency M, Q, A or comma separated list<br/>
 ##<br/>
 usage: beainputoutput [-h] --TableID TABLEID --Year YEAR<br/>
 [--format {json,XML}] [--csvfn CSVFN]<br/>
-[--splitkey SPLITKEY] [--xkey XKEY] [--ykey YKEY]<br/>
-[--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
+[--csvzipfn CSVZIPFN] [--splitkey SPLITKEY]<br/>
+[--xkey XKEY] [--ykey YKEY] [--unitskey UNITSKEY]<br/>
+[--htmlfn HTMLFN]<br/>
 <br/>
 get BEA InputOutput data<br/>
 <br/>
@@ -140,6 +149,7 @@ options:<br/>
 --Year YEAR          year YYYY or ALL<br/>
 --format {json,XML}  request result format(json)<br/>
 --csvfn CSVFN        name of file to store dataset CSV result<br/>
+--csvzipfn CSVZIPFN  name of zip file to store dataset CSV results<br/>
 --splitkey SPLITKEY  table column name(ColDescr) to use to split the plots<br/>
 --xkey XKEY          table column name(Year) to use to plot the data<br/>
 --ykey YKEY          table column name(DataValue) to use to plot the data<br/>
@@ -152,9 +162,9 @@ options:<br/>
 ##<br/>
 usage: beaissta [-h] --Channel CHANNEL --Destination DESTINATION --Industry<br/>
 INDUSTRY --AreaOrCountry AREAORCOUNTRY --Year YEAR<br/>
-[--format {json,XML}] [--csvfn CSVFN] [--splitkey SPLITKEY]<br/>
-[--xkey XKEY] [--ykey YKEY] [--unitskey UNITSKEY]<br/>
-[--htmlfn HTMLFN]<br/>
+[--format {json,XML}] [--csvfn CSVFN] [--csvzipfn CSVZIPFN]<br/>
+[--splitkey SPLITKEY] [--xkey XKEY] [--ykey YKEY]<br/>
+[--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
 <br/>
 get BEA IntlServSTA data<br/>
 <br/>
@@ -169,6 +179,7 @@ area or country<br/>
 --Year YEAR           year YYYY or ALL<br/>
 --format {json,XML}   query result format(json)<br/>
 --csvfn CSVFN         name of file to store dataset CSV result<br/>
+--csvzipfn CSVZIPFN   name of zip file to store dataset CSV results<br/>
 --splitkey SPLITKEY   table column name(TimeSeriesDescription) to use to<br/>
 split the plots<br/>
 --xkey XKEY           table column name(Year) to use to plot the data<br/>
@@ -182,11 +193,11 @@ split the plots<br/>
 ##<br/>
 usage: beaistrade [-h] --TypeOfService TYPEOFSERVICE<br/>
 [--TradeDirection TRADEDIRECTION]<br/>
-[--affiliation AFFILIATION]<br/>
+[--Affiliation AFFILIATION]<br/>
 [--AreaOrCountry AREAORCOUNTRY] --Year YEAR<br/>
 [--format {json,XML}] [--csvfn CSVFN]<br/>
-[--splitkey SPLITKEY] [--xkey XKEY] [--ykey YKEY]<br/>
-[--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
+[--csvzipfn CSVZIPFN] [--splitkey SPLITKEY] [--xkey XKEY]<br/>
+[--ykey YKEY] [--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
 <br/>
 get BEA IntlServTrade data<br/>
 <br/>
@@ -196,13 +207,14 @@ options:<br/>
 type of service<br/>
 --TradeDirection TRADEDIRECTION<br/>
 trade direction<br/>
---affiliation AFFILIATION<br/>
+--Affiliation AFFILIATION<br/>
 affiliation<br/>
 --AreaOrCountry AREAORCOUNTRY<br/>
 area or country<br/>
 --Year YEAR           year YYYY or ALL<br/>
 --format {json,XML}   query result format(json)<br/>
 --csvfn CSVFN         name of file to store dataset CSV result<br/>
+--csvzipfn CSVZIPFN   name of zip file to store dataset CSV results<br/>
 --splitkey SPLITKEY   table column name(TimeSeriesDescription) to use to<br/>
 split the plots<br/>
 --xkey XKEY           table column name(Year) to use to plot the data<br/>
@@ -216,8 +228,9 @@ split the plots<br/>
 ##<br/>
 usage: beaita [-h] --Indicator INDICATOR --AreaOrCountry AREAORCOUNTRY<br/>
 --Frequency FREQUENCY --Year YEAR [--format {json,XML}]<br/>
-[--csvfn CSVFN] [--splitkey SPLITKEY] [--xkey XKEY]<br/>
-[--ykey YKEY] [--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
+[--csvfn CSVFN] [--csvzipfn CSVZIPFN] [--splitkey SPLITKEY]<br/>
+[--xkey XKEY] [--ykey YKEY] [--unitskey UNITSKEY]<br/>
+[--htmlfn HTMLFN]<br/>
 <br/>
 get BEA ITA data<br/>
 <br/>
@@ -232,6 +245,7 @@ frequency M, Q, A or comma separated list<br/>
 --Year YEAR           year YYYY or ALL<br/>
 --format {json,XML}   query result format(json)<br/>
 --csvfn CSVFN         name of file to store dataset CSV result<br/>
+--csvzipfn CSVZIPFN   name of zip file to store dataset CSV results<br/>
 --splitkey SPLITKEY   table column name(TimeSeriesDescription) to use to<br/>
 split the plots<br/>
 --xkey XKEY           table column name(Year) to use to plot the data<br/>
@@ -241,7 +255,7 @@ split the plots<br/>
 'default': 'CL_UNIT', 'type': None, 'choices': None,<br/>
 'required': False, 'help': 'table column name(%s) to y<br/>
 label the plot', 'metavar': None, 'container':<br/>
-<argparse._ArgumentGroup object at 0x102d70f50>,<br/>
+<argparse._ArgumentGroup object at 0x1017ef860>,<br/>
 'prog': 'beaita'}) to y label the plot<br/>
 --htmlfn HTMLFN       name of file to store dataset HTML result<br/>
 <br/>
@@ -252,9 +266,9 @@ label the plot', 'metavar': None, 'container':<br/>
 usage: beamne [-h] [--SeriesID SERIESID] --DirectionOfInvestment<br/>
 DIRECTIONOFINVESTMENT --Classification CLASSIFICATION<br/>
 [--Country COUNTRY] [--Industry INDUSTRY] --Year YEAR<br/>
-[--format {json,XML}] [--csvfn CSVFN] [--splitkey SPLITKEY]<br/>
-[--xkey XKEY] [--ykey YKEY] [--unitskey UNITSKEY]<br/>
-[--htmlfn HTMLFN]<br/>
+[--format {json,XML}] [--csvfn CSVFN] [--csvzipfn CSVZIPFN]<br/>
+[--splitkey SPLITKEY] [--xkey XKEY] [--ykey YKEY]<br/>
+[--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
 <br/>
 get BEA MNE data<br/>
 <br/>
@@ -270,6 +284,7 @@ classification<br/>
 --Year YEAR           year YYYY or all<br/>
 --format {json,XML}   query result format(json)<br/>
 --csvfn CSVFN         name of file to store dataset CSV result<br/>
+--csvzipfn CSVZIPFN   name of zip file to store dataset CSV results<br/>
 --splitkey SPLITKEY   table column name(SeriesName) to use to split the<br/>
 plots<br/>
 --xkey XKEY           table column name(Year) to use to plot the data<br/>
@@ -283,8 +298,9 @@ plots<br/>
 ##<br/>
 usage: beanipa [-h] --TableName TABLENAME [--ShowMillions SHOWMILLIONS]<br/>
 --Frequency FREQUENCY --Year YEAR [--format {json,XML}]<br/>
-[--csvfn CSVFN] [--splitkey SPLITKEY] [--xkey XKEY]<br/>
-[--ykey YKEY] [--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
+[--csvfn CSVFN] [--csvzipfn CSVZIPFN] [--splitkey SPLITKEY]<br/>
+[--xkey XKEY] [--ykey YKEY] [--unitskey UNITSKEY]<br/>
+[--htmlfn HTMLFN]<br/>
 <br/>
 get BEA NIPA data<br/>
 <br/>
@@ -299,6 +315,7 @@ frequency M, Q, A or comma separated list<br/>
 --Year YEAR           year YYYY or X for all<br/>
 --format {json,XML}   query result format(json)<br/>
 --csvfn CSVFN         name of file to store dataset CSV result<br/>
+--csvzipfn CSVZIPFN   name of zip file to store dataset CSV results<br/>
 --splitkey SPLITKEY   table column name(LineDescription) to use to split the<br/>
 plots<br/>
 --xkey XKEY           table column name(TimePeriod) to use to plot the data<br/>
@@ -311,9 +328,9 @@ plots<br/>
 ## beaniud<br/>
 ##<br/>
 usage: beaniud [-h] --TableName TABLENAME --Frequency FREQUENCY --Year YEAR<br/>
-[--format {json,XML}] [--csvfn CSVFN] [--splitkey SPLITKEY]<br/>
-[--xkey XKEY] [--ykey YKEY] [--unitskey UNITSKEY]<br/>
-[--htmlfn HTMLFN]<br/>
+[--format {json,XML}] [--csvfn CSVFN] [--csvzipfn CSVZIPFN]<br/>
+[--splitkey SPLITKEY] [--xkey XKEY] [--ykey YKEY]<br/>
+[--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
 <br/>
 get BEA NIUnderlyingDetail data<br/>
 <br/>
@@ -326,13 +343,14 @@ frequency M, Q, A or comma separated list<br/>
 --Year YEAR           year YYYY or X or all<br/>
 --format {json,XML}   query result format(json)<br/>
 --csvfn CSVFN         name of file to store dataset CSV result<br/>
+--csvzipfn CSVZIPFN   name of zip file to store dataset CSV results<br/>
 --splitkey SPLITKEY   table column name({'option_strings': ['--splitkey'],<br/>
 'dest': 'splitkey', 'nargs': None, 'const': None,<br/>
 'default': 'LineDescription', 'type': None, 'choices':<br/>
 None, 'required': False, 'help': 'table column<br/>
 name(%s) to use to split the plots', 'metavar': None,<br/>
 'container': <argparse._ArgumentGroup object at<br/>
-0x100df7f20>, 'prog': 'beaniud'}) to use to split<br/>
+0x102a0b770>, 'prog': 'beaniud'}) to use to split<br/>
 the plots<br/>
 --xkey XKEY           table column name(TimePeriod) to use to plot the data<br/>
 --ykey YKEY           table column name(DataValue) to use to plot the data<br/>
@@ -345,8 +363,9 @@ the plots<br/>
 ##<br/>
 usage: bearegional [-h] --TableName TABLENAME --GeoFips GEOFIPS --LineCode<br/>
 LINECODE --Year YEAR [--format {json,XML}]<br/>
-[--csvfn CSVFN] [--splitkey SPLITKEY] [--xkey XKEY]<br/>
-[--ykey YKEY] [--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
+[--csvfn CSVFN] [--csvzipfn CSVZIPFN]<br/>
+[--splitkey SPLITKEY] [--xkey XKEY] [--ykey YKEY]<br/>
+[--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
 <br/>
 get BEA Regional data<br/>
 <br/>
@@ -359,6 +378,7 @@ table name<br/>
 --Year YEAR           year YYYY or ALL<br/>
 --format {json,XML}   query result format(json)<br/>
 --csvfn CSVFN         name of file to store dataset CSV result<br/>
+--csvzipfn CSVZIPFN   name of zip file to store dataset CSV results<br/>
 --splitkey SPLITKEY   table column name(GeoName) to use to split the plots<br/>
 --xkey XKEY           table column name(TimePeriod) to use to plot the data<br/>
 --ykey YKEY           table column name(DataValue) to use to plot the data<br/>
@@ -371,8 +391,9 @@ table name<br/>
 ##<br/>
 usage: beaugdpbyind [-h] --TableID TABLEID --Industry INDUSTRY --Frequency<br/>
 FREQUENCY --Year YEAR [--format {json,XML}]<br/>
-[--csvfn CSVFN] [--splitkey SPLITKEY] [--xkey XKEY]<br/>
-[--ykey YKEY] [--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
+[--csvfn CSVFN] [--csvzipfn CSVZIPFN]<br/>
+[--splitkey SPLITKEY] [--xkey XKEY] [--ykey YKEY]<br/>
+[--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
 <br/>
 get BEA UnderlyingGDPbyIndustry data<br/>
 <br/>
@@ -385,6 +406,7 @@ frequency M, Q, A or comma separated list<br/>
 --Year YEAR           year YYYY or ALL<br/>
 --format {json,XML}   result format<br/>
 --csvfn CSVFN         name of file to store dataset CSV result<br/>
+--csvzipfn CSVZIPFN   name of zip file to store dataset CSV results<br/>
 --splitkey SPLITKEY   table column name(IndustrYDescription) to split the<br/>
 plots<br/>
 --xkey XKEY           table column name(Year) to use to plot the data<br/>
@@ -406,13 +428,13 @@ usage: beaqueryq [-h]<br/>
 [--Country COUNTRY] [--Indicator INDICATOR]<br/>
 [--AreaOrCountry AREAORCOUNTRY]<br/>
 [--TypeOfInvestment TYPEOFINVESTMENT]<br/>
-[--Component COMPONENT] [--TypeOService TYPEOSERVICE]<br/>
+[--Component COMPONENT] [--TypeOfService TYPEOFSERVICE]<br/>
 [--TradeDirection TRADEDIRECTION]<br/>
 [--Affiliation AFFILIATION] [--Channel CHANNEL]<br/>
 [--Destination DESTINATION] [--GeoFips GEOFIPS]<br/>
 [--LineCode LINECODE] [--csvfn CSVFN]<br/>
-[--splitkey SPLITKEY] [--xkey XKEY] [--ykey YKEY]<br/>
-[--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
+[--csvzipfn CSVZIPFN] [--splitkey SPLITKEY] [--xkey XKEY]<br/>
+[--ykey YKEY] [--unitskey UNITSKEY] [--htmlfn HTMLFN]<br/>
 [--format {json,XML}] [--hierarchy] [--tableregister]<br/>
 <br/>
 get BEA data<br/>
@@ -447,7 +469,7 @@ ITA IntlServTrade IntlServSTA area or country<br/>
 IIP type of investment<br/>
 --Component COMPONENT<br/>
 IIP component<br/>
---TypeOService TYPEOSERVICE<br/>
+--TypeOfService TYPEOFSERVICE<br/>
 IntlServTrade type of service<br/>
 --TradeDirection TRADEDIRECTION<br/>
 IntlServTrade trade direction<br/>
@@ -459,6 +481,7 @@ IntlServSTA destination<br/>
 --GeoFips GEOFIPS     Regional geo FIPS<br/>
 --LineCode LINECODE   Regional line code<br/>
 --csvfn CSVFN         name of file to store dataset CSV result<br/>
+--csvzipfn CSVZIPFN   name of zip file to store dataset CSV results<br/>
 --splitkey SPLITKEY   table column name to use to split the table<br/>
 --xkey XKEY           table column name to use to plot the data<br/>
 --ykey YKEY           table column name to use to plot the data<br/>
