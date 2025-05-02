@@ -547,7 +547,7 @@ class BEAQueryQ():
                 sys.exit()
 
         try:
-            os.path.mkdir(zd)
+            os.mkdir(zd)
         except Exception as e:
             print('makezipdir %s: %s' % (zd, e), file=sys.stderr)
 
