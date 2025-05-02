@@ -23,7 +23,7 @@ def main():
                       help=argparse.SUPPRESS)
     argp.add_argument('--TypeOfService', required=True, help='type of service')
     argp.add_argument('--TradeDirection', help='trade direction')
-    argp.add_argument('--affiliation', help='affiliation')
+    argp.add_argument('--Affiliation', help='affiliation')
     argp.add_argument('--AreaOrCountry', help='area or country')
     argp.add_argument('--Year', required=True,
                       help='year YYYY or ALL')
@@ -34,6 +34,9 @@ def main():
 
     argp.add_argument('--csvfn', \
          help='name of file to store dataset CSV result')
+    argp.add_argument('--csvzipfn', \
+             help='name of zip file to store dataset CSV results')
+
 
     argp.add_argument('--splitkey', default=dsk,
         help='table column name(%s) to use to split the plots' % dsk)
@@ -55,6 +58,8 @@ def main():
     else:
         if args.csvfn != None:
             BN.store2csv(d, args.csvfn)
+        elif args.csvzipfn:
+            zfn = BN.d2csvzipfile(d, args)
         elif args.htmlfn != None:
             h = BN.d2html(d, args)
             with open(args.htmlfn, 'w') as fp:

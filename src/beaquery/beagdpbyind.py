@@ -34,6 +34,8 @@ def main():
 
     argp.add_argument('--csvfn', \
          help='name of file to store dataset CSV result')
+    argp.add_argument('--csvzipfn', \
+             help='name of zip file to store dataset CSV results')
 
     argp.add_argument('--splitkey', default=dsk,
         help='table column name(%s) to use to split the plots' % dsk)
@@ -55,6 +57,8 @@ def main():
     else:
         if args.csvfn != None:
             BN.store2csv(d, args.csvfn)
+        elif args.csvzipfn:
+            zfn = BN.d2csvzipfile(d, args)
         elif args.htmlfn != None:
             h = BN.d2html(d, args)
             with open(args.htmlfn, 'w') as fp:

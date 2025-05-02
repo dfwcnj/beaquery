@@ -1,13 +1,16 @@
 #! env python
 #
 import argparse
+import glob
 import json
 import os
+import re
 import sys
 import time
 import webbrowser
 import xml
 import xml.etree.ElementTree as ET
+import zipfile
 
 import plotly
 from plotly.subplots import make_subplots
@@ -39,6 +42,7 @@ class BEAQueryQ():
         self.uq = ebquery._EBURLQuery()
 
         self.args = None
+        self.zipdir = '/tmp/BEA'
 
     def getNIPAregister(self):
         """ getNIPAregister()
@@ -529,6 +533,107 @@ class BEAQueryQ():
             return None
         return jsd['BEAAPI']['Results']
 
+    def makezipdir(self):
+        """ makezipdir()
+        create the directory to hold BEA zip files
+        """
+        zd = self.zipdir
+
+        if os.path.exists(zd):
+            if os.path.isdir(zd):
+                return
+            else:
+                print('%s not a directory' % zd, file=sys.stderr)
+                sys.exit()
+
+        try:
+            os.path.mkdir(zd)
+        except Exception as e:
+            print('makezipdir %s: %s' % (zd, e), file=sys.stderr)
+
+    def clearzipfiles(self):
+        """clearzipfiles()
+        remove BEAzip files older than 1 week
+        """
+        tm = time.time()
+        spd = 60 * 60 * 24
+        spw = spd * 7
+        bzfl = glob.glob('/tmp/BEA/BEA*.zip')
+        if len(bzfl) == 0:
+            return
+        bzinfo = [(bnm, os.stat(bnm)) for bnm in bzfl]
+        for bzn, bzs in bzinfo:
+            if (tm - bzs) > spw:
+                os.unlink(bzn)
+
+    def loadzipfile(self, zfp, d, ds, dn, sk):
+        """ loadzipfile(zfp, d, ds, dn, sk)
+        zfp - zipfile file pointer
+        d   - data
+        ds  - dataset name
+        dn  - qualifying parameter name
+        sk  - split key
+        """
+        nms = {}
+        dx=0
+        if type(d) == type({}):
+            aa = self.dd2aa(d, 'Data')
+            if sk != None:
+                asp = self.aasplit(aa, sk)
+                for pk in asp['parts'].keys():
+                    csv = self.aa2csv(asp['parts'][pk])
+                    pk = re.sub("[,' :)(]", '', pk)
+                    csvfn = '%s%s%s.csv' % (ds,dn,pk)
+                    if csvfn in nms:
+                        csvfn = '%s%s%s%d.csv' % (ds,dn,pk,dx)
+                        dx += 1
+                    zfp.writestr(csvfn, csv)
+                    nms[csvfn]=1
+            else:
+                csv = self.aa2csv(aa)
+                csvfn = '%s%s.csv' % (ds,dn)
+                zfp.writestr(csvfn, csv)
+
+        elif type(d) == type([]):
+            for i in range(len(d)):
+                aa = self.dd2aa(d[i], 'Data')
+                if sk != None:
+                    asp = self.aasplit(aa, sk)
+                    for pk in asp['parts'].keys():
+                        csv = self.aa2csv(asp['parts'][pk])
+                        pk = re.sub("[,' :)(]", '', pk)
+                        csvfn = '%s%s%s.csv' % (ds,dn,pk)
+                        if csvfn in nms:
+                            csvfn = '%s%s%s%d.csv' % (ds,dn,pk,dx)
+                            dx += 1
+                        zfp.writestr(csvfn, csv)
+                        nms[csvfn]=1
+                else:
+                    csv = self.aa2csv(aa)
+                    csvfn = '%s%s.csv' % (ds,dn)
+                    zfp.writestr(csvfn, csv)
+
+    def d2csvzipfile(self, d, args):
+        """d2csvzipfile
+        save csvfiles to a zipfile
+        """
+
+        self.makezipdir()
+        self.clearzipfiles()
+
+        ds = args.DatasetName
+        dn = self.ds2dn(args)
+        sk = args.splitkey
+        if sk == None:
+            sk = self.ds2sk(args)
+        zfn = args.csvzipfn
+        if zfn == None:
+            zfn = '/tmp/BEA/BEA%s%s.zip' % (ds,dn)
+        with zipfile.ZipFile(zfn, 'w', zipfile.ZIP_DEFLATED) as zfp:
+            self.loadzipfile(zfp, d, ds, dn, sk)
+            zfp.close()
+            return zfn
+
     def dd2csv(self, jsd):
         """ dd2csv(jsd)
         jsd - results from BEA table query
@@ -790,7 +895,7 @@ class BEAQueryQ():
         """ aasplit(self, aa, k)
         aa - array of arrays
         k - split key
-        return split aa
+        return aa split on k
         """
         ai = None # index to split key
         asp = {}
@@ -812,7 +917,7 @@ class BEAQueryQ():
         return asp
 
     def ds2uk(self, args):
-        """ds2dn(args)
+        """ds2uk(args)
         args - command arguments
         return y axis units key
         """
@@ -833,7 +938,7 @@ class BEAQueryQ():
         return uk
 
     def ds2xk(self, args):
-        """ds2dn(args)
+        """ds2xk(args)
         args - command arguments
         return x key
         """
@@ -856,7 +961,7 @@ class BEAQueryQ():
 
 
     def ds2yk(self, args):
-        """ds2dn(args)
+        """ds2yk(args)
         args - command arguments
         return y key
         """
@@ -878,9 +983,9 @@ class BEAQueryQ():
         return yk
 
     def ds2sk(self, args):
-        """ds2dn(args)
+        """ds2sk(args)
         args - command arguments
-        return qualifying name for dataset
+        return split key
         """
         if args.DatasetName in ['NIPA', 'NIUnderlyingDetail', 'FixedAssets']:
             sk = 'LineDescription'
@@ -905,7 +1010,7 @@ class BEAQueryQ():
     def ds2dn(self, args):
         """ds2dn(args)
         args - command arguments
-        return qualifying name for dataset
+        return qualifying parameter name for dataset
         """
         if args.DatasetName in ['NIPA', 'NIUnderlyingDetail', 'FixedAssets',
                             'Regional']:
@@ -1209,6 +1314,8 @@ def main():
 
     argp.add_argument('--csvfn', \
          help='name of file to store dataset CSV result')
+    argp.add_argument('--csvzipfn', \
+         help='name of zip file to store dataset CSV results')
 
     argp.add_argument('--splitkey',
         help='table column name to use to split the table')
@@ -1259,18 +1366,6 @@ def main():
         else:
             argp.print_help()
             sys.exit()
-        if d == None or type(d) == type({}) and 'Data' not in d.keys():
-            print('beaqueryq: no data', file=sys.stderr)
-        else:
-            if args.csvfn != None:
-                BN.store2csv(d, args.csvfn)
-            elif args.htmlfn != None:
-                h = BN.d2html(d, args)
-                with open(args.htmlfn, 'w') as fp:
-                    print(h, file=fp)
-                webbrowser.open('file://%s' % args.htmlfn)
-            else:
-                BN.print2csv(d)
     elif args.TableID:
         d = None
         if args.DatasetName =='InputOutput':
@@ -1282,18 +1377,6 @@ def main():
         else:
             argp.print_help()
             sys.exit()
-        if d == None or type(d) == type({}) and 'Data' not in d.keys():
-            print('beaqueryq: no data', file=sys.stderr)
-        else:
-            if args.csvfn != None:
-                BN.store2csv(d, args.csvfn)
-            elif args.htmlfn != None:
-                h = BN.d2html(d, args)
-                with open(args.htmlfn, 'w') as fp:
-                    print(h, file=fp)
-                webbrowser.open('file://%s' % args.htmlfn)
-            else:
-                BN.print2csv(d)
     elif args.SeriesID:
         d = None
         if args.DatasetName == 'MNE':
@@ -1301,18 +1384,6 @@ def main():
         else:
             argp.print_help()
             sys.exit()
-        if d == None or type(d) == type({}) and 'Data' not in d.keys():
-            print('beaqueryq: no data', file=sys.stderr)
-        else:
-            if args.csvfn != None:
-                BN.store2csv(d, args.csvfn)
-            elif args.htmlfn != None:
-                h = BN.d2html(d, args)
-                with open(args.htmlfn, 'w') as fp:
-                    print(h, file=fp)
-                webbrowser.open('file://%s' % args.htmlfn)
-            else:
-                BN.print2csv(d)
     elif args.TypeOfInvestment:
         d = None
         if args.DatasetName == 'IIP':
@@ -1320,18 +1391,6 @@ def main():
         else:
             argp.print_help()
             sys.exit()
-        if d == None or type(d) == type({}) and 'Data' not in d.keys():
-            print('beaqueryq: no data', file=sys.stderr)
-        else:
-            if args.csvfn != None:
-                BN.store2csv(d, args.csvfn)
-            elif args.htmlfn != None:
-                h = BN.d2html(d, args)
-                with open(args.htmlfn, 'w') as fp:
-                    print(h, file=fp)
-                webbrowser.open('file://%s' % args.htmlfn)
-            else:
-                BN.print2csv(d)
     elif args.Indicator:
         d = None
         if args.DatasetName == 'ITA':
@@ -1339,18 +1398,6 @@ def main():
         else:
             argp.print_help()
             sys.exit()
-        if d == None or type(d) == type({}) and 'Data' not in d.keys():
-            print('beaqueryq: no data', file=sys.stderr)
-        else:
-            if args.csvfn != None:
-                BN.store2csv(d, args.csvfn)
-            elif args.htmlfn != None:
-                h = BN.d2html(d, args)
-                with open(args.htmlfn, 'w') as fp:
-                    print(h, file=fp)
-                webbrowser.open('file://%s' % args.htmlfn)
-            else:
-                BN.print2csv(d)
     elif args.TypeOfService:
         d = None
         if args.DatasetName == 'IntlServTrade':
@@ -1358,18 +1405,6 @@ def main():
         else:
             argp.print_help()
             sys.exit()
-        if d == None or type(d) == type({}) and 'Data' not in d.keys():
-            print('beaqueryq: no data', file=sys.stderr)
-        else:
-            if args.csvfn != None:
-                BN.store2csv(d, args.csvfn)
-            elif args.htmlfn != None:
-                h = BN.d2html(d, args)
-                with open(args.htmlfn, 'w') as fp:
-                    print(h, file=fp)
-                webbrowser.open('file://%s' % args.htmlfn)
-            else:
-                BN.print2csv(d)
     elif args.Channel:
         d = None
         if args.DatasetName == 'IntlServSTA':
@@ -1377,18 +1412,6 @@ def main():
         else:
             argp.print_help()
             sys.exit()
-        if d == None or type(d) == type({}) and 'Data' not in d.keys():
-            print('beaqueryq: no data', file=sys.stderr)
-        else:
-            if args.csvfn != None:
-                BN.store2csv(d, args.csvfn)
-            elif args.htmlfn != None:
-                h = BN.d2html(d, args)
-                with open(args.htmlfn, 'w') as fp:
-                    print(h, file=fp)
-                webbrowser.open('file://%s' % args.htmlfn)
-            else:
-                BN.print2csv(d)
     elif args.hierarchy:
         hd = BN.hierarchy(args.format)
         htm = BN.hierarchyhtml(hd)
@@ -1396,6 +1419,22 @@ def main():
     else:
         argp.print_help()
         sys.exit()
+
+    if d == None or type(d) == type({}) and 'Data' not in d.keys():
+        print('beaqueryq: no data', file=sys.stderr)
+    else:
+        if args.csvfn != None:
+            BN.store2csv(d, args.csvfn)
+        elif args.csvzipfn:
+            zfn = BN.d2csvzipfile(d, args)
+        elif args.htmlfn != None:
+            h = BN.d2html(d, args)
+            with open(args.htmlfn, 'w') as fp:
+                print(h, file=fp)
+            webbrowser.open('file://%s' % args.htmlfn)
+        else:
+            BN.print2csv(d)
+
 
 
 if __name__ == '__main__':
