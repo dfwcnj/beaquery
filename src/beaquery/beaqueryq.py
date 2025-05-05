@@ -89,7 +89,7 @@ class BEAQueryQ():
         return params
 
 
-    def MNEParameters(self, args):
+    def MNEParams(self, args):
         if args.DirectionOfInvestment == None or args.Classification == None or args.Year == None:
             print('MNEParameters: DirectionOfInvestment,'
                   'Classification,and Year required', file=sys.stderr)
@@ -108,7 +108,7 @@ class BEAQueryQ():
                   args.Industry, args.Year, args.format) )
         return params
 
-    def FixedAssetsParameters(self, args):
+    def FixedAssetsParams(self, args):
         if args.TableName == None or args.Year == None:
             print('FixedAssetsParameters TableName and Year required',
                   file=sys.stderr)
@@ -121,7 +121,7 @@ class BEAQueryQ():
                   ('FixedAssets', args.TableName, args.Year, args.format) )
         return params
 
-    def ITAParameters(self, args):
+    def ITAParams(self, args):
         params = ('&method=GetData&'
                   'DatasetName=%s&'
                   'Indicator=%s&'
@@ -134,7 +134,7 @@ class BEAQueryQ():
                   args.format) )
         return params
 
-    def IIPParameters(self, args):
+    def IIPParams(self, args):
         params = ('&method=GetData&'
                   'DatasetName=%s&'
                   'TypeOfInvestment=%s&'
@@ -146,7 +146,7 @@ class BEAQueryQ():
                   args.format) )
         return params
 
-    def InputOutputParameters(self, args):
+    def InputOutputParams(self, args):
         if args.TableID == None or args.Year == None:
             print('InputOutputParameters TableID and Year required',
                   file=sys.stderr)
@@ -159,7 +159,7 @@ class BEAQueryQ():
                   ('InputOutput', args.TableID, args.Year, args.format) )
         return params
 
-    def IntlServTradeParameters(self, args):
+    def IntlServTradeParams(self, args):
         params = ('&method=GetData&'
                   'DatasetName=%s&'
                   'TypeOfService=%s&'
@@ -173,7 +173,7 @@ class BEAQueryQ():
                   args.AreaOrCountry, args.Year, args.format) )
         return params
 
-    def IntlServSTAParameters(self, args):
+    def IntlServSTAParams(self, args):
         params = ('&method=GetData&'
                   'DatasetName=%s&'
                   'Channel=%s&'
@@ -186,7 +186,7 @@ class BEAQueryQ():
                   args.AreaOrCountry, args.Year, args.format) )
         return params
 
-    def GDPbyIndustryParameters(self, args):
+    def GDPbyIndustryParams(self, args):
         if args.Frequency == None or args.Industry == None or args.TableID == None \
         or args.Year == None:
             print('GDPbyIndustryParameters Frequency, Industry,'
@@ -204,7 +204,7 @@ class BEAQueryQ():
                   args.Year, args.format) )
         return params
 
-    def RegionalParameters(self, args):
+    def RegionalParams(self, args):
         if args.GeoFips == None or args.TableName == None or args.LineCode == None:
             print('Regional GeoFips, LineCode, TableName required',
                   file=sys.stderr)
@@ -222,7 +222,7 @@ class BEAQueryQ():
                   args.format) )
         return params
 
-    def UnderlyingGDPbyIndustryParameters(self, args):
+    def UnderlyingGDPbyIndustryParams(self, args):
         if args.Frequency == None or args.Industry == None or args.TableID == None or \
            args.Year == None:
             print('UnderlyingGDPbyIndustryParameters TableID, Industry,'
@@ -305,7 +305,7 @@ class BEAQueryQ():
         fmt - result format
         return multinational enterprises data
         """
-        params = self.MNEParameters(args)
+        params = self.MNEParams(args)
         url = self.burl + params
         resp = self.uq.query(url)
         if resp == None:
@@ -327,7 +327,7 @@ class BEAQueryQ():
         fmt - result format
         return fixed assets data
         """
-        params = self.FixedAssetsParameters(args)
+        params = self.FixedAssetsParams(args)
         url = self.burl + params
         resp = self.uq.query(url)
         if resp == None:
@@ -349,7 +349,7 @@ class BEAQueryQ():
         fmt - result format
         return international transactions accounts data
         """
-        params = self.ITAParameters(args)
+        params = self.ITAParams(args)
         url = self.burl + params
         resp = self.uq.query(url)
         if resp == None:
@@ -373,7 +373,7 @@ class BEAQueryQ():
         fmt - result format
         return international investment position data
         """
-        params = self.IIPParameters(args)
+        params = self.IIPParams(args)
         url = self.burl + params
         resp = self.uq.query(url)
         if resp == None:
@@ -395,7 +395,7 @@ class BEAQueryQ():
         fmt - result format
         return input output data
         """
-        params = self.InputOutputParameters(args)
+        params = self.InputOutputParams(args)
         url = self.burl + params
         resp = self.uq.query(url)
         if resp == None:
@@ -420,7 +420,7 @@ class BEAQueryQ():
         fmt - result format
         return international service trade data
         """
-        params = self.IntlServTradeParameters(args)
+        params = self.IntlServTradeParams(args)
         url = self.burl + params
         resp = self.uq.query(url)
         if resp == None:
@@ -446,7 +446,7 @@ class BEAQueryQ():
         fmt - result format
         return international services supplied through affiliates data
         """
-        params = self.IntlServSTAParameters(args)
+        params = self.IntlServSTAParams(args)
         url = self.burl + params
         resp = self.uq.query(url)
         if resp == None:
@@ -470,7 +470,7 @@ class BEAQueryQ():
         fmt - result format
         return gdp by industry data
         """
-        params = self.GDPbyIndustryParameters(args)
+        params = self.GDPbyIndustryParams(args)
         url = self.burl + params
         resp = self.uq.query(url)
         if resp == None:
@@ -494,7 +494,7 @@ class BEAQueryQ():
         fmt - result format
         return regional data
         """
-        params = self.RegionalParameters(args)
+        params = self.RegionalParams(args)
         url = self.burl + params
         resp = self.uq.query(url)
         if resp == None:
@@ -518,7 +518,7 @@ class BEAQueryQ():
         fmt - result format
         return underlying gdp by industry data
         """
-        params = self.UnderlyingGDPbyIndustryParameters(args)
+        params = self.UnderlyingGDPbyIndustryParams(args)
         url = self.burl + params
         resp = self.uq.query(url)
         if resp == None:
