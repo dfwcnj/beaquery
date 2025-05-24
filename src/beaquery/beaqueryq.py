@@ -988,7 +988,7 @@ class BEAQueryQ():
         return split key
         """
         if args.DatasetName in ['NIPA', 'NIUnderlyingDetail', 'FixedAssets']:
-            sk = 'LineDescription'
+            sk = 'SeriesCode'
         elif args.DatasetName in ['InputOutput']:
             sk = 'ColDescr'
         elif args.DatasetName in ['GDPbyIndustry', 'UnderlyingGDPbyIndustry']:

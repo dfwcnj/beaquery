@@ -13,7 +13,7 @@ except Exception as e:
 
 def main():
     dfmt = 'json'
-    dsk  = 'LineDescription'
+    dsk  = 'SeriesCode'
     dxk  = 'TimePeriod'
     dyk  = 'DataValue'
     duk  = 'METRIC_NAME'
