@@ -992,7 +992,7 @@ class BEAQueryQ():
         elif args.DatasetName in ['InputOutput']:
             sk = 'ColDescr'
         elif args.DatasetName in ['GDPbyIndustry', 'UnderlyingGDPbyIndustry']:
-            sk = 'IndustrYDescription'
+            sk = 'TableID'
         elif args.DatasetName in ['MNE']:
             #sk = args.SeriesID
             sk = 'SeriesName'
